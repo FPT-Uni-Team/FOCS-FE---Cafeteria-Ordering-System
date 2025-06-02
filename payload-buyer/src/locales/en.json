@@ -1,0 +1,11 @@
+{
+  "common": {},
+  "sign-in": {
+    "meta_title": "Login to Your Account",
+    "meta_description": "Log in to quickly and easily order your favorite meals."
+  },
+  "sign-up": {
+    "meta_title": "Create a New Account",
+    "meta_description": "Sign up to enjoy fast meal ordering and exclusive offers."
+  }
+}
