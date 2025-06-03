@@ -1,3 +1,5 @@
 Step by step clone project
 
-git clone --recurse-submodules https://github.com/FPT-Uni-Team/TipTrip.git
+git clone https://github.com/FPT-Uni-Team/FOCS-FE---Cafeteria-Ordering-System.git
+npm i
+npm run dev
