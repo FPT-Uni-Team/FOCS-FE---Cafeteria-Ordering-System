@@ -15,5 +15,5 @@ export async function generateMetadata(props: IAuthenticationProps) {
 }
 
 export default async function SignInPage() {
-  return <h1>cuognnhe</h1>;
+  return <div className="text-3xl font-bold underline">Hello world!</div>;
 }
