@@ -38,14 +38,14 @@ export default function ProductDetailPage() {
   const totalPrice = (PRODUCT.price + sizePrice + toppingsPrice) * quantity;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex justify-center items-start p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow p-4 space-y-5">
         {/* Image */}
         <div className="relative">
           <img
             src={PRODUCT.image}
             alt={PRODUCT.name}
-            className="w-full rounded-xl"
+            className="w-full h-52 object-cover rounded-xl"
           />
           <div className="absolute bottom-2 right-2 bg-black text-white text-xs px-2 py-0.5 rounded-full">
             1/5
@@ -54,7 +54,7 @@ export default function ProductDetailPage() {
 
         {/* Info */}
         <div className="space-y-1">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
             <h2 className="text-xl font-bold text-gray-800">{PRODUCT.name}</h2>
             <span className="text-green-600 text-xl font-bold">
               {PRODUCT.price.toLocaleString()} đ
@@ -155,8 +155,8 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Quantity + Add to cart */}
-        <div className="flex items-center justify-between gap-3 pt-2">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <div className="flex items-center gap-2 justify-center">
             <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
               className="w-8 h-8 rounded-full bg-gray-200 text-gray-800 text-lg flex items-center justify-center"
@@ -171,7 +171,7 @@ export default function ProductDetailPage() {
               +
             </button>
           </div>
-          <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-full font-semibold text-sm transition">
+          <button className="w-full sm:flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-full font-semibold text-sm transition">
             Add to cart - {totalPrice.toLocaleString()} đ
           </button>
         </div>

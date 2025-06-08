@@ -40,14 +40,14 @@ const products = [
 
 export default function ProductListPage() {
   return (
-    <div className="min-h-screen bg-white flex">
-      {/* Category list - Vertical Sidebar */}
-      <div className="w-32 bg-gray-100 h-screen fixed top-0 left-0 overflow-y-auto">
-        <div className="flex flex-col space-y-2 p-4">
+    <div className="min-h-screen bg-white flex flex-col md:flex-row">
+      {/* Category list */}
+      <div className="w-full md:w-32 bg-gray-100 md:h-screen md:fixed top-0 left-0 overflow-x-auto md:overflow-y-auto">
+        <div className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-2 p-2 md:p-4 overflow-x-auto">
           {categories.map((cat, idx) => (
             <button
               key={cat}
-              className={`px-3 py-2 text-left rounded-lg ${
+              className={`whitespace-nowrap px-3 py-2 text-sm rounded-lg ${
                 idx === 0 ? "bg-blue-100 text-blue-600 font-semibold" : "text-gray-500 hover:bg-gray-200"
               }`}
             >
@@ -58,7 +58,7 @@ export default function ProductListPage() {
       </div>
 
       {/* Product list */}
-      <div className="flex-1 ml-32 p-4">
+      <div className="flex-1 md:ml-32 p-4 mt-2 md:mt-0">
         <div className="max-w-md mx-auto">
           {products.map((group) => (
             <div key={group.group} className="mb-6">
