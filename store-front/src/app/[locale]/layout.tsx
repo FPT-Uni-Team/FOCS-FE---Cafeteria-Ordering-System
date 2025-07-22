@@ -4,6 +4,10 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "@/styles/globals.css";
 import { routing } from "@/libs/i18n/routing";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/libs/auth/authOptions";
+import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   icons: [
@@ -28,6 +32,7 @@ export const metadata: Metadata = {
       url: "/favicon.ico",
     },
   ],
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
 };
 
 export function generateStaticParams() {
@@ -39,17 +44,25 @@ export default async function RootLayout(props: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await props.params;
-
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
-
   setRequestLocale(locale);
-
+  const session = await getServerSession(authOptions);
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider>{props.children}</NextIntlClientProvider>
+        <SessionProviderWrapper session={session}>
+          <NextIntlClientProvider>
+            {props.children}
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                className: "text-sm",
+              }}
+            />
+          </NextIntlClientProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

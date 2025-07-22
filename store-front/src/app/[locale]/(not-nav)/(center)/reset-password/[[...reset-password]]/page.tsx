@@ -1,3 +1,4 @@
+import ResetPasswordWrapper from "@/components/reset-password/ResetPasswordWrapper";
 import { IAuthenticationProps } from "@/types/common";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -5,7 +6,7 @@ export async function generateMetadata(props: IAuthenticationProps) {
   const { locale } = await props.params;
   const t = await getTranslations({
     locale,
-    namespace: "sign-in",
+    namespace: "reset-password",
   });
   setRequestLocale(locale);
   return {
@@ -14,6 +15,6 @@ export async function generateMetadata(props: IAuthenticationProps) {
   };
 }
 
-export default async function SignInPage() {
-  return <div className="text-3xl font-bold underline">Hello world!</div>;
+export default function ResetPasswordPage() {
+  return <ResetPasswordWrapper />;
 }

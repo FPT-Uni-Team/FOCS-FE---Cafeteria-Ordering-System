@@ -1,11 +1,93 @@
 {
   "common": {},
   "sign-in": {
-    "meta_title": "Đăng nhập tài khoản",
-    "meta_description": "Đăng nhập để truy cập dịch vụ đặt món ăn nhanh chóng và tiện lợi."
+    "meta_title": "Đăng nhập tài khoản của bạn",
+    "meta_description": "Đăng nhập để đặt món yêu thích một cách nhanh chóng và dễ dàng.",
+    "get_something": "Cùng đặt món nào",
+    "good_to_see_you": "Rất vui được gặp lại bạn.",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "sign_in": "Đăng nhập",
+    "forgot_password": "Quên mật khẩu?",
+    "do_not_account": "Chưa có tài khoản?",
+    "sign_up": "Đăng ký",
+    "error_email_invalid": "Email không hợp lệ",
+    "error_password_combined": "Mật khẩu phải có ít nhất 6 ký tự, bao gồm ít nhất 1 chữ thường, 1 chữ hoa và 1 chữ số."
   },
   "sign-up": {
-    "meta_title": "Tạo tài khoản mới",
-    "meta_description": "Đăng ký tài khoản để trải nghiệm dịch vụ đặt món ăn dễ dàng và nhiều ưu đãi hấp dẫn."
+    "meta_title": "Tạo Tài Khoản Mới",
+    "meta_description": "Đăng ký để đặt món nhanh chóng và nhận ưu đãi độc quyền.",
+    "title": "Đăng Ký",
+    "first_name": "Họ",
+    "last_name": "Tên",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "submit": "Đăng Ký",
+    "error_required": "Trường này là bắt buộc",
+    "error_email_invalid": "Địa chỉ email không hợp lệ",
+    "error_phone_invalid": "Số điện thoại phải từ 9 đến 11 chữ số",
+    "error_password_combined": "Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số",
+    "error_password_not_match": "Mật khẩu xác nhận không khớp",
+    "already_have_account": "Bạn đã có tài khoản?",
+    "sign_in": "Đăng Nhập",
+    "check_email_title": "Hãy kiểm tra email của bạn",
+    "check_email_description": "Chúng tôi đã gửi một liên kết xác nhận đến địa chỉ email bạn đã cung cấp.",
+    "go_to_sign_in": "Đi đến trang đăng nhập"
+  },
+  "home-page": {
+    "title": "Chào mừng đến với FOCS!",
+    "meta_title": "Chào mừng đến với dịch vụ giao đồ ăn của chúng tôi",
+    "meta_description": "Khám phá những món ăn ngon và giao hàng nhanh đến tận cửa nhà bạn.",
+    "hero_title": "Những món ăn ngon được giao nhanh chóng",
+    "hero_subtitle": "Khám phá thực đơn và đặt món yêu thích ngay hôm nay!",
+    "category_title": "Danh mục",
+    "featured_dishes_title": "Món nổi bật"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "profile": "Tài khoản"
+  },
+  "forgot-password": {
+    "title": "Quên mật khẩu",
+    "description": "Nhập email của bạn để đặt lại mật khẩu.",
+    "email": "Email",
+    "submit": "Gửi",
+    "new_password": "Mật khẩu mới",
+    "confirm_password": "Xác nhận mật khẩu",
+    "reset_success": "Đặt lại mật khẩu thành công. Bạn có thể đăng nhập ngay bây giờ.",
+    "back_to_sign_in": "Quay lại đăng nhập",
+    "error_email_invalid": "Email không hợp lệ",
+    "error_password_combined": "Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số",
+    "error_password_not_match": "Xác nhận mật khẩu không khớp",
+    "check_email_title": "Vui lòng kiểm tra email",
+    "check_email_description": "Chúng tôi đã gửi một liên kết để đặt lại mật khẩu của bạn. Vui lòng làm theo hướng dẫn trong email.",
+    "go_to_sign_in": "Quay lại đăng nhập"
+  },
+  "reset-password": {
+    "meta_title": "Đặt Lại Mật Khẩu",
+    "meta_description": "Nhập mật khẩu mới để đặt lại.",
+    "reset_title": "Đặt Lại Mật Khẩu",
+    "email": "Email",
+    "new_password": "Mật Khẩu Mới",
+    "confirm_password": "Xác Nhận Mật Khẩu Mới",
+    "submit_reset": "Đặt Lại Mật Khẩu",
+    "error_email_invalid": "Địa chỉ email không hợp lệ",
+    "error_password_combined": "Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số",
+    "error_password_not_match": "Mật khẩu không khớp",
+    "reset_success": "Đặt lại mật khẩu thành công."
+  },
+  "profile": {
+    "meta_title": "Hồ Sơ Của Bạn",
+    "meta_description": "Xem và chỉnh sửa thông tin hồ sơ của bạn.",
+    "title": "Hồ sơ của tôi",
+    "edit": "Chỉnh sửa hồ sơ",
+    "favourites": "Yêu thích",
+    "languages": "Ngôn ngữ",
+    "location": "Vị trí",
+    "logout": "Đăng xuất"
   }
 }
