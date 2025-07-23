@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
+  images: {
+    domains: [
+      "images.unsplash.com",
+      "cdn-icons-png.flaticon.com",
+      "www.google.com",
+    ],
+  },
 };
 
 const withNextIntl = createNextIntlPlugin("./src/libs/i18n/request.ts");

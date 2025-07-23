@@ -2,10 +2,94 @@
   "common": {},
   "sign-in": {
     "meta_title": "Login to Your Account",
-    "meta_description": "Log in to quickly and easily order your favorite meals."
+    "meta_description": "Log in to quickly and easily order your favorite meals.",
+    "get_something": "Let's get something",
+    "good_to_see_you": "Good to see you back.",
+    "email": "Email",
+    "password": "Password",
+    "sign_in": "Sign In",
+    "forgot_password": "Forgot your password",
+    "do_not_account": "Don't have an account?",
+    "sign_up": "Sign Up",
+    "error_email_invalid": "Email is invalid",
+    "error_password_combined": "Password must be at least 6 characters long, and include at least 1 lowercase letter, 1 uppercase letter, and 1 digit."
   },
   "sign-up": {
     "meta_title": "Create a New Account",
-    "meta_description": "Sign up to enjoy fast meal ordering and exclusive offers."
+    "meta_description": "Sign up to enjoy fast meal ordering and exclusive offers.",
+    "title": "Sign Up",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "submit": "Sign Up",
+    "error_required": "This field is required",
+    "error_email_invalid": "Invalid email address",
+    "error_phone_invalid": "Phone number must be 9 to 11 digits",
+    "error_password_combined": "Password must contain at least 6 characters, including uppercase, lowercase and number",
+    "error_password_not_match": "Passwords do not match",
+    "already_have_account": "Already have an account?",
+    "sign_in": "Sign In",
+    "check_email_title": "Check Your Email",
+    "check_email_description": "We've sent a confirmation link to the email address you provided.",
+    "go_to_sign_in": "Go to Sign In"
+  },
+  "home-page": {
+    "title": "Welcome to FOCS!",
+    "meta_title": "Welcome to Our Food Delivery Service",
+    "meta_description": "Discover delicious meals and quick delivery right to your door.",
+    "hero_title": "Delicious Meals Delivered Fast",
+    "hero_subtitle": "Explore our menu and order your favorites today!",
+    "category_title": "Categories",
+    "featured_dishes_title": "Featured Dishes"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "profile": "Profile",
+    "search_placeholder": "Search ..."
+  },
+  "forgot-password": {
+    "meta_title": "Forgot Password",
+    "meta_description": "Enter your email to reset your password.",
+    "title": "Forgot Password",
+    "email": "Email",
+    "submit": "Submit",
+    "new_password": "New Password",
+    "confirm_password": "Confirm New Password",
+    "reset_success": "Password reset successfully. You can now log in.",
+    "back_to_sign_in": "Back to Sign In",
+    "error_email_invalid": "Invalid email address",
+    "error_password_combined": "Password must contain at least 6 characters, including uppercase, lowercase and number",
+    "error_password_not_match": "Passwords do not match",
+    "check_email_title": "Please check your email",
+    "check_email_description": "We have sent a link to reset your password. Please follow the instructions in the email.",
+    "go_to_sign_in": "Go to Sign In"
+  },
+  "reset-password": {
+    "meta_title": "Reset Password",
+    "meta_description": "Enter your new password to reset it.",
+    "reset_title": "Reset Password",
+    "email": "Email",
+    "new_password": "New Password",
+    "confirm_password": "Confirm New Password",
+    "submit_reset": "Reset Password",
+    "error_email_invalid": "Invalid email address",
+    "error_password_combined": "Password must contain at least 6 characters, including uppercase, lowercase and number",
+    "error_password_not_match": "Passwords do not match",
+    "reset_success": "Password reset successfully."
+  },
+  "profile": {
+    "meta_title": "Your Profile",
+    "meta_description": "View and edit your profile information.",
+    "title": "My Profile",
+    "edit": "Edit Profile",
+    "favourites": "Favourites",
+    "languages": "Languages",
+    "location": "Location",
+    "logout": "Log Out"
   }
 }
