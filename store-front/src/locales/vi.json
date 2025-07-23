@@ -49,7 +49,8 @@
     "home": "Trang chủ",
     "about": "Về chúng tôi",
     "contact": "Liên hệ",
-    "profile": "Tài khoản"
+    "profile": "Tài khoản",
+    "search_placeholder": "Tìm kiếm ..."
   },
   "forgot-password": {
     "title": "Quên mật khẩu",

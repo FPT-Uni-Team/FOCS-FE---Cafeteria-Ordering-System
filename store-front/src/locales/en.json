@@ -49,7 +49,8 @@
     "home": "Home",
     "about": "About Us",
     "contact": "Contact Us",
-    "profile": "Profile"
+    "profile": "Profile",
+    "search_placeholder": "Search ..."
   },
   "forgot-password": {
     "meta_title": "Forgot Password",
