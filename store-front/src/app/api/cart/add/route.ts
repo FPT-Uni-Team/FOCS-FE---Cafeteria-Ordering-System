@@ -1,10 +1,22 @@
-import authService from "@/services/authService";
+import cartService from "@/services/cartService";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const data = await req.json();
-    const res = await authService.forgotPassword(data);
+    const { menu_item_id, variants, quantity, note, actorId, tableId } =
+      await req.json();
+    const cartItem = {
+      menu_item_id,
+      variants,
+      quantity,
+      note,
+    };
+
+    const dataTable = {
+      actorId,
+      tableId,
+    };
+    const res = await cartService.add(cartItem, dataTable);
     return NextResponse.json(res.data, { status: res.status });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {

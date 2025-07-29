@@ -1,5 +1,7 @@
 {
-  "common": {},
+  "common": {
+    "cart": "Cart"
+  },
   "sign-in": {
     "meta_title": "Login to Your Account",
     "meta_description": "Log in to quickly and easily order your favorite meals.",
@@ -50,7 +52,13 @@
     "about": "About Us",
     "contact": "Contact Us",
     "profile": "Profile",
-    "search_placeholder": "Search ..."
+    "search_placeholder": "Search ...",
+    "filter": "Filter",
+    "category_filter": "Category",
+    "price_sort": "Price",
+    "price_low_to_high": "From Low to High",
+    "price_high_to_low": "From High to Low",
+    "apply_filter": "Apply"
   },
   "forgot-password": {
     "meta_title": "Forgot Password",
@@ -91,5 +99,48 @@
     "languages": "Languages",
     "location": "Location",
     "logout": "Log Out"
+  },
+  "product-list": {
+    "meta_title": "Product List",
+    "meta_description": "Browse our wide selection of products.",
+    "title": "Products",
+    "add_to_cart": "Add to Cart",
+    "view_details": "View Details",
+    "no_products_found": "No products found."
+  },
+  "product-modal": {
+    "add_to_cart": "Add to Cart",
+    "view_details": "View Details",
+    "close": "Close",
+    "quantity": "Quantity",
+    "total_price": "Total Price",
+    "select_variant": "Select Variant",
+    "select_variants": "Select Variants",
+    "add_to_cart_success": "Product added to cart successfully.",
+    "error_select_variant": "Please select a variant.",
+    "base_price": "Base Price",
+    "note_label": "Note",
+    "note_placeholder": "Add any special instructions or notes here",
+    "required": "Required",
+    "not_required": "Not required",
+    "max": "Max",
+    "min": "Min",
+    "min_select_msg": "Please select at least {count} option.",
+    "max_select_msg": "You can select up to {count} options.",
+    "required_msg": "This option is required."
+  },
+  "cart": {
+    "meta_title": "Add to cart",
+    "meta_description": "View and manage the items you've added to your shopping cart before checking",
+    "title": "Your Cart",
+    "empty": "No items in your cart.",
+    "product_id": "Product ID",
+    "note": "Note",
+    "no_note": "None",
+    "quantity": "Quantity",
+    "variants": "Variants",
+    "no_variant": "None",
+    "total": "Total",
+    "checkout": "Checkout"
   }
 }

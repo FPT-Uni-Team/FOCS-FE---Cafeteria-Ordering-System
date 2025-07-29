@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
+  images: {
+    domains: ["res.cloudinary.com"],
+  },
 };
 
 const withNextIntl = createNextIntlPlugin("./src/libs/i18n/request.ts");

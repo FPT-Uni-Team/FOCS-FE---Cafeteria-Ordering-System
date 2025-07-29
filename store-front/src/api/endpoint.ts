@@ -1,4 +1,5 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+const API_BASE_URL_HUB = process.env.NEXT_PUBLIC_API_BASE_URL_HUB || "";
 
 const endpoints = {
   promotion: {
@@ -10,29 +11,8 @@ const endpoints = {
       `${API_BASE_URL}/admin/promotion/${action}/${id}`,
   },
   menuItem: {
-    list: () => `${API_BASE_URL}/admin/menu-item/list`,
-    listByIds: () => `${API_BASE_URL}/admin/menu-item/bulk`,
-    create: () => `${API_BASE_URL}/admin/menu-item`,
-    detail: (params: string) => `${API_BASE_URL}/admin/menu-item/${params}`,
-    update: (params: string) => `${API_BASE_URL}/admin/menu-item/${params}`,
-    images: (params: string) =>
-      `${API_BASE_URL}/admin/menu-item/${params}/images`,
-    variantGroups: (params: string) =>
-      `${API_BASE_URL}/admin/menu-item/${params}/variant-groups`,
-    createVariantGroups: (params: string) =>
-      `${API_BASE_URL}/admin/menu-item/${params}/variant-group/variants`,
-    menuItemCategory: (params: string) =>
-      `${API_BASE_URL}/menu-item-category/menu-item/${params}/categories`,
-    menuItemAssignCategory: (params: string) =>
-      `${API_BASE_URL}/menu-item-category/assign-to-menu-item/${params}`,
-    menuItemDeleteCategory: () =>
-      `${API_BASE_URL}/menu-item-category/remove-from-product`,
-    menuItemDeleteGroupVariant: (params: string) =>
-      `${API_BASE_URL}/admin/menu-item/${params}/variant-groups`,
-    menuItemDeleteVariant: (params: string) =>
-      `${API_BASE_URL}/admin/menu-item/${params}/product-variants`,
-    change: (action: string, id: string) =>
-      `${API_BASE_URL}/admin/menu-item/${action}/${id}`,
+    list: () => `${API_BASE_URL}/me/menu-item`,
+    listByIds: () => `${API_BASE_URL}/me/menu-item/ids`,
   },
   auth: {
     login: () => `${API_BASE_URL}/me/login`,
@@ -81,6 +61,14 @@ const endpoints = {
   user: {
     profile: () => `${API_BASE_URL}/user`,
     updateProfile: () => `${API_BASE_URL}/user/`,
+  },
+  cart: {
+    addToCart: ({ tableId, actorId }: { tableId: string; actorId: string }) =>
+      `${API_BASE_URL}/order/tables/${tableId}/cart/${actorId}`,
+    get: ({ tableId, actorId }: { tableId: string; actorId: string }) =>
+      `${API_BASE_URL}/order/get/table/${tableId}/cart/${actorId}`,
+    hub: ({ storeId, tableId }: { storeId: string; tableId: string }) =>
+      `${API_BASE_URL_HUB}/hubs/cart?dept=user&storeId=${storeId}&tableId=${tableId}`,
   },
 };
 
