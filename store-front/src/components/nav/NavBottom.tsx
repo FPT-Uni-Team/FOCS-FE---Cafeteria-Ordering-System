@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FaHome, FaUser, FaShoppingCart, FaSignInAlt } from "react-icons/fa";
 import { useCleanPath } from "@/utils/common/common";
+import { MdLocalMall } from "react-icons/md";
 
 export default function NavBottom() {
   const { data: session } = useSession();
@@ -18,6 +19,11 @@ export default function NavBottom() {
       href: "/cart",
       label: "Cart",
       icon: <FaShoppingCart size={18} />,
+    },
+    {
+      href: "/product-list",
+      label: "Product",
+      icon: <MdLocalMall size={18} />,
     },
     isAuth
       ? {

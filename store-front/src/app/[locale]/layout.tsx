@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/libs/auth/authOptions";
 import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 import { Toaster } from "react-hot-toast";
+import ReduxProvider from "@/store/ReduxProvider";
 
 export const metadata: Metadata = {
   icons: [
@@ -32,7 +33,12 @@ export const metadata: Metadata = {
       url: "/favicon.ico",
     },
   ],
-  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export function generateStaticParams() {
@@ -53,15 +59,17 @@ export default async function RootLayout(props: {
     <html lang={locale}>
       <body>
         <SessionProviderWrapper session={session}>
-          <NextIntlClientProvider>
-            {props.children}
-            <Toaster
-              position="top-center"
-              toastOptions={{
-                className: "text-sm",
-              }}
-            />
-          </NextIntlClientProvider>
+          <ReduxProvider>
+            <NextIntlClientProvider>
+              {props.children}
+              <Toaster
+                position="top-center"
+                toastOptions={{
+                  className: "text-sm",
+                }}
+              />
+            </NextIntlClientProvider>
+          </ReduxProvider>
         </SessionProviderWrapper>
       </body>
     </html>
