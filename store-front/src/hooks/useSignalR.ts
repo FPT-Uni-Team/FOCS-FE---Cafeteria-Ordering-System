@@ -41,7 +41,7 @@ export const useSignalR = ({
       }
     };
 
-    connection.on("ReceiveCartUpdate", (update: unknown) => {
+    connection.on("UpdateCart", (update: unknown) => {
       onReceiveUpdate?.(update);
     });
 
