@@ -69,6 +69,8 @@ const endpoints = {
       `${API_BASE_URL}/order/get/table/${tableId}/cart/${actorId}`,
     hub: ({ storeId, tableId }: { storeId: string; tableId: string }) =>
       `${API_BASE_URL_HUB}/hubs/cart?dept=user&storeId=${storeId}&tableId=${tableId}`,
+    delete: ({ tableId, actorId }: { tableId: string; actorId: string }) =>
+      `${API_BASE_URL}/order/table/${tableId}/cart/${actorId}`,
   },
 };
 

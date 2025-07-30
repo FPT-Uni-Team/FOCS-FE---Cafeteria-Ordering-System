@@ -5,6 +5,7 @@ export type Variant = {
   prep_per_time: number;
   quantity_per_time: number;
   is_available: boolean;
+  isSelected?: boolean;
 };
 
 export type VariantGroup = {
@@ -38,3 +39,9 @@ export type CartItem = Product & {
   quantity: number;
   note?: string;
 };
+
+export interface CartItemInput {
+  menu_item_id: string;
+  variant_id: string;
+  quantity: number;
+}
