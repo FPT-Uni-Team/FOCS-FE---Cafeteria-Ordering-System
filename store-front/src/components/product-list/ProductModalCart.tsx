@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Product } from "@/types/menuItem";
 import { useTranslations } from "next-intl";
 import { MdOutlineClose } from "react-icons/md";
-import { useEffect, useState, useRef } from "react"; // Import useRef
+import { useEffect, useState, useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { SubmitPayload } from "@/types/cart";
 import LoadingOverlay from "../common/LoadingOverlay";
@@ -15,6 +15,11 @@ type ProductSliderProps = {
   show: boolean;
   onClose: () => void;
   onSubmit?: (data: SubmitPayload) => void;
+  initialData?: {
+    quantity: number;
+    note: string;
+    selectedVariants: string[];
+  };
 };
 
 type FormValues = {
@@ -27,6 +32,7 @@ export default function ProductModalCart({
   show,
   onClose,
   onSubmit,
+  initialData,
 }: ProductSliderProps) {
   const t = useTranslations("product-modal");
   const [totalPrice, setTotalPrice] = useState(product.base_price);
@@ -48,10 +54,15 @@ export default function ProductModalCart({
   } = useForm<FormValues>({
     mode: "onSubmit",
     defaultValues: {
-      quantity: 1,
-      note: "",
+      quantity: initialData?.quantity || 1,
+      note: initialData?.note || "",
       ...Object.fromEntries(
-        product.variant_groups.map((group) => [`variants-${group.id}`, []])
+        product.variant_groups.map((group) => [
+          `variants-${group.id}`,
+          initialData?.selectedVariants?.filter((variantId) =>
+            group.variant.some((v) => v.id === variantId)
+          ) || [],
+        ])
       ),
     },
   });
@@ -152,14 +163,21 @@ export default function ProductModalCart({
   ]);
 
   useEffect(() => {
-    reset({
-      quantity: 1,
-      note: "",
+    const defaultValues = {
+      quantity: initialData?.quantity || 1,
+      note: initialData?.note || "",
       ...Object.fromEntries(
-        product.variant_groups.map((group) => [`variants-${group.id}`, []])
+        product.variant_groups.map((group) => [
+          `variants-${group.id}`,
+          initialData?.selectedVariants?.filter((variantId) =>
+            group.variant.some((v) => v.id === variantId)
+          ) || [],
+        ])
       ),
-    });
-  }, [product, reset]);
+    };
+
+    reset(defaultValues);
+  }, [product, reset, initialData]);
 
   useEffect(() => {
     const handleScroll = () => {
