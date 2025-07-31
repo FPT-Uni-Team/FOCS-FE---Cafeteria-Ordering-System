@@ -16,7 +16,7 @@ import usePrevNavigate from "@/hooks/usePrevNavigate";
 
 export default function ProductList() {
   const [showSlider, setShowSlider] = useState(false);
-  const { selectedPrice } = useFilter();
+  const { selectedPrice, selectedCategories } = useFilter();
   const { searchGlobalData: searchText, searchTrigger } = useAppSelector(
     (state) => state.common
   );
@@ -92,6 +92,11 @@ export default function ProductList() {
       ...defaultParams(10, 1),
       search_value: searchText || "",
       sort_order: selectedPrice || "",
+      ...(selectedCategories.length > 0 && {
+        filters: {
+          categories: selectedCategories.join(","),
+        },
+      }),
     };
     fetchProduct({ pageNumber: 1, params });
   }, [searchTrigger]);
@@ -119,6 +124,11 @@ export default function ProductList() {
       ...defaultParams(10, page),
       search_value: searchText || "",
       sort_order: selectedPrice || "",
+      ...(selectedCategories.length > 0 && {
+        filters: {
+          categories: selectedCategories.join(","),
+        },
+      }),
     };
     fetchProduct({ pageNumber: page, params });
   }, [page]);
