@@ -7,6 +7,14 @@ const productService = {
     axiosClient.post(endpoints.menuItem.list(), params),
   listByIds: (params: string[]) =>
     axiosClient.post(endpoints.menuItem.listByIds(), params),
+  menuItemDetail: (params: string) =>
+    axiosClient.get(endpoints.menuItem.detail(params)),
+  menuItemImage: (params: string) =>
+    axiosClient.get(endpoints.menuItem.images(params)),
+  menuItemGroups: (params: string) =>
+    axiosClient.get(endpoints.menuItem.variantGroups(params)),
+  menuItemCategory: (params: string) =>
+    axiosClient.post(endpoints.menuItem.menuItemCategory(params)),
 };
 
 export default productService;

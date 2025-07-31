@@ -13,6 +13,14 @@ const endpoints = {
   menuItem: {
     list: () => `${API_BASE_URL}/me/menu-item`,
     listByIds: () => `${API_BASE_URL}/me/menu-item/ids`,
+    detail: (params: string) => `${API_BASE_URL}/admin/menu-item/${params}`,
+    update: (params: string) => `${API_BASE_URL}/admin/menu-item/${params}`,
+    images: (params: string) =>
+      `${API_BASE_URL}/admin/menu-item/${params}/images`,
+    variantGroups: (params: string) =>
+      `${API_BASE_URL}/admin/menu-item/${params}/variant-groups`,
+    menuItemCategory: (params: string) =>
+      `${API_BASE_URL}/menu-item-category/menu-item/${params}/categories`,
   },
   auth: {
     login: () => `${API_BASE_URL}/me/login`,

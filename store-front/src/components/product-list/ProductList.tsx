@@ -11,6 +11,8 @@ import productService from "@/services/productService";
 import { defaultParams, ProductListParams } from "@/types/common";
 import ProductSkeleton from "../common/ProductSkeleton";
 import { useFilter } from "@/context/FilterContext";
+import { useRouter } from "next/navigation";
+import usePrevNavigate from "@/hooks/usePrevNavigate";
 
 export default function ProductList() {
   const [showSlider, setShowSlider] = useState(false);
@@ -26,6 +28,8 @@ export default function ProductList() {
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const trigger = usePrevNavigate();
 
   const fetchProduct = async ({
     pageNumber = 1,
@@ -139,12 +143,19 @@ export default function ProductList() {
                     className="w-full h-full object-cover rounded-md"
                     width={80}
                     height={80}
+                    loading="lazy"
                   />
                 </div>
                 <div className="flex p-2 relative w-full">
                   <div className="flex flex-col justify-between">
                     <div>
-                      <h2 className="text-lg font-semibold text-gray-800">
+                      <h2
+                        className="text-lg font-semibold text-gray-800"
+                        onClick={() => {
+                          trigger();
+                          router.push(`/product-detail/${product.id}`);
+                        }}
+                      >
                         {product.name}
                       </h2>
                       <p className="text-sm text-gray-500">
