@@ -7,6 +7,7 @@ interface CommonState {
   actorId: string;
   searchGlobalData: string;
   searchTrigger: number;
+  prevNavigate: string;
 }
 
 const initialState: CommonState = {
@@ -15,6 +16,7 @@ const initialState: CommonState = {
   actorId: "f3c3b4e8-2b7f-4f47-b6a1-0ec2b7a5f8a1",
   searchGlobalData: "",
   searchTrigger: 0,
+  prevNavigate: "/en/product-list",
 };
 
 const commonSlice = createSlice({
@@ -33,6 +35,9 @@ const commonSlice = createSlice({
     setSearchTrigger(state) {
       state.searchTrigger += 1;
     },
+    setPrevNavigate(state, action: PayloadAction<string>) {
+      state.prevNavigate = action.payload;
+    },
     resetCommonState() {
       return initialState;
     },
@@ -45,5 +50,6 @@ export const {
   resetCommonState,
   setSearchGlobalData,
   setSearchTrigger,
+  setPrevNavigate,
 } = commonSlice.actions;
 export default commonSlice.reducer;

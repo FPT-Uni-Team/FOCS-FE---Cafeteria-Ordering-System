@@ -12,6 +12,7 @@ export type VariantGroup = {
   id: string;
   name: string;
   variant: Variant[];
+  variants?: Variant[];
   is_required: boolean;
   min_select: number;
   max_select: number;
@@ -24,15 +25,27 @@ export type Category = {
   is_active: boolean;
 };
 
+export type Feedback = {
+  user: string;
+  rating: number;
+  comment: string;
+};
+
+export interface ImageType {
+  url: string;
+  is_main?: boolean;
+}
+
 export type Product = {
   id: string;
   name: string;
   description: string;
-  images: string[] | string;
+  images: string[] | ImageType[] | string;
   base_price: number;
   is_available: boolean;
   variant_groups: VariantGroup[];
   categories: Category[];
+  feedbacks?: Feedback[];
 };
 
 export type CartItem = Product & {

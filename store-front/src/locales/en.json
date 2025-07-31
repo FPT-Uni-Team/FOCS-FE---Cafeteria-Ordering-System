@@ -142,5 +142,9 @@
     "no_variant": "None",
     "total": "Total",
     "checkout": "Checkout"
+  },
+  "product-detail": {
+    "feedbackTitle": "Feedback",
+    "noFeedback": "There are no reviews yet. Be the first to leave one!"
   }
 }
