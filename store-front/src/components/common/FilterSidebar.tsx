@@ -1,7 +1,10 @@
 "use client";
 
+import categoryService from "@/services/categoryService";
+import { defaultParams } from "@/types/common";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiTag } from "react-icons/fi";
 import { MdOutlinePriceChange } from "react-icons/md";
@@ -16,7 +19,6 @@ type FilterSidebarProps = {
   onSubmit: () => void;
 };
 
-const categories = ["Bánh mì", "Trà sữa", "Cà phê", "Mì Ý"];
 const priceOptions = ["asc", "desc"];
 
 export default function FilterSidebar({
@@ -29,7 +31,9 @@ export default function FilterSidebar({
   onSubmit,
 }: FilterSidebarProps) {
   const t = useTranslations("nav");
-
+  const [categories, setCategories] = useState<
+    { id: string; name: string; description: string; is_active: boolean }[]
+  >([]);
   const toggleCategory = (cat: string) => {
     setSelectedCategories(
       selectedCategories.includes(cat)
@@ -38,6 +42,11 @@ export default function FilterSidebar({
     );
   };
 
+  useEffect(() => {
+    categoryService
+      .getListCategories(defaultParams(1000, 1))
+      .then((res) => setCategories(res.data.items));
+  }, []);
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -64,15 +73,15 @@ export default function FilterSidebar({
           <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
               <button
-                key={cat}
-                onClick={() => toggleCategory(cat)}
+                key={cat.id}
+                onClick={() => toggleCategory(cat.id)}
                 className={`px-3 py-1 rounded-full text-sm border ${
-                  selectedCategories.includes(cat)
+                  selectedCategories.includes(cat.id)
                     ? "bg-green-800 text-white border-green-800"
                     : "bg-white text-gray-700 border-gray-300"
                 }`}
               >
-                {cat}
+                {cat.name}
               </button>
             ))}
           </div>
