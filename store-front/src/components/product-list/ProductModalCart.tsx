@@ -9,6 +9,7 @@ import { useEffect, useState, useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { SubmitPayload } from "@/types/cart";
 import LoadingOverlay from "../common/LoadingOverlay";
+import toast from "react-hot-toast";
 
 type ProductSliderProps = {
   product: Product;
@@ -84,7 +85,6 @@ export default function ProductModalCart({
       const fieldName = `variants-${group.id}` as const;
       const selected = getValues(fieldName) || [];
       const selectedCount = selected.length;
-
       if (selectedCount === 0 && group.is_required) {
         setError(fieldName, {
           type: "manual",
@@ -132,8 +132,9 @@ export default function ProductModalCart({
       setIsSubmitting(true);
       await onSubmit?.(payload);
       onClose();
-    } catch (error) {
-      console.error("Submit failed:", error);
+      toast.success(t("add_to_cart_success"));
+    } catch {
+      toast.error(t("add_to_cart_failed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -161,6 +162,8 @@ export default function ProductModalCart({
     getValues,
     priceCalculationKey,
   ]);
+
+  console.log("total", totalPrice);
 
   useEffect(() => {
     const defaultValues = {
@@ -264,13 +267,7 @@ export default function ProductModalCart({
               <h2 className="text-lg font-bold text-black">{product.name}</h2>
               <div className="flex flex-col gap-1 items-end">
                 <p className="text-green-800 text-md font-semibold">
-                  {product.base_price
-                    .toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                      minimumFractionDigits: 0,
-                    })
-                    .replace("₫", "VND")}
+                  {product.base_price} VND
                 </p>
                 <div className=" text-xs text-gray-600">{t("base_price")}</div>
               </div>
@@ -316,7 +313,7 @@ export default function ProductModalCart({
                         variant.is_available ? "text-gray-800" : "text-gray-400"
                       }`}
                     >
-                      +{variant.price.toLocaleString("vi-VN")}
+                      +{variant.price}
                     </span>
                   </label>
                 ))}
@@ -373,14 +370,7 @@ export default function ProductModalCart({
               <FaSpinner className="animate-spin w-4 h-4" />
             ) : (
               <>
-                {t("add_to_cart")} –{" "}
-                {totalPrice
-                  .toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                    minimumFractionDigits: 0,
-                  })
-                  .replace("₫", "VND")}
+                {t("add_to_cart")} – {totalPrice} VND
               </>
             )}
           </button>

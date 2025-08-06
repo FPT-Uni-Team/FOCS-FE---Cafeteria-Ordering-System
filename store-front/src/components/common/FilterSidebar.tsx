@@ -74,9 +74,9 @@ export default function FilterSidebar({
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => toggleCategory(cat.id)}
+                onClick={() => toggleCategory(cat.name)}
                 className={`px-3 py-1 rounded-full text-sm border ${
-                  selectedCategories.includes(cat.id)
+                  selectedCategories.includes(cat.name)
                     ? "bg-green-800 text-white border-green-800"
                     : "bg-white text-gray-700 border-gray-300"
                 }`}

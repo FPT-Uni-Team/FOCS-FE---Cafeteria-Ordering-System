@@ -80,6 +80,12 @@ const endpoints = {
     delete: ({ tableId, actorId }: { tableId: string; actorId: string }) =>
       `${API_BASE_URL}/order/table/${tableId}/cart/${actorId}`,
   },
+  checkout: {
+    apply_discount: ({ actorId }: { actorId: string }) =>
+      `${API_BASE_URL}/order/${actorId}/apply-discount`,
+    create_cart: () => `${API_BASE_URL}/order`,
+    payment: () => `${API_BASE_URL}/payment`,
+  },
 };
 
 export default endpoints;
