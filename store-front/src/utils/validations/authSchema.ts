@@ -58,6 +58,27 @@ export const createPasswordSchema = (t: (key: string) => string) =>
       path: ["confirm_password"],
     });
 
+export const createCheckoutSchema = (t: (key: string) => string) =>
+  z.object({
+    customerName: z
+      .string()
+      .min(1, t("error_required"))
+      .max(30, t("error_name_too_long")),
+    customerPhone: z.string().regex(/^[0-9]{9,11}$/, t("error_phone_invalid")),
+  });
+
+export const createProfileDetailSchema = (t: (key: string) => string) =>
+  z.object({
+    first_name: z.string().min(1, t("error_required")),
+    last_name: z.string().min(1, t("error_required")),
+  });
+
+export type ProfileFormData = z.infer<
+  ReturnType<typeof createProfileDetailSchema>
+>;
+
+export type CheckoutFormData = z.infer<ReturnType<typeof createCheckoutSchema>>;
+
 export type EmailFormData = z.infer<ReturnType<typeof createEmailSchema>>;
 export type PasswordFormData = z.infer<ReturnType<typeof createPasswordSchema>>;
 

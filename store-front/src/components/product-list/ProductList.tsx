@@ -42,7 +42,7 @@ export default function ProductList() {
       ...(params ?? defaultParams(10, pageNumber)),
       page: pageNumber,
       search_by: "name",
-      sort_by: "base_price",
+      sort_by: "price",
     };
 
     try {
@@ -94,7 +94,7 @@ export default function ProductList() {
       sort_order: selectedPrice || "",
       ...(selectedCategories.length > 0 && {
         filters: {
-          categories: selectedCategories.join(","),
+          category: selectedCategories.join(","),
         },
       }),
     };
@@ -136,65 +136,65 @@ export default function ProductList() {
   return (
     <>
       <div className="space-y-4">
-        {isLoading
-          ? Array.from({ length: 4 }).map((_, i) => <ProductSkeleton key={i} />)
-          : products.map((product) => (
-              <div
-                key={product.id}
-                className="flex bg-white shadow-md rounded-lg overflow-hidden"
-              >
-                <div className="w-28 h-28 flex-shrink-0 p-2">
-                  <Image
-                    src={
-                      (product?.images as string) ||
-                      "/img/profile/default-avatar.jpg"
-                    }
-                    alt={product.name}
-                    className="w-full h-full object-cover rounded-md"
-                    width={80}
-                    height={80}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="flex p-2 relative w-full">
-                  <div className="flex flex-col justify-between">
-                    <div>
-                      <h2
-                        className="text-lg font-semibold text-gray-800"
-                        onClick={() => {
-                          trigger();
-                          router.push(`/product-detail/${product.id}`);
-                        }}
-                      >
-                        {product.name}
-                      </h2>
-                      <p className="text-sm text-gray-500">
-                        {product.categories?.map((cat) => cat.name).join(", ")}
-                      </p>
-                    </div>
-                    <p className="text-green-800 text-sm font-semibold">
-                      {(product?.base_price || 0)
-                        .toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                          minimumFractionDigits: 0,
-                        })
-                        .replace("₫", "VND")}
+        {isLoading ? (
+          <div className="flex flex-col gap-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          products.map((product) => (
+            <div
+              key={product.id}
+              className="flex bg-white shadow-md rounded-lg overflow-hidden"
+            >
+              <div className="w-28 h-28 flex-shrink-0 p-2">
+                <Image
+                  src={
+                    (product?.images as string) ||
+                    "/img/profile/default-avatar.jpg"
+                  }
+                  alt={product.name}
+                  className="w-full h-full object-cover rounded-md"
+                  width={80}
+                  height={80}
+                  loading="lazy"
+                />
+              </div>
+              <div className="flex p-2 relative w-full">
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <h2
+                      className="text-lg font-semibold text-gray-800"
+                      onClick={() => {
+                        trigger();
+                        router.push(`/product-detail/${product.id}`);
+                      }}
+                    >
+                      {product.name}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      {product.categories?.map((cat) => cat.name).join(", ")}
                     </p>
                   </div>
-                  <button
-                    className="absolute bottom-4 right-4 text-white bg-green-800 px-[10px] py-1 rounded-xl"
-                    title="Add to cart"
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setShowSlider(true);
-                    }}
-                  >
-                    <CiShoppingCart size={18} />
-                  </button>
+                  <p className="text-green-800 text-sm font-semibold">
+                    {product?.base_price || 0} VND
+                  </p>
                 </div>
+                <button
+                  className="absolute bottom-4 right-4 text-white bg-green-800 px-[10px] py-1 rounded-xl"
+                  title="Add to cart"
+                  onClick={() => {
+                    setSelectedProduct(product);
+                    setShowSlider(true);
+                  }}
+                >
+                  <CiShoppingCart size={18} />
+                </button>
               </div>
-            ))}
+            </div>
+          ))
+        )}
       </div>
 
       {!isLoading && (selectedProduct || products[0]) && (
@@ -206,10 +206,13 @@ export default function ProductList() {
         />
       )}
 
-      {isFetchingMore &&
-        Array.from({ length: 2 }).map((_, i) => (
-          <ProductSkeleton key={`skeleton-${i}`} />
-        ))}
+      {isFetchingMore && (
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <ProductSkeleton key={`skeleton-${i}`} />
+          ))}
+        </div>
+      )}
 
       {hasMore && <div ref={loaderRef} />}
     </>

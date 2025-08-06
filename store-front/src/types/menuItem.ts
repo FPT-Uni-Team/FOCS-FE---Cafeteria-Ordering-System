@@ -52,9 +52,20 @@ export type CartItem = Product & {
   quantity: number;
   note?: string;
 };
+export interface CartItemInputVariant {
+  variant_id: string;
+  quantity: number;
+}
 
 export interface CartItemInput {
   menu_item_id: string;
-  variant_id: string;
+  variants: CartItemInputVariant[];
   quantity: number;
+}
+
+export interface OrderItem {
+  menuItemId: string;
+  variantId: string;
+  quantity: number;
+  note?: string;
 }

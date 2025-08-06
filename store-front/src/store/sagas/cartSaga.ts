@@ -7,9 +7,15 @@ import {
 import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import cartService from "@/services/cartService";
-import { cartItem, tableCart } from "@/types/cart";
+import { cartItem, CheckoutResponse, tableCart } from "@/types/cart";
 import productService from "@/services/productService";
 import { Product } from "@/types/menuItem";
+import {
+  checkoutFailed,
+  CheckoutPayload,
+  checkoutStart,
+  checkoutSuccess,
+} from "../slices/cart/checkoutSlice";
 
 function* fetchCartItemList(
   action: PayloadAction<tableCart>
@@ -54,6 +60,21 @@ function* fetchCartItemList(
   }
 }
 
+function* handleCheckoutSaga(
+  action: PayloadAction<CheckoutPayload>
+): Generator<Effect, void, AxiosResponse<CheckoutResponse>> {
+  try {
+    const response = yield call(() =>
+      cartService.checkout(action.payload.actorId, action.payload.data)
+    );
+    yield put(checkoutSuccess(response.data));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    yield put(checkoutFailed(err.response.data.message || "Checkout failed"));
+  }
+}
+
 export function* watchMenuSaga() {
   yield takeLatest(fetchCartItemsStart.type, fetchCartItemList);
+  yield takeLatest(checkoutStart.type, handleCheckoutSaga);
 }

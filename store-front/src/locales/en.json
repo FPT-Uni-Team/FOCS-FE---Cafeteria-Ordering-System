@@ -1,6 +1,8 @@
 {
   "common": {
-    "cart": "Cart"
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "profile-detail": "Profile Detail"
   },
   "sign-in": {
     "meta_title": "Login to Your Account",
@@ -98,7 +100,15 @@
     "favourites": "Favourites",
     "languages": "Languages",
     "location": "Location",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone": "Phone Number",
+    "email": "Email",
+    "save": "Save",
+    "error_required": "This field is required",
+    "update_success": "Update successfully",
+    "update_fail": "Update failed"
   },
   "product-list": {
     "meta_title": "Product List",
@@ -117,6 +127,7 @@
     "select_variant": "Select Variant",
     "select_variants": "Select Variants",
     "add_to_cart_success": "Product added to cart successfully.",
+    "add_to_cart_failed": "Product added to cart failed.",
     "error_select_variant": "Please select a variant.",
     "base_price": "Base Price",
     "note_label": "Note",
@@ -141,10 +152,32 @@
     "variants": "Variants",
     "no_variant": "None",
     "total": "Total",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "add_to_cart_success": "Product updated to cart successfully.",
+    "add_to_cart_failed": "Product updated to cart failed."
   },
   "product-detail": {
     "feedbackTitle": "Feedback",
     "noFeedback": "There are no reviews yet. Be the first to leave one!"
+  },
+  "checkout": {
+    "meta_title": "Checkout",
+    "meta_description": "Checkout Page",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "Total",
+    "pay": "Pay Now",
+    "customerInfo": "Customer Information",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "orderType": "Order Type",
+    "dineIn": "Dine In",
+    "takeAway": "Take Away",
+    "apply": "Apply",
+    "couponCode": "Apply Coupon Code",
+    "enterCoupon": "Enter Coupon",
+    "error_required": "This field is required",
+    "error_name_too_long": "Name must not exceed 30 characters",
+    "error_phone_invalid": "Invalid phone number"
   }
 }
