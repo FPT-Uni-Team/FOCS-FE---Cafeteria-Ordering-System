@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com", "images.unsplash.com", "img.icons8.com"],
   },
 };
 

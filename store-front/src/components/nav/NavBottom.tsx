@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FaHome, FaUser, FaShoppingCart, FaSignInAlt } from "react-icons/fa";
 import { useCleanPath } from "@/utils/common/common";
 import { MdLocalMall } from "react-icons/md";
+import { LiaHistorySolid } from "react-icons/lia";
 
 export default function NavBottom() {
   const { data: session } = useSession();
@@ -24,6 +25,11 @@ export default function NavBottom() {
       href: "/product-list",
       label: "Product",
       icon: <MdLocalMall size={18} />,
+    },
+    {
+      href: "/order-history",
+      label: "Order History",
+      icon: <LiaHistorySolid size={18} />,
     },
     isAuth
       ? {
