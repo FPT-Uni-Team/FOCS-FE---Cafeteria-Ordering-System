@@ -2,7 +2,9 @@
   "common": {
     "cart": "Cart",
     "checkout": "Checkout",
-    "profile-detail": "Profile Detail"
+    "profile-detail": "Profile Detail",
+    "order-history": "Order History",
+    "order-detail": "Order Detail"
   },
   "sign-in": {
     "meta_title": "Login to Your Account",
@@ -179,5 +181,52 @@
     "error_required": "This field is required",
     "error_name_too_long": "Name must not exceed 30 characters",
     "error_phone_invalid": "Invalid phone number"
+  },
+  "order-detail": {
+    "meta_title": "Order History",
+    "meta_description": "This is order history page",
+    "orderHistoryTitle": "Order History",
+    "tabComing": "Coming",
+    "tabHistory": "History",
+    "tabReview": "Review",
+    "loading": "Loading...",
+    "noOrders": "No orders",
+    "orderCode": "Order Code",
+    "createdAt": "Created At",
+    "quantity": "Qty",
+    "total": "Total",
+    "status": {
+      "0": "Coming",
+      "1": "Completed",
+      "2": "Reviewed"
+    },
+    "note": "Note",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "discount": "Discount",
+    "feedback": "Feedback"
+  },
+  "FeedbackForm": {
+    "title": "Feedback",
+    "howDoYouFeel": "How do you feel?",
+    "shareYourThoughts": "Please share your thoughts after enjoying the dishes. What impressed you the most?",
+    "starRequired": "Star rating is required",
+    "descriptionPlaceholder": "Please write your feedback",
+    "pleaseUploadImages": "Please upload images",
+    "max2Images": "Maximum 2 images allowed",
+    "submit": "Submit",
+    "descriptionRequired": "Please enter a description",
+    "feedbackSuccess": "Feedback submitted successfully",
+    "feedbackError": "Failed to submit feedback, please try again"
+  },
+  "homepage": {
+    "meta_title": "Homepage",
+    "meta_description": "This is homepage",
+    "welcomeMessage": "Welcome to the store",
+    "discoverProducts": "Discover our featured products",
+    "featuredProducts": "Featured Products",
+    "categories": "Product Categories",
+    "baseOnUse": "Can you need this products",
+    "buy_now": "Buy Now"
   }
 }

@@ -19,7 +19,8 @@ export interface ListPageParams {
   search_value?: string;
   sort_by?: string;
   sort_order?: string;
-  filters?: Record<string, string>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filters?: Record<string, any>;
 }
 export type ProductListParams = {
   page: number;
