@@ -63,7 +63,7 @@ const Checkout = () => {
           note: item.note ?? "",
         })),
         point: 0,
-        is_use_point: true,
+        is_use_point: false,
         coupon_code: couponCode,
       };
 
