@@ -45,7 +45,7 @@ export default function NavBottom() {
   ];
 
   return (
-    <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-2 rounded-full shadow-lg flex gap-6 z-2">
+    <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-2 rounded-full shadow-lg flex gap-2 z-2">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
         return (
