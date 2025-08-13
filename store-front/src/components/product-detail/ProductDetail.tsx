@@ -26,9 +26,7 @@ export default function ProductDetail() {
   const { menuItem: product, loading } = useAppSelector(
     (state) => state.menuItemDetail
   );
-  const { actorId, tableId, prevNavigate } = useAppSelector(
-    (state) => state.common
-  );
+  const { actorId, tableId } = useAppSelector((state) => state.common);
 
   const handleSubmit = async (product: SubmitPayload) => {
     try {
@@ -50,7 +48,7 @@ export default function ProductDetail() {
   };
 
   const onBack = () => {
-    router.push(prevNavigate);
+    router.back();
   };
 
   useEffect(() => {

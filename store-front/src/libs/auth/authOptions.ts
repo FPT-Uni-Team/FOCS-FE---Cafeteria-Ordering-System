@@ -27,10 +27,28 @@ interface CustomUser {
   accessTokenExpires: number;
 }
 
-function parseJwt(token: string): { exp: number } {
-  const base64Payload = token.split(".")[1];
-  const payload = Buffer.from(base64Payload, "base64").toString("utf8");
-  return JSON.parse(payload);
+export function parseJwt(token: string) {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    const payload = JSON.parse(jsonPayload);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const normalizedPayload: Record<string, any> = {};
+    for (const key in payload) {
+      const shortKey = key.includes("/") ? key.split("/").pop()! : key;
+      normalizedPayload[shortKey] = payload[key];
+    }
+    return normalizedPayload;
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -49,7 +67,8 @@ export const authOptions: NextAuthOptions = {
         });
         const data = response.data;
         if (data?.is_succes && data?.access_token) {
-          const { exp } = parseJwt(data.access_token);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { exp }: any = parseJwt(data.access_token);
           return {
             id: credentials.email,
             accessToken: data.access_token,
@@ -74,7 +93,8 @@ export const authOptions: NextAuthOptions = {
         const res = await authService.refreshToken();
         const newToken = res.data?.access_token;
         if (newToken) {
-          const { exp } = parseJwt(newToken);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { exp }: any = parseJwt(newToken);
           token.accessToken = newToken;
           token.accessTokenExpires = exp * 1000;
           return token;

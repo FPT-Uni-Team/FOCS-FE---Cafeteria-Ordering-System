@@ -44,10 +44,10 @@ const checkoutSlice = createSlice({
       state.success = false;
     },
     resetCheckoutState(state) {
-      state.loading = initialState.loading;
-      state.error = initialState.error;
-      state.data = initialState.data;
-      state.success = initialState.success;
+      state.loading = false;
+      state.error = null;
+      state.data = null;
+      state.success = false;
     },
   },
 });

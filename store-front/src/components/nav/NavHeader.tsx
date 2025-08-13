@@ -9,6 +9,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { FiSearch } from "react-icons/fi";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { makeHref } from "@/utils/common/common";
 
 export default function NavHeader() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function NavHeader() {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 dispatch(setSearchTrigger());
-                router.push("/product-list");
+                router.push(makeHref("product-list"));
               }
             }}
           />

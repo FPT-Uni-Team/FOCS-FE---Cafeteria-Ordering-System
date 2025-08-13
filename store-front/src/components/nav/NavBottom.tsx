@@ -5,35 +5,49 @@ import { FaHome, FaUser, FaShoppingCart, FaSignInAlt } from "react-icons/fa";
 import { useCleanPath } from "@/utils/common/common";
 import { MdLocalMall } from "react-icons/md";
 import { LiaHistorySolid } from "react-icons/lia";
+import { useEffect, useState } from "react";
 
 export default function NavBottom() {
   const { data: session } = useSession();
   const pathname = useCleanPath();
   const isAuth = !!session?.accessToken;
+  const [storeId, setStoreId] = useState<string | null>(null);
+  const [tableId, setTableId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setStoreId(localStorage.getItem("storeFrontId"));
+    setTableId(localStorage.getItem("tableStoreId"));
+  }, []);
+  const makeHref = (path: string) => {
+    if (storeId && tableId) {
+      return `/${storeId}/${tableId}/${path}`;
+    }
+    return `/${path}`;
+  };
   const navItems = [
     {
-      href: "/home-page",
+      href: makeHref("home-page"),
       label: "Home",
       icon: <FaHome size={18} />,
     },
     {
-      href: "/cart",
+      href: makeHref("cart"),
       label: "Cart",
       icon: <FaShoppingCart size={18} />,
     },
     {
-      href: "/product-list",
+      href: makeHref("product-list"),
       label: "Product",
       icon: <MdLocalMall size={18} />,
     },
     {
-      href: "/order-history",
+      href: makeHref("order-history"),
       label: "Order History",
       icon: <LiaHistorySolid size={18} />,
     },
     isAuth
       ? {
-          href: "/profile",
+          href: makeHref("profile"),
           label: "Profile",
           icon: <FaUser size={18} />,
         }
@@ -47,7 +61,9 @@ export default function NavBottom() {
   return (
     <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-2 rounded-full shadow-lg flex gap-2 z-2">
       {navItems.map((item) => {
-        const isActive = pathname === item.href;
+        const hrefLastSegment = item.href.split("/").pop();
+        const pathnameLastSegment = pathname.split("/").pop();
+        const isActive = hrefLastSegment === pathnameLastSegment;
         return (
           <Link
             key={item.href}

@@ -228,5 +228,18 @@
     "categories": "Product Categories",
     "baseOnUse": "Can you need this products",
     "buy_now": "Buy Now"
+  },
+  "payment": {
+    "continue_shopping": "Keep Shopping",
+    "payment_success_title": "Payment Successful",
+    "payment_success_message": "Thank you for your purchase! Your payment has been successfully processed.",
+    "order_code": "Order Code",
+    "status": "Status",
+    "meta_title": "Payment Success - Thank you for your purchase",
+    "meta_title_fail": "Payment Fail - Thank you for you",
+    "meta_description_fail": "Your payment was fail. Add new product to order.",
+    "meta_description": "Your payment was completed successfully. View your order details here.",
+    "payment_fail_title": "Payment Failed",
+    "payment_fail_message": "Something went wrong with your transaction. Please try again."
   }
 }

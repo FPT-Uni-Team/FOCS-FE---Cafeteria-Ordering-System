@@ -127,11 +127,15 @@ const Checkout = () => {
         order_type: parseInt(orderType),
       };
       const res = await cartService.create_order(orderData);
-      await cartService.payment_order({
+      const resPayment = await cartService.payment_order({
         order_code: res.data.order_code as number,
         amount: res.data.total_price as number,
         description: `Order ${res.data.order_code}`,
+        table_id: tableId,
       });
+      if (resPayment.data) {
+        window.location.href = resPayment.data;
+      }
     } catch {
     } finally {
       setIsSubmitting(false);

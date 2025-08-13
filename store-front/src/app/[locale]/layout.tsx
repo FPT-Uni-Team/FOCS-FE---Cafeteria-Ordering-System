@@ -9,6 +9,7 @@ import { authOptions } from "@/libs/auth/authOptions";
 import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 import { Toaster } from "react-hot-toast";
 import ReduxProvider from "@/store/ReduxProvider";
+import StoreTableSaver from "@/components/common/StoreTableSaver";
 
 export const metadata: Metadata = {
   icons: [
@@ -61,6 +62,7 @@ export default async function RootLayout(props: {
         <SessionProviderWrapper session={session}>
           <ReduxProvider>
             <NextIntlClientProvider>
+              <StoreTableSaver />
               {props.children}
               <Toaster
                 position="top-center"
