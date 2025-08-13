@@ -3,8 +3,8 @@ import { IAuthenticationProps } from "@/types/common";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 interface PaymentSuccessPageProps {
-  params: { locale: string };
-  searchParams: { orderCode?: string; statusString?: string };
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ orderCode?: string; statusString?: string }>;
 }
 
 export async function generateMetadata(props: IAuthenticationProps) {
@@ -21,8 +21,9 @@ export async function generateMetadata(props: IAuthenticationProps) {
 }
 
 export default async function PaymentSuccessPage({
-  searchParams: { orderCode = "", statusString = "" },
+  searchParams,
 }: PaymentSuccessPageProps) {
+  const { orderCode = "", statusString = "" } = await searchParams;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   if (orderCode && statusString) {
@@ -32,6 +33,5 @@ export default async function PaymentSuccessPage({
       body: JSON.stringify({ orderCode, statusString }),
     });
   }
-
   return <PaymentSuccess orderCode={orderCode} />;
 }

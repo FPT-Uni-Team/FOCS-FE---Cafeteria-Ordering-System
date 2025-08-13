@@ -2,9 +2,9 @@ import PaymentFail from "@/components/failed/PaymentFail";
 import { IAuthenticationProps } from "@/types/common";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-interface PaymentSuccessPageProps {
-  params: { locale: string };
-  searchParams: { orderCode?: string; statusString?: string };
+interface PaymentFailPageProps {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ orderCode?: string; statusString?: string }>;
 }
 
 export async function generateMetadata(props: IAuthenticationProps) {
@@ -15,14 +15,15 @@ export async function generateMetadata(props: IAuthenticationProps) {
   });
   setRequestLocale(locale);
   return {
-    title: t("meta_title"),
-    description: t("meta_description"),
+    title: t("meta_title_fail"),
+    description: t("meta_description_fail"),
   };
 }
 
 export default async function PaymentFailPage({
-  searchParams: { orderCode = "", statusString = "" },
-}: PaymentSuccessPageProps) {
+  searchParams,
+}: PaymentFailPageProps) {
+  const { orderCode = "", statusString = "" } = await searchParams;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   if (orderCode && statusString) {
