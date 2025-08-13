@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { TbArrowNarrowLeft } from "react-icons/tb";
 import { FaSpinner } from "react-icons/fa";
 import { useState } from "react";
+import { makeHref } from "@/utils/common/common";
 
 export default function ForgotPassword() {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function ForgotPassword() {
             </h2>
             <p className="text-gray-600">{t("check_email_description")}</p>
             <button
-              onClick={() => router.push("/sign-in")}
+              onClick={() => router.push(makeHref("sign-in"))}
               className="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
             >
               {t("go_to_sign_in")}
@@ -52,7 +53,7 @@ export default function ForgotPassword() {
         ) : (
           <>
             <button
-              onClick={() => router.push("/sign-in")}
+              onClick={() => router.push(makeHref("sign-in"))}
               className="absolute left-4 top-5 text-black text-sm"
               aria-label="Back"
             >

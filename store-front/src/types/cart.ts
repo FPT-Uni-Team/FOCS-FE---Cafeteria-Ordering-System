@@ -88,4 +88,5 @@ export type OrderRequestPayment = {
   amount: number;
   description?: string;
   items?: string;
+  table_id?: string;
 };

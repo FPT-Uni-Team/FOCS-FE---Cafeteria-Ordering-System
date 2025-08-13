@@ -26,10 +26,8 @@ import cartService from "@/services/cartService";
 import LoadingOverlay from "../common/LoadingOverlay";
 import axiosClient from "@/api/axiosClient";
 import { useRouter } from "next/navigation";
-import {
-  checkoutStart,
-  resetCheckoutState,
-} from "@/store/slices/cart/checkoutSlice";
+import { checkoutStart } from "@/store/slices/cart/checkoutSlice";
+import { makeHref } from "@/utils/common/common";
 
 export default function Cart() {
   const t = useTranslations("cart");
@@ -37,8 +35,9 @@ export default function Cart() {
   const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cartItem);
   const { actorId, tableId, storeId } = useAppSelector((state) => state.common);
-  const { loading, success } = useAppSelector((state) => state.checkoutSlice);
-
+  const { loading, success: successCheckout } = useAppSelector(
+    (state) => state.checkoutSlice
+  );
   const [items, setItems] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -223,14 +222,14 @@ export default function Cart() {
   });
 
   useEffect(() => {
-    setItems(cartItems);
-    setIsLoading(false);
-  }, [cartItems]);
-
-  useEffect(() => {
     setIsLoading(true);
     dispatch(fetchCartItemsStart({ actorId, tableId }));
   }, []);
+
+  useEffect(() => {
+    setItems(cartItems);
+    setIsLoading(false);
+  }, [cartItems]);
 
   useEffect(() => {
     const calculatedSubtotal = items.reduce((sum, item) => {
@@ -250,11 +249,10 @@ export default function Cart() {
   }, [items]);
 
   useEffect(() => {
-    if (success) {
-      dispatch(resetCheckoutState());
-      router.push("/checkout");
+    if (successCheckout) {
+      router.push(makeHref("checkout"));
     }
-  }, [dispatch, router, success]);
+  }, [dispatch, router, successCheckout]);
 
   return (
     <div className="relative">

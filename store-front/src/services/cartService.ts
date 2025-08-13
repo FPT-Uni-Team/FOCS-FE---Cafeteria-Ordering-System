@@ -37,6 +37,20 @@ const cartService = {
   payment_order: (data: OrderRequestPayment) => {
     return axiosClient.post(endpoints.checkout.payment(), data);
   },
+  order_update: (
+    data: { orderCode: string; statusString: string },
+    token?: string
+  ) => {
+    const dataRequest = {
+      order_code: data.orderCode,
+      status: data.statusString,
+    };
+    return axiosClient.post(endpoints.order.update(), dataRequest, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
 };
 
 export default cartService;

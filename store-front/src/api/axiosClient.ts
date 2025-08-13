@@ -3,8 +3,14 @@ import { getSession } from "next-auth/react";
 
 const axiosClient = axios.create({
   headers: {
-    storeId: "550e8400-e29b-41d4-a716-446655440000",
-    actorId: "f3c3b4e8-2b7f-4f47-b6a1-0ec2b7a5f8a1",
+    storeId:
+      typeof window !== "undefined"
+        ? localStorage.getItem("storeFrontId") || ""
+        : "",
+    actorId:
+      typeof window !== "undefined"
+        ? localStorage.getItem("actorId") || ""
+        : "",
   },
   timeout: 10000,
   withCredentials: true,
@@ -14,6 +20,9 @@ axiosClient.interceptors.request.use(
   async (config) => {
     if (!config.headers?.Authorization) {
       const session = await getSession();
+      if (session?.error === "RefreshFailed") {
+        localStorage.removeItem("actorId");
+      }
       const token = session?.accessToken;
       if (token) {
         if (config.headers) {

@@ -13,6 +13,7 @@ import { TbArrowNarrowLeft } from "react-icons/tb";
 import { useState, useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { makeHref } from "@/utils/common/common";
 
 export default function ResetPassword() {
   const t = useTranslations("reset-password");
@@ -36,7 +37,7 @@ export default function ResetPassword() {
         confirm_password: data.confirm_password,
       });
       toast.success(t("reset_success"));
-      router.push("/sign-in");
+      router.push(makeHref("sign-in"));
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const message = err.response?.data?.message || t("error_generic");
@@ -53,7 +54,7 @@ export default function ResetPassword() {
       <div className="bg-white max-w-md w-full p-4 rounded-lg shadow-lg space-y-4 m-4 relative">
         <>
           <button
-            onClick={() => router.push("/sign-in")}
+            onClick={() => router.push(makeHref("sign-in"))}
             className="absolute left-4 top-5 text-black text-sm"
             aria-label="Back"
           >

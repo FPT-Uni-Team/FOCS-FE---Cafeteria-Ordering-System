@@ -4,6 +4,8 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
+import { useAppDispatch } from "@/hooks/redux";
+import { resetCheckoutState } from "@/store/slices/cart/checkoutSlice";
 
 interface TitleProps {
   titleKey: string;
@@ -20,7 +22,7 @@ export default function Title({
 }: TitleProps) {
   const t = useTranslations("common");
   const router = useRouter();
-
+  const dispatch = useAppDispatch();
   return (
     <div
       className={`flex relative items-center justify-between mb-2 ${
@@ -30,7 +32,10 @@ export default function Title({
       <div className="flex items-center ">
         {showBackButton && (
           <button
-            onClick={() => router.back()}
+            onClick={() => {
+              dispatch(resetCheckoutState());
+              router.back();
+            }}
             className="text-gray-600 focus:outline-none absolute transform -translate-y-1/2 top-1/2 left-0"
           >
             <IoIosArrowBack />

@@ -9,6 +9,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createSignInSchema } from "@/utils/validations/authSchema";
+import { makeHref } from "@/utils/common/common";
 
 const SignIn = () => {
   const t = useTranslations("sign-in");
@@ -39,7 +40,7 @@ const SignIn = () => {
       if (res.error) {
         setLoginError(t("error_invalid_credentials"));
       } else {
-        router.push("/home-page");
+        router.push(makeHref("home-page"));
       }
     } catch {
       setLoginError("Something went wrong.");

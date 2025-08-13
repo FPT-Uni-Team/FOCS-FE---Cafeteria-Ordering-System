@@ -10,6 +10,7 @@ import { Order } from "@/types/order";
 import { fakeOrders } from "@/faker/mockdata";
 import { useRouter } from "next/navigation";
 import FeedbackForm from "../common/FeedbackForm";
+import { makeHref } from "@/utils/common/common";
 
 export default function OrderHistory() {
   const router = useRouter();
@@ -89,7 +90,9 @@ export default function OrderHistory() {
                 <div>
                   <p
                     className="text-sm text-gray-500"
-                    onClick={() => router.push(`/order-detail/${order.id}`)}
+                    onClick={() =>
+                      router.push(makeHref(`order-detail/${order.id}`))
+                    }
                   >
                     #<span className="font-medium">{order.order_code}</span>
                   </p>

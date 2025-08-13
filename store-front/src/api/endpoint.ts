@@ -90,6 +90,7 @@ const endpoints = {
     list: () => `${API_BASE_URL}/order/history`,
     detail: (id: string) => `${API_BASE_URL}/order/${id}`,
     feedback: () => `${API_BASE_URL}/feedback`,
+    update: () => `${API_BASE_URL}/payment/receive-hook`,
   },
 };
 

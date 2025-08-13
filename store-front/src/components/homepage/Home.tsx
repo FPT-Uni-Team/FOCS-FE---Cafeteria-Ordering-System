@@ -7,6 +7,7 @@ import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { makeHref } from "@/utils/common/common";
 
 const featuredProducts = [
   {
@@ -64,7 +65,7 @@ export default function Home() {
   const t = useTranslations("homepage");
   const router = useRouter();
   const handleBuyNowClick = () => {
-    router.push("/product-list");
+    router.push(makeHref("product-list"));
   };
 
   return (
