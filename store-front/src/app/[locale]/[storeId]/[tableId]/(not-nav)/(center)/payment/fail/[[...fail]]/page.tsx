@@ -24,7 +24,8 @@ export default async function PaymentFailPage({
   searchParams,
 }: PaymentFailPageProps) {
   const { orderCode = "", statusString = "" } = await searchParams;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_BASE_URL_SEVER || "http://localhost:3000";
 
   if (orderCode && statusString) {
     await fetch(`${baseUrl}/api/payment/update`, {
