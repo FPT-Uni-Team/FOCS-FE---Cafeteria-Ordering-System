@@ -10,11 +10,11 @@ import { useParams, useRouter } from "next/navigation";
 import ImageSlider from "../common/ImageSlider";
 import { CiShoppingCart } from "react-icons/ci";
 import ProductModalCart from "../product-list/ProductModalCart";
-import { SubmitPayload } from "@/types/cart";
-import axiosClient from "@/api/axiosClient";
+import { cartItem, SubmitPayload } from "@/types/cart";
 import { ImageType, Variant } from "@/types/menuItem";
 import ProductDetailSkeleton from "../common/ProductDetailSkeleton";
 import { IoIosArrowBack } from "react-icons/io";
+import cartService from "@/services/cartService";
 
 export default function ProductDetail() {
   const t = useTranslations("product-detail");
@@ -38,10 +38,8 @@ export default function ProductDetail() {
         })),
         quantity: product.quantity,
         note: product.note,
-        actorId,
-        tableId,
       };
-      await axiosClient.post("/api/cart/add", data);
+      await cartService.add(data as cartItem, { actorId, tableId });
     } catch {
       throw new Error("");
     }

@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
       actorId,
       tableId,
     };
+    console.log(dataTable);
     const res = await cartService.add(cartItem, dataTable);
     return NextResponse.json(res.data, { status: res.status });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
