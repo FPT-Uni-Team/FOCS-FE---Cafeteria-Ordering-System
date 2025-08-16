@@ -20,11 +20,10 @@ import {
 } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
 import { MdDeleteOutline } from "react-icons/md";
-import { CheckoutRequest, SubmitPayload } from "@/types/cart";
+import { cartItem, CheckoutRequest, SubmitPayload } from "@/types/cart";
 import ProductModalCart from "../product-list/ProductModalCart";
 import cartService from "@/services/cartService";
 import LoadingOverlay from "../common/LoadingOverlay";
-import axiosClient from "@/api/axiosClient";
 import { useRouter } from "next/navigation";
 import { checkoutStart } from "@/store/slices/cart/checkoutSlice";
 import { makeHref } from "@/utils/common/common";
@@ -77,10 +76,8 @@ export default function Cart() {
         })),
         quantity: product.quantity,
         note: product.note,
-        actorId,
-        tableId,
       };
-      await axiosClient.post("/api/cart/add", data);
+      await cartService.add(data as cartItem, { actorId, tableId });
     } catch {
       throw new Error("");
     }

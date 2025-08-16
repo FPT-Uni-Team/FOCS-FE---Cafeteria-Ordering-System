@@ -5,14 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import { CiShoppingCart } from "react-icons/ci";
 import ProductModalCart from "./ProductModalCart";
 import { useAppSelector } from "@/hooks/redux";
-import { SubmitPayload } from "@/types/cart";
-import axiosClient from "@/api/axiosClient";
+import { cartItem, SubmitPayload } from "@/types/cart";
 import productService from "@/services/productService";
 import { defaultParams, ProductListParams } from "@/types/common";
 import ProductSkeleton from "../common/ProductSkeleton";
 import { useFilter } from "@/context/FilterContext";
 import { useRouter } from "next/navigation";
 import { makeHref } from "@/utils/common/common";
+import cartService from "@/services/cartService";
 
 export default function ProductList() {
   const [showSlider, setShowSlider] = useState(false);
@@ -76,10 +76,9 @@ export default function ProductList() {
         })),
         quantity: product.quantity,
         note: product.note,
-        actorId,
-        tableId,
       };
-      await axiosClient.post("/api/cart/add", data);
+
+      await cartService.add(data as cartItem, { actorId, tableId });
     } catch {
       throw new Error("");
     }
