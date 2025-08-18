@@ -49,6 +49,7 @@ const Checkout = () => {
       const checkoutData: CheckoutRequest = {
         store_id: storeId,
         table_id: tableId,
+        actor_id: actorId,
         items: cartItems.map((item) => ({
           menuItemId: item.id,
           variants: item.variant_groups.flatMap((group) =>
