@@ -37,6 +37,7 @@ export interface CheckoutItem {
 
 export interface CheckoutRequest {
   store_id: string;
+  actor_id?: string;
   table_id: string;
   items: CheckoutItem[];
   note?: string;
