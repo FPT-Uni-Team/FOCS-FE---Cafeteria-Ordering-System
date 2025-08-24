@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSignUpSchema } from "@/utils/validations/authSchema";
-import Link from "next/link";
 import axiosClient from "@/api/axiosClient";
 import { FaSpinner } from "react-icons/fa";
 import { makeHref } from "@/utils/common/common";
@@ -40,6 +39,9 @@ const SignUp = () => {
       setRegisterError(message);
       throw new Error("");
     }
+  };
+  const handleNavigate = (path: string) => {
+    router.push(makeHref(path));
   };
 
   return (
@@ -180,9 +182,12 @@ const SignUp = () => {
             </button>
             <div className="text-center text-sm text-gray-500 mt-4">
               {t("already_have_account")}{" "}
-              <Link href="/sign-in" className="text-orange-600">
+              <div
+                onClick={() => handleNavigate("sign-in")}
+                className="text-orange-600 inline-block"
+              >
                 {t("sign_in")}
-              </Link>
+              </div>
             </div>
           </form>
           {form.formState.isSubmitting && (

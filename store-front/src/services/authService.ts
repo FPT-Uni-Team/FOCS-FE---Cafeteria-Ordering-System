@@ -3,7 +3,7 @@ import axiosClient from "../api/axiosClient";
 import endpoints from "../api/endpoint";
 
 interface LoginPayload {
-  email: string;
+  phone: string;
   password: string;
 }
 

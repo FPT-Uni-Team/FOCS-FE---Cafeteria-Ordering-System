@@ -1,10 +1,15 @@
 "use client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { FaHome, FaUser, FaShoppingCart, FaSignInAlt } from "react-icons/fa";
+import {
+  FaHome,
+  FaUser,
+  FaShoppingCart,
+  FaSignInAlt,
+  FaHistory,
+} from "react-icons/fa";
 import { useCleanPath } from "@/utils/common/common";
 import { MdLocalMall } from "react-icons/md";
-import { LiaHistorySolid } from "react-icons/lia";
 import { useEffect, useState } from "react";
 
 export default function NavBottom() {
@@ -43,7 +48,7 @@ export default function NavBottom() {
     {
       href: makeHref("order-history"),
       label: "Order History",
-      icon: <LiaHistorySolid size={18} />,
+      icon: <FaHistory size={18} />,
     },
     isAuth
       ? {
@@ -52,7 +57,7 @@ export default function NavBottom() {
           icon: <FaUser size={18} />,
         }
       : {
-          href: "/sign-in",
+          href: makeHref("sign-in"),
           label: "Sign In",
           icon: <FaSignInAlt size={18} />,
         },

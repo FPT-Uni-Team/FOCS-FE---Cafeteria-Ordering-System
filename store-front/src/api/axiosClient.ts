@@ -2,22 +2,22 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 
 const axiosClient = axios.create({
-  headers: {
-    storeId:
-      typeof window !== "undefined"
-        ? localStorage.getItem("storeFrontId") || ""
-        : "",
-    actorId:
-      typeof window !== "undefined"
-        ? localStorage.getItem("actorId") || ""
-        : "",
-  },
   timeout: 10000,
   withCredentials: true,
 });
 
 axiosClient.interceptors.request.use(
   async (config) => {
+    if (typeof window !== "undefined") {
+      const storeId = localStorage.getItem("storeFrontId") || "";
+      const actorId = localStorage.getItem("actorId") || "";
+      if (!config.headers.storeId) {
+        config.headers.storeId = storeId;
+      }
+      if (!config.headers.actorId) {
+        config.headers.actorId = actorId;
+      }
+    }
     if (!config.headers?.Authorization) {
       const session = await getSession();
       if (session?.error === "RefreshFailed") {

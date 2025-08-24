@@ -10,14 +10,18 @@ import { FiSearch } from "react-icons/fi";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { makeHref } from "@/utils/common/common";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import NotificationSidebar from "../common/NotificationSidebar";
 
 export default function NavHeader() {
   const router = useRouter();
   const t = useTranslations("nav");
+  const [showNotifications, setShowNotifications] = useState(false);
   const { searchGlobalData } = useAppSelector((state) => state.common);
   const dispatch = useAppDispatch();
   return (
-    <section className="fixed top-0 z-2 w-full px-4 py-3 h-[108px] bg-green-900 text-white">
+    <section className="fixed top-0 z-4 w-full px-4 py-3 h-[108px] bg-green-900 text-white">
       <div className="mb-4 flex items-center gap-3">
         <div className="flex items-center gap-2 border border-white/30 rounded-lg px-3 py-1 flex-1">
           <FiSearch className="text-white/70" />
@@ -35,7 +39,10 @@ export default function NavHeader() {
             }}
           />
         </div>
-        <IoIosNotificationsOutline size={22} />
+        <IoIosNotificationsOutline
+          size={22}
+          onClick={() => setShowNotifications(true)}
+        />
       </div>
       <div>
         <h1 className="text-sm font-bold">FOCS</h1>
@@ -44,6 +51,14 @@ export default function NavHeader() {
           123 Main Street, City, Country
         </p>
       </div>
+      <AnimatePresence>
+        {showNotifications && (
+          <NotificationSidebar
+            show={showNotifications}
+            onClose={() => setShowNotifications(false)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
