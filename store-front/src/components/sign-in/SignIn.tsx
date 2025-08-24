@@ -7,7 +7,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { createSignInSchema } from "@/utils/validations/authSchema";
 import { makeHref } from "@/utils/common/common";
 
@@ -23,7 +22,7 @@ const SignIn = () => {
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "",
+      phone: "",
       password: "",
     },
   });
@@ -33,7 +32,7 @@ const SignIn = () => {
     try {
       const res = await signIn("credentials", {
         redirect: false,
-        email: data.email,
+        phone: data.phone,
         password: data.password,
       });
       if (!res) return;
@@ -45,6 +44,10 @@ const SignIn = () => {
     } catch {
       setLoginError("Something went wrong.");
     }
+  };
+
+  const handleNavigate = (path: string) => {
+    router.push(makeHref(path));
   };
 
   return (
@@ -93,17 +96,16 @@ const SignIn = () => {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("email")}
+                  {t("phone")}
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
-                  placeholder="focs@gmail.com"
-                  {...form.register("email")}
+                  {...form.register("phone")}
                 />
-                {form.formState.errors.email && (
+                {form.formState.errors.phone && (
                   <p className="text-red-500 text-sm mt-1">
-                    {form.formState.errors.email.message}
+                    {form.formState.errors.phone.message}
                   </p>
                 )}
               </div>
@@ -143,17 +145,28 @@ const SignIn = () => {
 
           <div className="text-center text-sm text-gray-500 mt-4">
             {t("do_not_account")}{" "}
-            <Link href="/sign-up" className="text-orange-600">
+            <div
+              onClick={() => handleNavigate("sign-up")}
+              className="text-orange-600 inline-block"
+            >
               {t("sign_up")}
-            </Link>
+            </div>
           </div>
           <div className="text-center text-sm text-gray-500 mt-2">
-            <Link
-              href="/forgot-password"
-              className="text-orange-600 hover:underline"
+            <div
+              onClick={() => handleNavigate("forgot-password")}
+              className="text-orange-600"
             >
               {t("forgot_password")}
-            </Link>
+            </div>
+          </div>
+          <div className="text-center text-sm text-gray-500 mt-4">
+            <div
+              onClick={() => handleNavigate("home-page")}
+              className="text-gray-800"
+            >
+              {t("continue_as_guest")}
+            </div>
           </div>
         </div>
       </form>

@@ -15,6 +15,8 @@ const productService = {
     axiosClient.get(endpoints.menuItem.variantGroups(params)),
   menuItemCategory: (params: string) =>
     axiosClient.post(endpoints.menuItem.menuItemCategory(params)),
+  mostOrder: () => axiosClient.post(endpoints.menuItem.mostOrder()),
+  basedOnHistory: () => axiosClient.post(endpoints.menuItem.basOnHistory()),
 };
 
 export default productService;

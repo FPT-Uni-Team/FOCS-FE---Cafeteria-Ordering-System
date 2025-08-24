@@ -21,6 +21,8 @@ const endpoints = {
       `${API_BASE_URL}/admin/menu-item/${params}/variant-groups`,
     menuItemCategory: (params: string) =>
       `${API_BASE_URL}/menu-item-category/menu-item/${params}/categories`,
+    mostOrder: () => `${API_BASE_URL}/me/menu-item/most-order`,
+    basOnHistory: () => `${API_BASE_URL}/me/menu-item/based-on-history`,
   },
   auth: {
     login: () => `${API_BASE_URL}/me/login`,

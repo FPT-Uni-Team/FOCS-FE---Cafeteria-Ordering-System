@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const createSignInSchema = (t: (key: string) => string) => {
   return z.object({
-    email: z.string().email(t("error_email_invalid")),
+    phone: z.string().regex(/^[0-9]{9,11}$/, t("error_phone_invalid")),
     password: z
       .string()
       .regex(

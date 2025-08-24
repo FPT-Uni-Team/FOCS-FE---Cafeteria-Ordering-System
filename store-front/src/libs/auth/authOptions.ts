@@ -56,13 +56,13 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
+        phone: { label: "Phone", type: "" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (!credentials?.phone || !credentials?.password) return null;
         const response = await authService.login({
-          email: credentials.email,
+          phone: credentials.phone,
           password: credentials.password,
         });
         const data = response.data;
@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const { exp }: any = parseJwt(data.access_token);
           return {
-            id: credentials.email,
+            id: credentials.phone,
             accessToken: data.access_token,
             accessTokenExpires: exp * 1000,
           };

@@ -8,65 +8,70 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { makeHref } from "@/utils/common/common";
+import { useEffect, useState } from "react";
+import productService from "@/services/productService";
 
-const featuredProducts = [
-  {
-    id: 1,
-    name: "Sản phẩm 1",
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-    price: "500,000₫",
-  },
-  {
-    id: 2,
-    name: "Sản phẩm 2",
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-    price: "750,000₫",
-  },
-  {
-    id: 3,
-    name: "Sản phẩm 3",
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-    price: "300,000₫",
-  },
-];
+export interface ICategory {
+  id: string;
+  name: string;
+  description: string;
+  is_active: boolean;
+}
 
-const categories = [
-  {
-    id: 1,
-    name: "Áo thun",
-    icon: "https://img.icons8.com/ios-filled/50/000000/t-shirt.png",
-  },
-  {
-    id: 2,
-    name: "Giày dép",
-    icon: "https://img.icons8.com/ios-filled/50/000000/shoes.png",
-  },
-  {
-    id: 3,
-    name: "Phụ kiện",
-    icon: "https://img.icons8.com/ios-filled/50/000000/wristwatch.png",
-  },
-  {
-    id: 4,
-    name: "Phụ kiện",
-    icon: "https://img.icons8.com/ios-filled/50/000000/wristwatch.png",
-  },
-  {
-    id: 5,
-    name: "Phụ kiện",
-    icon: "https://img.icons8.com/ios-filled/50/000000/wristwatch.png",
-  },
-];
+interface IHomeProps {
+  categories: ICategory[];
+}
 
-export default function Home() {
+export default function Home({ categories }: IHomeProps) {
   const t = useTranslations("homepage");
   const router = useRouter();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [mostOrderProducts, setMostOrderProducts] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [basedOnHistoryProducts, setBasedOnHistoryProducts] = useState<any[]>(
+    []
+  );
+  const [loadingMostOrder, setLoadingMostOrder] = useState(true);
+  const [loadingBasedOnHistory, setLoadingBasedOnHistory] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resMostOrder = await productService.mostOrder();
+        setMostOrderProducts(resMostOrder.data ?? []);
+      } catch (e) {
+        console.error("Error fetch mostOrder:", e);
+      } finally {
+        setLoadingMostOrder(false);
+      }
+
+      try {
+        const resBasedOnHistory = await productService.basedOnHistory();
+        setBasedOnHistoryProducts(resBasedOnHistory.data ?? []);
+      } catch (e) {
+        console.error("Error fetch basedOnHistory:", e);
+      } finally {
+        setLoadingBasedOnHistory(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleBuyNowClick = () => {
     router.push(makeHref("product-list"));
   };
+  const handleNavigate = (path: string) => {
+    router.push(makeHref(path));
+  };
+
+  const ProductSkeleton = () => (
+    <div className="shadow-md border-gray-200 rounded-2xl flex flex-col items-center animate-pulse p-4">
+      <div className="bg-gray-300 rounded-full w-40 h-40 mb-3"></div>
+      <div className="h-4 bg-gray-300 rounded w-24 mb-2"></div>
+      <div className="h-3 bg-gray-200 rounded w-16"></div>
+    </div>
+  );
 
   return (
     <div className="bg-white text-gray-900 ">
@@ -85,28 +90,43 @@ export default function Home() {
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={16}
           slidesPerView={1.5}
-          style={{
-            paddingBottom: "4px",
-          }}
+          style={{ paddingBottom: "4px" }}
+          observer={true}
+          observeParents={true}
         >
-          {featuredProducts.map((product) => (
-            <SwiperSlide key={product.id}>
-              <div className="shadow-md border-gray-600 rounded-2xl flex flex-col items-center">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  className="object-cover rounded-full w-40 h-40"
-                  priority
-                  height={80}
-                  width={80}
-                />
-                <div className="p-3 text-black text-center">
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <p className="text-sm">{product.price}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
+          {loadingMostOrder
+            ? [...Array(3)].map((_, idx) => (
+                <SwiperSlide key={idx}>
+                  <ProductSkeleton />
+                </SwiperSlide>
+              ))
+            : mostOrderProducts.map((product) => (
+                <SwiperSlide key={product.id}>
+                  <div className="shadow-md border-gray-600 rounded-2xl flex flex-col items-center">
+                    <Image
+                      src={product.image}
+                      alt={product.menu_item_name}
+                      className="object-cover rounded-full w-40 h-40"
+                      priority
+                      height={80}
+                      width={80}
+                    />
+                    <div className="p-3 text-black text-center">
+                      <h3
+                        className="text-lg font-semibold"
+                        onClick={() => {
+                          handleNavigate(
+                            `product-detail/${product.menu_item_id}`
+                          );
+                        }}
+                      >
+                        {product.menu_item_name}
+                      </h3>
+                      <p className="text-sm">{product.price}</p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
         </Swiper>
       </section>
 
@@ -118,6 +138,8 @@ export default function Home() {
           slidesPerView={"auto"}
           loop={true}
           autoplay={{ delay: 1000, disableOnInteraction: false }}
+          observer={true}
+          observeParents={true}
         >
           {categories.map((cat) => (
             <SwiperSlide key={cat.id} style={{ width: "auto" }}>
@@ -135,30 +157,46 @@ export default function Home() {
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={16}
           slidesPerView={1.5}
-          style={{
-            paddingBottom: "4px",
-          }}
+          style={{ paddingBottom: "4px" }}
+          observer={true}
+          observeParents={true}
         >
-          {featuredProducts.map((product) => (
-            <SwiperSlide key={product.id}>
-              <div className="shadow-md border-gray-600 rounded-2xl flex flex-col items-center">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  className="object-cover rounded-full w-40 h-40"
-                  priority
-                  height={80}
-                  width={80}
-                />
-                <div className="p-3 text-black text-center">
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <p className="text-sm">{product.price}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
+          {loadingBasedOnHistory
+            ? [...Array(3)].map((_, idx) => (
+                <SwiperSlide key={idx}>
+                  <ProductSkeleton />
+                </SwiperSlide>
+              ))
+            : basedOnHistoryProducts.map((product) => (
+                <SwiperSlide key={product.id}>
+                  <div className="shadow-md border-gray-600 rounded-2xl flex flex-col items-center">
+                    <Image
+                      src={product.image}
+                      alt={product.menu_item_name}
+                      className="object-cover rounded-full w-40 h-40"
+                      priority
+                      height={80}
+                      width={80}
+                    />
+                    <div className="p-3 text-black text-center">
+                      <h3
+                        className="text-lg font-semibold"
+                        onClick={() => {
+                          handleNavigate(
+                            `product-detail/${product.menu_item_id}`
+                          );
+                        }}
+                      >
+                        {product.menu_item_name}
+                      </h3>
+                      <p className="text-sm">{product.price}</p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
         </Swiper>
       </section>
+
       <section className="text-center pb-4">
         <button
           onClick={handleBuyNowClick}

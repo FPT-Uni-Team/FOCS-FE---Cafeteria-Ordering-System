@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-// import orderService from "@/services/orderService";
+import orderService from "@/services/orderService";
 import { ListPageParams } from "@/types/common";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import Title from "../common/Title";
 import OrderSkeleton from "../common/OrderSkeleton";
 import { Order } from "@/types/order";
-import { fakeOrders } from "@/faker/mockdata";
+// import { fakeOrders } from "@/faker/mockdata";
 import { useRouter } from "next/navigation";
 import FeedbackForm from "../common/FeedbackForm";
 import { makeHref } from "@/utils/common/common";
@@ -35,13 +35,13 @@ export default function OrderHistory() {
       const params: ListPageParams = {
         page: 1,
         page_size: 100,
-        filters: {
-          order_status: 0,
-        },
+        // filters: {
+        //   order_status: 0,
+        // },
       };
-      //const res = await orderService.getListOrders(params);
-      //setOrders(res?.data?.items || []);
-      setOrders(fakeOrders.items);
+      const res = await orderService.getListOrders(params);
+      setOrders(res?.data?.items || []);
+      // setOrders(fakeOrders.items);
     } catch (err) {
       console.error(err);
     }

@@ -1,6 +1,14 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { IAuthenticationProps } from "@/types/common";
+import { defaultParams, IAuthenticationProps } from "@/types/common";
 import Home from "@/components/homepage/Home";
+import categoryService from "@/services/categoryService";
+
+interface HomePageProps {
+  params: Promise<{
+    storeId: string;
+    tableId: string;
+  }>;
+}
 
 export async function generateMetadata(props: IAuthenticationProps) {
   const { locale } = await props.params;
@@ -15,6 +23,15 @@ export async function generateMetadata(props: IAuthenticationProps) {
   };
 }
 
-export default function HomePage() {
-  return <Home />;
+export default async function HomePage({ params }: HomePageProps) {
+  const { storeId, tableId } = await params;
+  const resCate = await categoryService.getListCategories(
+    defaultParams(1000, 1),
+    {
+      storeId,
+      tableId,
+    }
+  );
+
+  return <Home categories={resCate.data.items} />;
 }

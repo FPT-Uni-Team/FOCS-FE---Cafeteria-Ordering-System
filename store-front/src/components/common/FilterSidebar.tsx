@@ -43,9 +43,9 @@ export default function FilterSidebar({
   };
 
   useEffect(() => {
-    categoryService
-      .getListCategories(defaultParams(1000, 1))
-      .then((res) => setCategories(res.data.items));
+    categoryService.getListCategories(defaultParams(1000, 1)).then((res) => {
+      setCategories(res.data.items);
+    });
   }, []);
   return (
     <motion.div

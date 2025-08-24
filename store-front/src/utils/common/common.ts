@@ -7,6 +7,9 @@ export function useCleanPath() {
 }
 
 export const makeHref = (path: string) => {
+  if (typeof window === "undefined") {
+    return `/${path}`;
+  }
   const tableId = localStorage.getItem("tableStoreId");
   const storeId = localStorage.getItem("storeFrontId");
 

@@ -17,7 +17,11 @@
     "forgot_password": "Forgot your password",
     "do_not_account": "Don't have an account?",
     "sign_up": "Sign Up",
+    "phone": "Phone Number",
+    "error_invalid_credentials": "Sign in failed. Try again.",
+    "continue_as_guest": "Continue as Guest",
     "error_email_invalid": "Email is invalid",
+    "error_phone_invalid": "Phone number must be 9 to 11 digits",
     "error_password_combined": "Password must be at least 6 characters long, and include at least 1 lowercase letter, 1 uppercase letter, and 1 digit."
   },
   "sign-up": {
@@ -241,5 +245,10 @@
     "meta_description": "Your payment was completed successfully. View your order details here.",
     "payment_fail_title": "Payment Failed",
     "payment_fail_message": "Something went wrong with your transaction. Please try again."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "welcome_title": "Welcome to our store!",
+    "welcome_message": "We're excited to have you here. Discover our products and enjoy your shopping."
   }
 }
