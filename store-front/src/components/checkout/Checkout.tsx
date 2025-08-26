@@ -2,7 +2,6 @@ import Image from "next/image";
 import Title from "../common/Title";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useEffect, useState } from "react";
-import { fetchCartItemsStart } from "@/store/slices/cart/cartSlice";
 import { checkoutStart } from "@/store/slices/cart/checkoutSlice";
 import { useTranslations } from "next-intl";
 import LoadingOverlay from "../common/LoadingOverlay";
@@ -14,11 +13,26 @@ import {
 import { useForm } from "react-hook-form";
 import { CheckoutRequest, CheckoutResponse, OrderRequest } from "@/types/cart";
 import cartService from "@/services/cartService";
+import { useSession } from "next-auth/react";
+import { FaCheckCircle, FaTag, FaTimes } from "react-icons/fa";
+import productService from "@/services/productService";
+import PaymentSuccess from "../success/PaymentSuccess";
 
+interface Coupon {
+  code: string;
+  description: string;
+}
 const Checkout = () => {
   const t = useTranslations("checkout");
   const [orderType, setOrderType] = useState("0");
+  const [paymentType, setPaymentType] = useState("0");
+  const [usePoint, setUsePoint] = useState(false);
+  const [orderCode, setOrderCode] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [validCoupons, setValidCoupons] = useState<Coupon[]>();
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -34,23 +48,24 @@ const Checkout = () => {
     data,
     error,
     loading: checkoutLoading,
+    selectedCartItems,
   } = useAppSelector((state) => state.checkoutSlice);
-  const { cartItems, loading: cartItemLoading } = useAppSelector(
-    (state) => state.cartItem
-  );
   const { actorId, tableId, storeId } = useAppSelector((state) => state.common);
   const [couponCode, setCouponCode] = useState("");
-  const isLoading = cartItemLoading || checkoutLoading || isSubmitting;
-
+  const isLoading = checkoutLoading || isSubmitting;
+  const { data: session } = useSession();
+  const isAuth = !!session?.accessToken;
   const dispatch = useAppDispatch();
-
+  const handleSelect = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
   const handleCheckout = async (couponCode?: string) => {
     try {
       const checkoutData: CheckoutRequest = {
         store_id: storeId,
         table_id: tableId,
         actor_id: actorId,
-        items: cartItems.map((item) => ({
+        items: selectedCartItems.map((item) => ({
           menuItemId: item.id,
           variants: item.variant_groups.flatMap((group) =>
             group.variant
@@ -64,7 +79,7 @@ const Checkout = () => {
           note: item.note ?? "",
         })),
         point: 0,
-        is_use_point: false,
+        is_use_point: usePoint,
         coupon_code: couponCode,
       };
 
@@ -74,14 +89,22 @@ const Checkout = () => {
           data: checkoutData,
         })
       );
+      const coupon =
+        validCoupons && validCoupons.find((item) => item.code === couponCode);
+      if (coupon) {
+        setSelectedCoupon(coupon);
+      }
     } catch (error) {
       console.error("Checkout failed", error);
     }
   };
+  const handleConfirm = () => {
+    handleCheckout(selectedCoupon?.code);
+  };
 
   useEffect(() => {
     handleCheckout();
-  }, [cartItems]);
+  }, [selectedCartItems]);
 
   useEffect(() => {
     setCouponCode((data?.applied_coupon_code as string) || "");
@@ -93,7 +116,9 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchCartItemsStart({ actorId, tableId }));
+    productService.couponValid().then((res) => {
+      setValidCoupons(res.data.items);
+    });
   }, []);
 
   const onSubmit = async (values: CheckoutFormData) => {
@@ -102,7 +127,7 @@ const Checkout = () => {
       const orderData: OrderRequest = {
         store_id: storeId,
         table_id: tableId,
-        items: cartItems.map((item) => ({
+        items: selectedCartItems.map((item) => ({
           menuItemId: item.id,
           variants: item.variant_groups.flatMap((group) =>
             group.variant
@@ -124,10 +149,14 @@ const Checkout = () => {
           phone: values.customerPhone,
         },
         discount: data as CheckoutResponse,
-        payment_type: 0,
+        payment_type: paymentType === "0" ? 0 : 1,
         order_type: parseInt(orderType),
       };
       const res = await cartService.create_order(orderData);
+      if (paymentType === "1") {
+        setOrderCode(res.data.order_code);
+        return;
+      }
       const resPayment = await cartService.payment_order({
         order_code: res.data.order_code as number,
         amount: res.data.total_price as number,
@@ -142,6 +171,10 @@ const Checkout = () => {
       setIsSubmitting(false);
     }
   };
+  if (orderCode) {
+    return <PaymentSuccess titlePaymentMoney={true} orderCode={orderCode} />;
+  }
+
   return (
     <>
       <Title titleKey="checkout" showBackButton center />
@@ -153,16 +186,14 @@ const Checkout = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="max-h-[calc(100vh-300px)] overflow-y-auto pb-4">
           <div className="flex flex-col gap-2">
-            {cartItems.map((item) => {
+            {selectedCartItems.map((item) => {
               const selectedVariant = item.variant_groups
                 .flatMap((g) => g.variant)
                 .find((v) => v.isSelected);
-
               const itemCode = `${item.id}_${selectedVariant?.id}`;
               const discountDetail = data?.item_discount_details?.find(
                 (detail) => detail.item_code === itemCode
               );
-
               const basePrice =
                 item.base_price +
                 (item.variant_groups?.reduce((vgSum, vg) => {
@@ -309,6 +340,38 @@ const Checkout = () => {
                 </label>
               </div>
             </div>
+
+            <div>
+              <p className="text-sm font-semibold text-black">
+                {t("paymentType")}
+              </p>
+              <div className="flex items-center gap-6 mt-2">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentType"
+                    value="1"
+                    checked={paymentType === "1"}
+                    onChange={(e) => setPaymentType(e.target.value)}
+                  />
+                  <span className="ml-2 text-sm text-black">{t("cash")}</span>
+                </label>
+
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentType"
+                    value="0"
+                    checked={paymentType === "0"}
+                    onChange={(e) => setPaymentType(e.target.value)}
+                  />
+                  <span className="ml-2 text-sm text-black">
+                    {t("transfer")}
+                  </span>
+                </label>
+              </div>
+            </div>
+
             <div className="mt-4">
               <label className="text-sm font-semibold text-black">
                 {t("couponCode")}
@@ -319,18 +382,128 @@ const Checkout = () => {
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
                   placeholder={t("enterCoupon")}
-                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none  text-black"
+                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none text-black"
                 />
                 <button
                   type="button"
                   onClick={handleApplyCoupon}
-                  className="px-4 py-2 bg-green-800 text-white rounded-md text-sm"
+                  disabled={!couponCode}
+                  className={`px-4 py-2 rounded-md text-sm text-white 
+                ${
+                  couponCode ? "bg-green-800" : "bg-gray-400 cursor-not-allowed"
+                }`}
                 >
                   {t("apply")}
                 </button>
               </div>
               {error && <p className="text-sm text-red-600">{error}</p>}
             </div>
+            <div
+              onClick={() => setShowModal(true)}
+              className="text-right text-gray-600 text-sm"
+            >
+              * {t("choose")}
+            </div>
+            {showModal && (
+              <div className="fixed inset-0 flex items-center justify-center z-4 bg-[#00000080] p-4">
+                <div className="bg-white rounded-lg shadow-lg w-full max-w-md max-h-[80vh] flex flex-col">
+                  <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      {t("chooseCoupons")}
+                    </h2>
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <FaTimes className="w-6 h-6" />
+                    </button>
+                  </div>
+
+                  <div className="flex-grow p-4 overflow-y-auto space-y-3">
+                    {validCoupons ? (
+                      validCoupons.map((coupon) => (
+                        <div
+                          key={coupon.code}
+                          onClick={() => handleSelect(coupon)}
+                          className={`
+                          p-4 rounded-lg border-2 cursor-pointer transition-colors 
+                          duration-200 flex items-center
+                          ${
+                            selectedCoupon &&
+                            selectedCoupon.code === coupon.code
+                              ? "border-green-600 bg-green-50"
+                              : "border-gray-200 hover:border-gray-400"
+                          }
+                          `}
+                        >
+                          <FaTag className="text-green-600 mr-3 w-6 h-6 flex-shrink-0" />
+                          <div className="flex-grow">
+                            <h3 className="font-medium text-gray-800">
+                              {coupon.code}
+                            </h3>
+                            <p className="text-sm text-gray-500 mt-1">
+                              {coupon.description}
+                            </p>
+                          </div>
+                          {selectedCoupon &&
+                            selectedCoupon.code === coupon.code && (
+                              <FaCheckCircle className="text-green-600 ml-4 w-6 h-6 flex-shrink-0" />
+                            )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-center text-gray-500">
+                        {t("noCouponsAvailable")}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="px-4 py-2 text-sm bg-gray-400 rounded-md text-black"
+                    >
+                      {t("cancel")}
+                    </button>
+                    <button
+                      onClick={handleConfirm}
+                      className={`px-4 py-2 text-sm text-white rounded-md transition-colors ${
+                        selectedCoupon
+                          ? "bg-green-700 hover:bg-green-800"
+                          : "bg-gray-400 cursor-not-allowed"
+                      }`}
+                      disabled={!selectedCoupon}
+                    >
+                      {t("Apply")}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {isAuth && (
+              <div className="mt-3 flex items-center justify-between">
+                <span className="text-sm font-semibold text-black">
+                  {t("point")}
+                </span>
+                <label className="inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={usePoint}
+                    onChange={() => setUsePoint(!usePoint)}
+                  />
+                  <div
+                    className="relative w-11 h-6 bg-gray-200 rounded-full 
+                  peer-checked:bg-green-600 
+                  after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
+                  after:bg-white after:border-gray-300 after:border 
+                  after:rounded-full after:h-5 after:w-5 
+                  after:transition-all peer-checked:after:translate-x-full"
+                  ></div>
+                </label>
+              </div>
+            )}
           </div>
         </div>
         <div className="fixed bottom-[80px] left-0 right-0 bg-white">

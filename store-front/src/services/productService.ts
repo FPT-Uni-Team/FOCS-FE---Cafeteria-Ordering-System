@@ -1,6 +1,6 @@
 import axiosClient from "@/api/axiosClient";
 import endpoints from "../api/endpoint";
-import { ListPageParams } from "@/types/common";
+import { defaultParams, ListPageParams } from "@/types/common";
 
 const productService = {
   list: (params: ListPageParams) =>
@@ -17,6 +17,10 @@ const productService = {
     axiosClient.post(endpoints.menuItem.menuItemCategory(params)),
   mostOrder: () => axiosClient.post(endpoints.menuItem.mostOrder()),
   basedOnHistory: () => axiosClient.post(endpoints.menuItem.basOnHistory()),
+  productFeedback: (params: string) =>
+    axiosClient.post(endpoints.menuItem.productFeedback(params)),
+  couponValid: () =>
+    axiosClient.post(endpoints.coupon.couponValid(), defaultParams(1000, 1)),
 };
 
 export default productService;

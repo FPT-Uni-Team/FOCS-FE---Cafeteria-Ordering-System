@@ -7,7 +7,6 @@ import { useTranslations } from "next-intl";
 import Title from "../common/Title";
 import OrderSkeleton from "../common/OrderSkeleton";
 import { Order } from "@/types/order";
-// import { fakeOrders } from "@/faker/mockdata";
 import { useRouter } from "next/navigation";
 import FeedbackForm from "../common/FeedbackForm";
 import { makeHref } from "@/utils/common/common";
@@ -41,7 +40,6 @@ export default function OrderHistory() {
       };
       const res = await orderService.getListOrders(params);
       setOrders(res?.data?.items || []);
-      // setOrders(fakeOrders.items);
     } catch (err) {
       console.error(err);
     }

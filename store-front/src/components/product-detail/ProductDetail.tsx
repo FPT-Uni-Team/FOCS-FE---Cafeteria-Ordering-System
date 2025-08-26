@@ -15,6 +15,7 @@ import { ImageType, Variant } from "@/types/menuItem";
 import ProductDetailSkeleton from "../common/ProductDetailSkeleton";
 import { IoIosArrowBack } from "react-icons/io";
 import cartService from "@/services/cartService";
+import Image from "next/image";
 
 export default function ProductDetail() {
   const t = useTranslations("product-detail");
@@ -100,28 +101,39 @@ export default function ProductDetail() {
               {t("feedbackTitle")}
             </h3>
             {product.feedbacks && product.feedbacks.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {product.feedbacks.map((fb, idx) => (
-                  <div key={idx} className="bg-gray-100 p-3 rounded-lg">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-medium text-sm text-gray-800">
-                        {fb.user}
-                      </span>
-                      <div className="flex gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <FaStar
+                  <div key={idx} className="bg-gray-100 p-4 rounded-lg">
+                    {fb.images && fb.images.length > 0 && (
+                      <div className="flex gap-2 mb-3 flex-wrap">
+                        {fb.images.map((img, i) => (
+                          <Image
                             key={i}
-                            size={14}
-                            className={
-                              i < fb.rating
-                                ? "text-yellow-400"
-                                : "text-gray-300"
-                            }
+                            src={img}
+                            alt={`feedback-${i}`}
+                            className="w-20 h-20 object-cover rounded-lg border"
+                            height={20}
+                            width={20}
                           />
                         ))}
                       </div>
+                    )}
+
+                    <div className="flex gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          size={16}
+                          className={
+                            i < fb.rating ? "text-yellow-400" : "text-gray-300"
+                          }
+                        />
+                      ))}
                     </div>
-                    <p className="text-sm text-gray-700">{fb.comment}</p>
+
+                    <p className="text-sm text-gray-700 italic">
+                      {fb.comment || "—"}
+                    </p>
                   </div>
                 ))}
               </div>

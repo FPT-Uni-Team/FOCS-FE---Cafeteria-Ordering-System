@@ -17,7 +17,7 @@
     "forgot_password": "Forgot your password",
     "do_not_account": "Don't have an account?",
     "sign_up": "Sign Up",
-    "phone": "Phone Number",
+    "phone": "Phone",
     "error_invalid_credentials": "Sign in failed. Try again.",
     "continue_as_guest": "Continue as Guest",
     "error_email_invalid": "Email is invalid",
@@ -28,6 +28,8 @@
     "meta_title": "Create a New Account",
     "meta_description": "Sign up to enjoy fast meal ordering and exclusive offers.",
     "title": "Sign Up",
+    "title_otp": "Enter OTP",
+    "verify": "Verify OTP",
     "first_name": "First Name",
     "last_name": "Last Name",
     "email": "Email",
@@ -160,9 +162,12 @@
     "total": "Total",
     "checkout": "Checkout",
     "add_to_cart_success": "Product updated to cart successfully.",
-    "add_to_cart_failed": "Product updated to cart failed."
+    "add_to_cart_failed": "Product updated to cart failed.",
+    "removeSuccess": "Product removed from cart successfully."
   },
   "product-detail": {
+    "meta_title": "Product Detail",
+    "meta_description": "This is product detail page",
     "feedbackTitle": "Feedback",
     "noFeedback": "There are no reviews yet. Be the first to leave one!"
   },
@@ -179,12 +184,21 @@
     "orderType": "Order Type",
     "dineIn": "Dine In",
     "takeAway": "Take Away",
+    "point": "Use Points",
     "apply": "Apply",
     "couponCode": "Apply Coupon Code",
     "enterCoupon": "Enter Coupon",
     "error_required": "This field is required",
     "error_name_too_long": "Name must not exceed 30 characters",
-    "error_phone_invalid": "Invalid phone number"
+    "error_phone_invalid": "Invalid phone number",
+    "paymentType": "Payment Type",
+    "cash": "Cash",
+    "transfer": "Bank Transfer",
+    "choose": "Select coupons",
+    "noCouponsAvailable": "No coupons available.",
+    "cancel": "Cancel",
+    "Apply": "Apply",
+    "chooseCoupons": "Select coupon"
   },
   "order-detail": {
     "meta_title": "Order History",
@@ -244,7 +258,8 @@
     "meta_description_fail": "Your payment was fail. Add new product to order.",
     "meta_description": "Your payment was completed successfully. View your order details here.",
     "payment_fail_title": "Payment Failed",
-    "payment_fail_message": "Something went wrong with your transaction. Please try again."
+    "payment_fail_message": "Something went wrong with your transaction. Please try again.",
+    "payment_money_title": "Please proceed to the cashier to complete your order."
   },
   "notifications": {
     "title": "Notifications",

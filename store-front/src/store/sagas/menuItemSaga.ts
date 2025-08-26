@@ -8,9 +8,9 @@ import {
   fetchMenuItemDetailSuccess,
 } from "../slices/menuItem/menuItemDetailSlice";
 import productService from "@/services/productService";
-import { Category, Product, VariantGroup } from "@/types/menuItem";
+import { Category, FeedbackDTO, Product, VariantGroup } from "@/types/menuItem";
 
-const { menuItemDetail, menuItemImage, menuItemGroups, menuItemCategory } =
+const { menuItemDetail, menuItemGroups, menuItemCategory, productFeedback } =
   productService;
 
 function* fetchMenuItemDetail(
@@ -19,12 +19,12 @@ function* fetchMenuItemDetail(
   try {
     const response = yield call(() => menuItemDetail(action.payload));
     const menuItemDetailData = response.data as Product;
-    const responseImage = yield call(() => menuItemImage(action.payload));
-    menuItemDetailData.images = responseImage.data as [];
-    const responseVariant = yield call(() => menuItemGroups(action.payload));
-    menuItemDetailData.variant_groups = responseVariant.data as VariantGroup[];
+    const responseFeedback = yield call(() => productFeedback(action.payload));
+    menuItemDetailData.feedbacks = responseFeedback.data as FeedbackDTO[];
     const responseCategory = yield call(() => menuItemCategory(action.payload));
     menuItemDetailData.categories = responseCategory.data as Category[];
+    const responseVariant = yield call(() => menuItemGroups(action.payload));
+    menuItemDetailData.variant_groups = responseVariant.data as VariantGroup[];
     yield put(fetchMenuItemDetailSuccess(menuItemDetailData));
   } catch {
     yield put(fetchMenuItemDetailFailed());

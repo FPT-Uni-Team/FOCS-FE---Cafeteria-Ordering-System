@@ -25,12 +25,6 @@ export type Category = {
   is_active: boolean;
 };
 
-export type Feedback = {
-  user: string;
-  rating: number;
-  comment: string;
-};
-
 export interface ImageType {
   url: string;
   is_main?: boolean;
@@ -45,7 +39,7 @@ export type Product = {
   is_available: boolean;
   variant_groups: VariantGroup[];
   categories: Category[];
-  feedbacks?: Feedback[];
+  feedbacks?: FeedbackDTO[];
 };
 
 export type CartItem = Product & {
@@ -68,4 +62,16 @@ export interface OrderItem {
   variantId: string;
   quantity: number;
   note?: string;
+}
+
+export interface FeedbackDTO {
+  id: string;
+  order_id: string;
+  user_id: string;
+  rating: number;
+  comment?: string;
+  images?: string[];
+  is_public: boolean;
+  reply?: string;
+  created_at: string;
 }

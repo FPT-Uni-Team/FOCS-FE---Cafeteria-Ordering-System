@@ -2,14 +2,22 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { AiOutlineClose } from "react-icons/ai";
 
+interface Notification {
+  id: string | number;
+  title: string;
+  message: string;
+}
+
 interface NotificationSidebarProps {
   show: boolean;
   onClose: () => void;
+  notifications: Notification[];
 }
 
 export default function NotificationSidebar({
   show,
   onClose,
+  notifications,
 }: NotificationSidebarProps) {
   const t = useTranslations("notifications");
   return (
@@ -34,6 +42,13 @@ export default function NotificationSidebar({
             <h3 className="font-semibold">{t("welcome_title")}</h3>
             <p className="text-sm text-gray-600">{t("welcome_message")}</p>
           </li>
+          {notifications.length > 0 &&
+            notifications.map((n) => (
+              <li key={n.id} className="p-2 border rounded-md">
+                <h3 className="font-semibold">{n.title}</h3>
+                <p className="text-sm text-gray-600">{n.message}</p>
+              </li>
+            ))}
         </ul>
       </div>
     </motion.div>

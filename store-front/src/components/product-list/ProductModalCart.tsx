@@ -163,8 +163,6 @@ export default function ProductModalCart({
     priceCalculationKey,
   ]);
 
-  console.log("total", totalPrice);
-
   useEffect(() => {
     const defaultValues = {
       quantity: initialData?.quantity || 1,

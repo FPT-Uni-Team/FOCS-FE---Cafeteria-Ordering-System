@@ -22,7 +22,7 @@ const SignIn = () => {
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      phone: "",
+      email: "",
       password: "",
     },
   });
@@ -32,7 +32,7 @@ const SignIn = () => {
     try {
       const res = await signIn("credentials", {
         redirect: false,
-        phone: data.phone,
+        email: data.email,
         password: data.password,
       });
       if (!res) return;
@@ -56,7 +56,6 @@ const SignIn = () => {
         <FaShippingFast size={80} />
         <div className="text-center text-2xl font-bold mt-2">FOCS</div>
       </div>
-
       <div
         className="absolute top-4/5 left-1/2 -translate-x-1/2 -translate-y-1/2 
         text-white cursor-pointer bg-orange-600 rounded-full p-2"
@@ -96,16 +95,17 @@ const SignIn = () => {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("phone")}
+                  {t("email")}
                 </label>
                 <input
-                  type="tel"
+                  type="text"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
-                  {...form.register("phone")}
+                  placeholder="focs@gmail.com"
+                  {...form.register("email")}
                 />
-                {form.formState.errors.phone && (
+                {form.formState.errors.email && (
                   <p className="text-red-500 text-sm mt-1">
-                    {form.formState.errors.phone.message}
+                    {form.formState.errors.email.message}
                   </p>
                 )}
               </div>
