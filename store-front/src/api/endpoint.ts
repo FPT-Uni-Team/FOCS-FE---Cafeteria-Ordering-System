@@ -13,16 +13,18 @@ const endpoints = {
   menuItem: {
     list: () => `${API_BASE_URL}/me/menu-item`,
     listByIds: () => `${API_BASE_URL}/me/menu-item/ids`,
-    detail: (params: string) => `${API_BASE_URL}/admin/menu-item/${params}`,
+    detail: (params: string) => `${API_BASE_URL}/me/menu-item/${params}`,
     update: (params: string) => `${API_BASE_URL}/admin/menu-item/${params}`,
     images: (params: string) =>
       `${API_BASE_URL}/admin/menu-item/${params}/images`,
     variantGroups: (params: string) =>
-      `${API_BASE_URL}/admin/menu-item/${params}/variant-groups`,
+      `${API_BASE_URL}/me/menu-item/${params}/variant-groups`,
     menuItemCategory: (params: string) =>
-      `${API_BASE_URL}/menu-item-category/menu-item/${params}/categories`,
+      `${API_BASE_URL}/me/menu-item/menu-item/${params}/categories`,
     mostOrder: () => `${API_BASE_URL}/me/menu-item/most-order`,
     basOnHistory: () => `${API_BASE_URL}/me/menu-item/based-on-history`,
+    productFeedback: (params: string) =>
+      `${API_BASE_URL}/feedback/menu-item/${params}`,
   },
   auth: {
     login: () => `${API_BASE_URL}/me/login`,
@@ -30,6 +32,9 @@ const endpoints = {
     signUp: () => `${API_BASE_URL}/me/register`,
     forgotPassword: () => `${API_BASE_URL}/me/forgot-password`,
     resetPassWord: () => `${API_BASE_URL}/me/reset-password`,
+    sendOtp: (phone: string) => `${API_BASE_URL}/me/send-otp?phone=${phone}`,
+    verifyOtp: () => `${API_BASE_URL}/me/verify-otp`,
+    mobileToken: () => `${API_BASE_URL}/me/mobile-token`,
   },
   coupon: {
     listValid: (promotionId?: string) => {
@@ -47,6 +52,7 @@ const endpoints = {
     setStatus: (id: string) => `${API_BASE_URL}/admin/coupon/${id}/status`,
     assignPromotion: (storeId: string) =>
       `${API_BASE_URL}/admin/coupon/${storeId}/assign-promotion`,
+    couponValid: () => `${API_BASE_URL}/me/menu-item/coupons`,
   },
   category: {
     list: () => `${API_BASE_URL}/Category/categories`,

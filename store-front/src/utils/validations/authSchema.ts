@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const createSignInSchema = (t: (key: string) => string) => {
   return z.object({
-    phone: z.string().regex(/^[0-9]{9,11}$/, t("error_phone_invalid")),
+    email: z.string().email(t("error_email_invalid")),
     password: z
       .string()
       .regex(
@@ -16,7 +16,6 @@ export const createSignUpSchema = (t: (key: string) => string) =>
   z
     .object({
       email: z.string().email(t("error_email_invalid")),
-
       password: z
         .string()
         .regex(
@@ -40,6 +39,11 @@ export const createSignUpSchema = (t: (key: string) => string) =>
 export const createEmailSchema = (t: (key: string) => string) =>
   z.object({
     email: z.string().email(t("error_email_invalid")),
+  });
+
+export const createPhoneSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().regex(/^[0-9]{9,11}$/, t("error_phone_invalid")),
   });
 
 export const createPasswordSchema = (t: (key: string) => string) =>
@@ -80,6 +84,7 @@ export type ProfileFormData = z.infer<
 export type CheckoutFormData = z.infer<ReturnType<typeof createCheckoutSchema>>;
 
 export type EmailFormData = z.infer<ReturnType<typeof createEmailSchema>>;
+export type PhoneFormData = z.infer<ReturnType<typeof createPhoneSchema>>;
 export type PasswordFormData = z.infer<ReturnType<typeof createPasswordSchema>>;
 
 export type SignInFormData = z.infer<ReturnType<typeof createSignInSchema>>;

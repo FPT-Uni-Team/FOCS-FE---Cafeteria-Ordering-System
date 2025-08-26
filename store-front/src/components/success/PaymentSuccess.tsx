@@ -7,19 +7,28 @@ import { makeHref } from "@/utils/common/common";
 
 interface PaymentSuccessProps {
   orderCode: string;
+  titlePaymentMoney?: boolean;
 }
 
-export default function PaymentSuccess({ orderCode }: PaymentSuccessProps) {
+export default function PaymentSuccess({
+  orderCode,
+  titlePaymentMoney = false,
+}: PaymentSuccessProps) {
   const router = useRouter();
   const t = useTranslations("payment");
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
       <div className="bg-white shadow-lg rounded-2xl p-8 max-w-md w-full text-center">
         <FaCheckCircle className="h-16 w-16 text-green-500 mx-auto" />
-        <h1 className="text-2xl font-bold text-gray-800 mt-4">
-          {t("payment_success_title")}
-        </h1>
+        {titlePaymentMoney ? (
+          <h2 className="text-xl font-semibold text-gray-800 mt-4">
+            {t("payment_money_title")}
+          </h2>
+        ) : (
+          <h1 className="text-2xl font-bold text-gray-800 mt-4">
+            {t("payment_success_title")}
+          </h1>
+        )}
         <p className="text-gray-600 mt-2">{t("payment_success_message")}</p>
 
         <div className="mt-6 border-t border-gray-200 pt-4 space-y-2">

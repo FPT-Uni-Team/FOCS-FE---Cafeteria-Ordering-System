@@ -1,4 +1,5 @@
 import { CheckoutRequest, CheckoutResponse } from "@/types/cart";
+import { CartItem } from "@/types/menuItem";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CheckoutState {
@@ -6,6 +7,7 @@ interface CheckoutState {
   error: string | null;
   data: CheckoutResponse | null;
   success: boolean;
+  selectedCartItems: CartItem[];
 }
 
 const initialState: CheckoutState = {
@@ -13,6 +15,7 @@ const initialState: CheckoutState = {
   error: null,
   data: null,
   success: false,
+  selectedCartItems: [],
 };
 
 export interface CheckoutPayload {
@@ -32,6 +35,9 @@ const checkoutSlice = createSlice({
       prepare(payload: CheckoutPayload) {
         return { payload };
       },
+    },
+    setSelectedCartItems: (state, action: PayloadAction<CartItem[]>) => {
+      state.selectedCartItems = action.payload;
     },
     checkoutSuccess(state, action: PayloadAction<CheckoutResponse>) {
       state.loading = false;
@@ -57,6 +63,7 @@ export const {
   checkoutSuccess,
   checkoutFailed,
   resetCheckoutState,
+  setSelectedCartItems,
 } = checkoutSlice.actions;
 
 export default checkoutSlice.reducer;

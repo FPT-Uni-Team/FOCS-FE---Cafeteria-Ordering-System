@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import Title from "../common/Title";
 import { CartItem, CartItemInput, Product } from "@/types/menuItem";
-import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useSignalR } from "@/hooks/useSignalR";
 import endpoints from "@/api/endpoint";
@@ -25,8 +24,12 @@ import ProductModalCart from "../product-list/ProductModalCart";
 import cartService from "@/services/cartService";
 import LoadingOverlay from "../common/LoadingOverlay";
 import { useRouter } from "next/navigation";
-import { checkoutStart } from "@/store/slices/cart/checkoutSlice";
+import {
+  checkoutStart,
+  setSelectedCartItems,
+} from "@/store/slices/cart/checkoutSlice";
 import { makeHref } from "@/utils/common/common";
+import toast from "react-hot-toast";
 
 export default function Cart() {
   const t = useTranslations("cart");
@@ -42,6 +45,7 @@ export default function Cart() {
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const [selectedCartItem, setSelectedCartItem] = useState<CartItem>({
     id: "",
@@ -56,6 +60,22 @@ export default function Cart() {
     is_available: true,
   } as CartItem);
 
+  const handleToggleSelect = (itemId: string) => {
+    setSelectedItems((prev) =>
+      prev.includes(itemId)
+        ? prev.filter((id) => id !== itemId)
+        : [...prev, itemId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedItems.length === items.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(items.map((i) => i.id));
+    }
+  };
+
   const handleVariantClick = (item: CartItem) => {
     setSelectedCartItem(item);
     setShowModal(true);
@@ -66,8 +86,8 @@ export default function Cart() {
   };
 
   const handleModalSubmit = async (product: SubmitPayload) => {
-    handleRemove({ itemId: product.menu_item_id, submitType: "change" });
     try {
+      await handleRemove({ itemId: product.menu_item_id, typeRemove: "all" });
       const data = {
         menu_item_id: product.menu_item_id,
         variants: product.variant_ids.map((id) => ({
@@ -84,36 +104,39 @@ export default function Cart() {
   };
 
   const handleCheckout = async () => {
-    try {
-      const checkoutData: CheckoutRequest = {
-        store_id: storeId,
-        table_id: tableId,
-        items: cartItems.map((item) => ({
-          menuItemId: item.id,
-          variants: item.variant_groups.flatMap((group) =>
-            group.variant
-              .filter((v) => v.isSelected)
-              .map((v) => ({
-                variant_id: v.id,
-                quantity: 1,
-              }))
-          ),
-          quantity: item.quantity,
-          note: item.note ?? "",
-        })),
-        point: 0,
-        is_use_point: true,
-      };
+    if (selectedItems.length === 0) return;
 
-      await dispatch(
-        checkoutStart({
-          actorId,
-          data: checkoutData,
-        })
-      );
-    } catch (error) {
-      console.error("Checkout failed", error);
-    }
+    const selectedCartItems = cartItems.filter((item) =>
+      selectedItems.includes(item.id)
+    );
+    dispatch(setSelectedCartItems(selectedCartItems));
+
+    const checkoutData: CheckoutRequest = {
+      store_id: storeId,
+      table_id: tableId,
+      items: selectedCartItems.map((item) => ({
+        menuItemId: item.id,
+        variants: item.variant_groups.flatMap((group) =>
+          group.variant
+            .filter((v) => v.isSelected)
+            .map((v) => ({
+              variant_id: v.id,
+              quantity: 1,
+            }))
+        ),
+        quantity: item.quantity,
+        note: item.note ?? "",
+      })),
+      point: 0,
+      is_use_point: true,
+    };
+
+    await dispatch(
+      checkoutStart({
+        actorId,
+        data: checkoutData,
+      })
+    );
   };
 
   const convertCartItemToProduct = (cartItem: CartItem): Product => {
@@ -147,27 +170,16 @@ export default function Cart() {
     };
   };
 
-  const handleQuantityChange = (id: string, delta: number) => {
-    if (delta == -1) {
-      handleRemove({ itemId: id, typeRemove: "single", numberRemove: 1 });
-    }
-  };
-
   const handleRemove = async ({
     itemId,
     typeRemove = "all",
     numberRemove = 1,
-    submitType = "notChange",
   }: {
     itemId: string;
     typeRemove?: "all" | "single";
     numberRemove?: number;
-    submitType?: "change" | "notChange";
   }) => {
     try {
-      if (submitType == "notChange") {
-        setIsRemoving(true);
-      }
       const itemToRemove = items.find((item) => item.id === itemId);
       if (!itemToRemove) return;
 
@@ -179,6 +191,7 @@ export default function Cart() {
             quantity: 1,
           }))
       );
+
       const dataCart: CartItemInput = {
         menu_item_id: itemToRemove.id,
         variants,
@@ -194,6 +207,7 @@ export default function Cart() {
       await cartService.delete(dataTable, dataCart);
     } catch {
     } finally {
+      setIsRemoving(false);
     }
   };
 
@@ -201,7 +215,11 @@ export default function Cart() {
     <TrailingActions>
       <SwipeAction
         destructive={true}
-        onClick={() => handleRemove({ itemId: itemId })}
+        onClick={async () => {
+          setIsRemoving(true);
+          await handleRemove({ itemId: itemId, typeRemove: "all" });
+          toast.success(t("removeSuccess"));
+        }}
       >
         <div className="bg-red-500 flex items-center text-white">
           <MdDeleteOutline size={20} className="w-full" />
@@ -213,23 +231,14 @@ export default function Cart() {
   useSignalR({
     hubUrl: endpoints.cart.hub({ storeId, tableId }),
     onReceiveUpdate: () => {
-      setIsRemoving(false);
       dispatch(fetchCartItemsStart({ actorId, tableId }));
     },
   });
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(fetchCartItemsStart({ actorId, tableId }));
-  }, []);
-
-  useEffect(() => {
-    setItems(cartItems);
-    setIsLoading(false);
-  }, [cartItems]);
-
-  useEffect(() => {
     const calculatedSubtotal = items.reduce((sum, item) => {
+      if (!selectedItems.includes(item.id)) return sum;
+
       const variantTotal =
         item.variant_groups?.reduce((vgSum, vg) => {
           return (
@@ -239,17 +248,28 @@ export default function Cart() {
               .reduce((vSum, v) => vSum + v.price, 0)
           );
         }, 0) || 0;
+
       const itemTotal = (item.base_price + variantTotal) * item.quantity;
       return sum + itemTotal;
     }, 0);
     setTotal(calculatedSubtotal);
-  }, [items]);
+  }, [items, selectedItems]);
 
   useEffect(() => {
     if (successCheckout) {
       router.push(makeHref("checkout"));
     }
   }, [dispatch, router, successCheckout]);
+
+  useEffect(() => {
+    setItems(cartItems);
+    setIsLoading(false);
+  }, [cartItems]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(fetchCartItemsStart({ actorId, tableId }));
+  }, []);
 
   return (
     <div className="relative">
@@ -270,6 +290,17 @@ export default function Cart() {
         <p className="text-center text-gray-500 py-10">{t("empty")}</p>
       ) : (
         <>
+          <div className="flex items-center gap-2 mb-2">
+            <input
+              type="checkbox"
+              checked={
+                selectedItems.length === items.length && items.length > 0
+              }
+              className="accent-green-700 cursor-pointer"
+              onChange={handleSelectAll}
+            />
+            <span className="text-sm text-gray-700">Select All</span>
+          </div>
           <SwipeableList
             threshold={0.3}
             className="max-h-[calc(100vh-200px)] overflow-y-auto space-y-3 pb-2"
@@ -280,10 +311,16 @@ export default function Cart() {
                 trailingActions={trailingActions(item.id)}
               >
                 <div key={item.id} className="flex relative gap-2 w-full">
+                  <input
+                    type="checkbox"
+                    className="mt-2 accent-green-700 cursor-pointer"
+                    checked={selectedItems.includes(item.id)}
+                    onChange={() => handleToggleSelect(item.id)}
+                  />
                   <Image
                     src={
                       (item.images as string) ||
-                      "/img/profile/default-avatar.jpg"
+                      "/img/product/image-not-available.png"
                     }
                     alt={item.name}
                     width={96}
@@ -296,7 +333,7 @@ export default function Cart() {
                         <h1 className="text-sm font-semibold text-gray-800 truncate max-w-[180px]">
                           {item.name}
                         </h1>
-                        <p className="text-sm text-gray-500 truncate max-w-[180px]">
+                        <p className="text-sm text-gray-500 truncate max-w-[150px]">
                           {item.categories?.map((cat) => cat.name).join(", ")}
                         </p>
                         {item.variant_groups.length > 0 && (
@@ -335,22 +372,6 @@ export default function Cart() {
                         </span>
                       </div>
                     </div>
-                    <div className="flex gap-2 absolute bottom-2 right-2">
-                      <button
-                        type="button"
-                        onClick={() => handleQuantityChange(item.id, -1)}
-                        className=" text-black "
-                      >
-                        <CiCircleMinus />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleQuantityChange(item.id, 1)}
-                        className=" text-black"
-                      >
-                        <CiCirclePlus />
-                      </button>
-                    </div>
                   </div>
                 </div>
               </SwipeableListItem>
@@ -363,7 +384,13 @@ export default function Cart() {
               </span>
               <button
                 onClick={handleCheckout}
-                className="bg-green-800 text-white rounded-xl font-semibold text-sm py-2 px-10"
+                disabled={selectedItems.length === 0}
+                className={`rounded-xl font-semibold text-sm py-2 px-10 bg-green-800
+                ${
+                  selectedItems.length === 0
+                    ? "opacity-70 cursor-not-allowed"
+                    : "text-white"
+                }`}
               >
                 {t("checkout")}
               </button>

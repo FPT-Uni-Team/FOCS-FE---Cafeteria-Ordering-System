@@ -7,7 +7,7 @@ export default function NavLayoutFooter({
 }) {
   return (
     <>
-      <div className="m-4">{children}</div>
+      <div className="m-4 mb-[80px]">{children}</div>
       <NavBottom />
     </>
   );
