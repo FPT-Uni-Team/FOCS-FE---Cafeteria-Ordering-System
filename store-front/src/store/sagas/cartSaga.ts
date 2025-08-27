@@ -22,36 +22,44 @@ function* fetchCartItemList(
 ): Generator<Effect, void, AxiosResponse> {
   try {
     const response = yield call(() => cartService.get(action.payload));
-    const menuItemIds = response.data.map(
+    const menuItemIds: string[] = response.data.map(
       (item: cartItem) => item.menu_item_id
     );
     const responseMenuData = yield call(() =>
-      productService.listByIds(menuItemIds)
+      productService.listByIds([...new Set(menuItemIds)])
     );
-    const inputMap = new Map(
-      response.data.map((item: cartItem) => [item.menu_item_id, item])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const inputMap = response.data.reduce((acc: any, item: cartItem) => {
+      if (!acc[item.menu_item_id]) {
+        acc[item.menu_item_id] = [];
+      }
+      acc[item.menu_item_id].push(item);
+      return acc;
+    }, {} as Record<string, cartItem[]>);
+    const mergedData = (responseMenuData.data as Product[]).flatMap(
+      (product) => {
+        const cartItems = inputMap[product.id] || [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return cartItems.map((cartItem: any) => {
+          const selectedVariantIds = new Set(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            cartItem.variants.map((v: any) => v.variant_id)
+          );
+          return {
+            ...product,
+            quantity: cartItem.quantity,
+            note: cartItem.note,
+            variant_groups: product.variant_groups.map((group) => ({
+              ...group,
+              variant: group.variant.map((v) => ({
+                ...v,
+                isSelected: selectedVariantIds.has(v.id),
+              })),
+            })),
+          };
+        });
+      }
     );
-
-    const mergedData = (responseMenuData.data as Product[]).map((item) => {
-      const input = inputMap.get(item.id);
-      const selectedVariantIds = new Set(
-        ((input as cartItem) || [])?.variants.map(
-          (v: { variant_id: string; quantity: number }) => v.variant_id
-        )
-      );
-      return {
-        ...item,
-        quantity: ((input as cartItem) || [])?.quantity ?? 0,
-        note: ((input as cartItem) || [])?.note ?? "",
-        variant_groups: item.variant_groups.map((group) => ({
-          ...group,
-          variant: group.variant.map((v) => ({
-            ...v,
-            isSelected: selectedVariantIds.has(v.id),
-          })),
-        })),
-      };
-    });
     yield put(fetchCartItemsSuccess({ cartItems: mergedData }));
   } catch (error: unknown) {
     const errorMessage =
