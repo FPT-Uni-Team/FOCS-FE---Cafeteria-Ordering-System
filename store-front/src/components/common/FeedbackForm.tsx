@@ -39,14 +39,11 @@ export default function FeedbackForm({ onClose, orderId }: FeedbackFormProps) {
 
   const onSubmit = (data: FeedbackFormValues) => {
     const realImages = files.filter((f): f is File => f !== null);
-    console.log("status", realImages);
     if (realImages.length === 0) {
       setError("images", { message: t("pleaseUploadImages") });
       return;
     }
-
     setLoading(true);
-
     const formData = new FormData();
     formData.append("rating", String(data.star));
     formData.append("comment", data.description || "");
