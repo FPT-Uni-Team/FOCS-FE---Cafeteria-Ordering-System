@@ -51,6 +51,9 @@ const cartService = {
       },
     });
   },
+  get_point: () => {
+    return axiosClient.post(endpoints.checkout.point());
+  },
 };
 
 export default cartService;

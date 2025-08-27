@@ -289,7 +289,7 @@ export default function Cart() {
       ) : items.length === 0 ? (
         <p className="text-center text-gray-500 py-10">{t("empty")}</p>
       ) : (
-        <>
+        <div>
           <div className="flex items-center gap-2 mb-2">
             <input
               type="checkbox"
@@ -303,7 +303,7 @@ export default function Cart() {
           </div>
           <SwipeableList
             threshold={0.3}
-            className="max-h-[calc(100vh-200px)] overflow-y-auto space-y-3 pb-2"
+            className="max-h-[calc(100vh-240px)] overflow-y-auto space-y-3 pb-2"
           >
             {items.map((item) => (
               <SwipeableListItem
@@ -411,7 +411,7 @@ export default function Cart() {
               }
             />
           )}
-        </>
+        </div>
       )}
     </div>
   );

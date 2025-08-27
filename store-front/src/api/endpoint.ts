@@ -94,6 +94,7 @@ const endpoints = {
       `${API_BASE_URL}/order/${actorId}/apply-discount`,
     create_cart: () => `${API_BASE_URL}/order`,
     payment: () => `${API_BASE_URL}/payment`,
+    point: () => `${API_BASE_URL}/me/point`,
   },
   order: {
     list: () => `${API_BASE_URL}/order/history`,

@@ -198,7 +198,8 @@
     "noCouponsAvailable": "No coupons available.",
     "cancel": "Cancel",
     "Apply": "Apply",
-    "chooseCoupons": "Select coupon"
+    "chooseCoupons": "Select coupon",
+    "tax": "Tax"
   },
   "order-detail": {
     "meta_title": "Order History",

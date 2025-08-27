@@ -52,6 +52,9 @@ const Checkout = () => {
   } = useAppSelector((state) => state.checkoutSlice);
   const { actorId, tableId, storeId } = useAppSelector((state) => state.common);
   const [couponCode, setCouponCode] = useState("");
+  const [codeZero, setCodeZero] = useState("");
+  const [point, setPoint] = useState(0);
+  const [priceZoro, serPriceZero] = useState(false);
   const isLoading = checkoutLoading || isSubmitting;
   const { data: session } = useSession();
   const isAuth = !!session?.accessToken;
@@ -131,7 +134,7 @@ const Checkout = () => {
         note: "",
         coupon_code: couponCode,
         is_use_point: usePoint,
-        point: 0,
+        point: usePoint ? point : 0,
         customer_info: {
           name: values.customerName,
           phone: values.customerPhone,
@@ -141,6 +144,15 @@ const Checkout = () => {
         order_type: parseInt(orderType),
       };
       const res = await cartService.create_order(orderData);
+      if (res.data.total_price === 0) {
+        serPriceZero(true);
+        setCodeZero(res.data.order_code);
+        await cartService.order_update({
+          orderCode: res.data.order_code,
+          statusString: "00",
+        });
+        return;
+      }
       if (paymentType === "1") {
         setOrderCode(res.data.order_code);
         return;
@@ -160,6 +172,11 @@ const Checkout = () => {
     }
   };
 
+  const handleChangePoint = () => {
+    setUsePoint(!usePoint);
+    handleCheckout();
+  };
+
   useEffect(() => {
     handleCheckout();
   }, [selectedCartItems]);
@@ -172,7 +189,14 @@ const Checkout = () => {
     productService.couponValid().then((res) => {
       setValidCoupons(res.data.items);
     });
+    cartService.get_point().then((res) => {
+      setPoint(res.data);
+    });
   }, []);
+
+  if (priceZoro) {
+    return <PaymentSuccess titlePaymentZero={true} orderCode={codeZero} />;
+  }
 
   if (orderCode) {
     return <PaymentSuccess titlePaymentMoney={true} orderCode={orderCode} />;
@@ -187,7 +211,7 @@ const Checkout = () => {
         </div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="max-h-[calc(100vh-300px)] overflow-y-auto pb-4">
+        <div className="max-h-[calc(100vh-320px)] overflow-y-auto pb-4">
           <div className="flex flex-col gap-2">
             {selectedCartItems.map((item) => {
               const selectedVariant = item.variant_groups
@@ -408,27 +432,32 @@ const Checkout = () => {
               * {t("choose")}
             </div>
 
-            {isAuth && (
+            {isAuth && point !== 0 && (
               <div className="mt-3 flex items-center justify-between">
                 <span className="text-sm font-semibold text-black">
                   {t("point")}
                 </span>
-                <label className="inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={usePoint}
-                    onChange={() => setUsePoint(!usePoint)}
-                  />
-                  <div
-                    className="relative w-11 h-6 bg-gray-200 rounded-full 
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-500">
+                    {point.toLocaleString("vi-VN")} point
+                  </span>
+                  <label className="inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={usePoint}
+                      onChange={handleChangePoint}
+                    />
+                    <div
+                      className="relative w-11 h-6 bg-gray-200 rounded-full 
                   peer-checked:bg-green-600 
                   after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
                   after:bg-white after:border-gray-300 after:border 
                   after:rounded-full after:h-5 after:w-5 
                   after:transition-all peer-checked:after:translate-x-full"
-                  ></div>
-                </label>
+                    ></div>
+                  </label>
+                </div>
               </div>
             )}
           </div>
@@ -439,7 +468,9 @@ const Checkout = () => {
               <span className="text-gray-600">{t("subtotal")}</span>
               <span className="font-semibold">
                 {(
-                  (data?.total_discount ?? 0) + (data?.total_price ?? 0)
+                  (data?.total_discount ?? 0) +
+                  (data?.total_price ?? 0) -
+                  (data?.tax_amount ?? 0)
                 ).toLocaleString("vi-VN")}{" "}
                 VND
               </span>
@@ -451,6 +482,16 @@ const Checkout = () => {
                 - {data?.total_discount.toLocaleString("vi-VN") ?? 0} VND
               </span>
             </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">{t("tax")}</span>
+              <span className="text-green-600 font-semibold">
+                +{" "}
+                {(data?.tax_amount &&
+                  data?.tax_amount.toLocaleString("vi-VN")) ??
+                  0}{" "}
+                VND
+              </span>
+            </div>
           </div>
 
           <div className="p-4 flex justify-between items-center border-t border-gray-300">
@@ -459,6 +500,7 @@ const Checkout = () => {
               {data?.total_price.toLocaleString("vi-VN") ?? 0} VND
             </span>
           </div>
+
           <div className="px-4 pb-2">
             <button
               type="submit"

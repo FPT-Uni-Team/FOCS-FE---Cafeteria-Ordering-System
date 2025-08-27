@@ -47,6 +47,7 @@ export interface CheckoutRequest {
 }
 
 export interface CheckoutResponse {
+  tax_amount?: number;
   total_discount: number;
   total_price: number;
   applied_coupon_code?: string;
