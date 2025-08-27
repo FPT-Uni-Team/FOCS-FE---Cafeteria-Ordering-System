@@ -20,7 +20,7 @@ const endpoints = {
     variantGroups: (params: string) =>
       `${API_BASE_URL}/me/menu-item/${params}/variant-groups`,
     menuItemCategory: (params: string) =>
-      `${API_BASE_URL}/me/menu-item/menu-item/${params}/categories`,
+      `${API_BASE_URL}/me/menu-item/${params}/categories`,
     mostOrder: () => `${API_BASE_URL}/me/menu-item/most-order`,
     basOnHistory: () => `${API_BASE_URL}/me/menu-item/based-on-history`,
     productFeedback: (params: string) =>

@@ -176,7 +176,7 @@ export default function ProductList() {
                     </p>
                   </div>
                   <p className="text-green-800 text-sm font-semibold">
-                    {product?.base_price || 0} VND
+                    {product?.base_price.toLocaleString("vi-VN") || 0} VND
                   </p>
                 </div>
                 <button

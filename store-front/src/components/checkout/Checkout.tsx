@@ -98,28 +98,16 @@ const Checkout = () => {
       console.error("Checkout failed", error);
     }
   };
+
   const handleConfirm = () => {
+    setShowModal(false);
     handleCheckout(selectedCoupon?.code);
   };
-
-  useEffect(() => {
-    handleCheckout();
-  }, [selectedCartItems]);
-
-  useEffect(() => {
-    setCouponCode((data?.applied_coupon_code as string) || "");
-  }, [data]);
 
   const handleApplyCoupon = () => {
     if (!couponCode) return;
     handleCheckout(couponCode);
   };
-
-  useEffect(() => {
-    productService.couponValid().then((res) => {
-      setValidCoupons(res.data.items);
-    });
-  }, []);
 
   const onSubmit = async (values: CheckoutFormData) => {
     setIsSubmitting(true);
@@ -142,7 +130,7 @@ const Checkout = () => {
         })),
         note: "",
         coupon_code: couponCode,
-        is_use_point: true,
+        is_use_point: usePoint,
         point: 0,
         customer_info: {
           name: values.customerName,
@@ -171,6 +159,21 @@ const Checkout = () => {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    handleCheckout();
+  }, [selectedCartItems]);
+
+  useEffect(() => {
+    setCouponCode((data?.applied_coupon_code as string) || "");
+  }, [data]);
+
+  useEffect(() => {
+    productService.couponValid().then((res) => {
+      setValidCoupons(res.data.items);
+    });
+  }, []);
+
   if (orderCode) {
     return <PaymentSuccess titlePaymentMoney={true} orderCode={orderCode} />;
   }
@@ -246,11 +249,11 @@ const Checkout = () => {
                         <div className="flex items-center space-x-2">
                           {discountDetail && (
                             <span className="text-gray-400 line-through text-xs">
-                              {basePrice} VND
+                              {basePrice.toLocaleString("vi-VN")} VND
                             </span>
                           )}
                           <span className="text-green-800 text-md font-semibold">
-                            {finalPrice} VND
+                            {finalPrice.toLocaleString("vi-VN")} VND
                           </span>
                         </div>
                       </div>
@@ -404,82 +407,6 @@ const Checkout = () => {
             >
               * {t("choose")}
             </div>
-            {showModal && (
-              <div className="fixed inset-0 flex items-center justify-center z-4 bg-[#00000080] p-4">
-                <div className="bg-white rounded-lg shadow-lg w-full max-w-md max-h-[80vh] flex flex-col">
-                  <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      {t("chooseCoupons")}
-                    </h2>
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <FaTimes className="w-6 h-6" />
-                    </button>
-                  </div>
-
-                  <div className="flex-grow p-4 overflow-y-auto space-y-3">
-                    {validCoupons ? (
-                      validCoupons.map((coupon) => (
-                        <div
-                          key={coupon.code}
-                          onClick={() => handleSelect(coupon)}
-                          className={`
-                          p-4 rounded-lg border-2 cursor-pointer transition-colors 
-                          duration-200 flex items-center
-                          ${
-                            selectedCoupon &&
-                            selectedCoupon.code === coupon.code
-                              ? "border-green-600 bg-green-50"
-                              : "border-gray-200 hover:border-gray-400"
-                          }
-                          `}
-                        >
-                          <FaTag className="text-green-600 mr-3 w-6 h-6 flex-shrink-0" />
-                          <div className="flex-grow">
-                            <h3 className="font-medium text-gray-800">
-                              {coupon.code}
-                            </h3>
-                            <p className="text-sm text-gray-500 mt-1">
-                              {coupon.description}
-                            </p>
-                          </div>
-                          {selectedCoupon &&
-                            selectedCoupon.code === coupon.code && (
-                              <FaCheckCircle className="text-green-600 ml-4 w-6 h-6 flex-shrink-0" />
-                            )}
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-center text-gray-500">
-                        {t("noCouponsAvailable")}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="px-4 py-2 text-sm bg-gray-400 rounded-md text-black"
-                    >
-                      {t("cancel")}
-                    </button>
-                    <button
-                      onClick={handleConfirm}
-                      className={`px-4 py-2 text-sm text-white rounded-md transition-colors ${
-                        selectedCoupon
-                          ? "bg-green-700 hover:bg-green-800"
-                          : "bg-gray-400 cursor-not-allowed"
-                      }`}
-                      disabled={!selectedCoupon}
-                    >
-                      {t("Apply")}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
 
             {isAuth && (
               <div className="mt-3 flex items-center justify-between">
@@ -511,14 +438,17 @@ const Checkout = () => {
             <div className="flex justify-between items-center">
               <span className="text-gray-600">{t("subtotal")}</span>
               <span className="font-semibold">
-                {(data?.total_discount ?? 0) + (data?.total_price ?? 0)} VND
+                {(
+                  (data?.total_discount ?? 0) + (data?.total_price ?? 0)
+                ).toLocaleString("vi-VN")}{" "}
+                VND
               </span>
             </div>
 
             <div className="flex justify-between items-center">
               <span className="text-gray-600">{t("discount")}</span>
               <span className="text-red-600 font-semibold">
-                - {data?.total_discount ?? 0} VND
+                - {data?.total_discount.toLocaleString("vi-VN") ?? 0} VND
               </span>
             </div>
           </div>
@@ -526,7 +456,7 @@ const Checkout = () => {
           <div className="p-4 flex justify-between items-center border-t border-gray-300">
             <span className="text-gray-900 font-semibold">{t("total")}</span>
             <span className="text-sm font-bold text-gray-900">
-              {data?.total_price ?? 0} VND
+              {data?.total_price.toLocaleString("vi-VN") ?? 0} VND
             </span>
           </div>
           <div className="px-4 pb-2">
@@ -539,6 +469,81 @@ const Checkout = () => {
           </div>
         </div>
       </form>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-4 bg-[#00000080] p-4">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md max-h-[80vh] flex flex-col">
+            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-gray-800">
+                {t("chooseCoupons")}
+              </h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <FaTimes className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="flex-grow p-4 overflow-y-auto space-y-3">
+              {validCoupons ? (
+                validCoupons.map((coupon) => (
+                  <div
+                    key={coupon.code}
+                    onClick={() => handleSelect(coupon)}
+                    className={`
+                          p-4 rounded-lg border-2 cursor-pointer transition-colors 
+                          duration-200 flex items-center
+                          ${
+                            selectedCoupon &&
+                            selectedCoupon.code === coupon.code
+                              ? "border-green-600 bg-green-50"
+                              : "border-gray-200 hover:border-gray-400"
+                          }
+                          `}
+                  >
+                    <FaTag className="text-green-600 mr-3 w-6 h-6 flex-shrink-0" />
+                    <div className="flex-grow">
+                      <h3 className="font-medium text-gray-800">
+                        {coupon.code}
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {coupon.description}
+                      </p>
+                    </div>
+                    {selectedCoupon && selectedCoupon.code === coupon.code && (
+                      <FaCheckCircle className="text-green-600 ml-4 w-6 h-6 flex-shrink-0" />
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500">
+                  {t("noCouponsAvailable")}
+                </p>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 text-sm bg-gray-400 rounded-md text-black"
+              >
+                {t("cancel")}
+              </button>
+              <button
+                onClick={handleConfirm}
+                className={`px-4 py-2 text-sm text-white rounded-md transition-colors ${
+                  selectedCoupon
+                    ? "bg-green-700 hover:bg-green-800"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                disabled={!selectedCoupon}
+              >
+                {t("Apply")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

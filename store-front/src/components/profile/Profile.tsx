@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { CiHeart, CiLocationOn, CiLogout } from "react-icons/ci";
+import { CiLocationOn, CiLogout } from "react-icons/ci";
 import { GrLanguage } from "react-icons/gr";
 import ProfileItem from "./ProfileItem";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { signOut } from "next-auth/react";
+import { makeHref } from "@/utils/common/common";
 
 interface Props {
   user: {
@@ -14,6 +16,13 @@ interface Props {
     avatar: string;
   };
 }
+
+const onClickIcon = () => {
+  signOut({
+    redirect: true,
+    callbackUrl: makeHref("sign-in"),
+  });
+};
 
 export default function Profile({ user }: Props) {
   const t = useTranslations("profile");
@@ -50,11 +59,14 @@ export default function Profile({ user }: Props) {
         </div>
       </div>
 
-      <ProfileItem icon={<CiHeart />} label={t("favourites")} />
       <ProfileItem icon={<GrLanguage />} label={t("languages")} />
       <ProfileItem icon={<CiLocationOn />} label={t("location")} />
       <div className="border border-t border-gray-200 mb-6"></div>
-      <ProfileItem icon={<CiLogout />} label={t("logout")} />
+      <ProfileItem
+        icon={<CiLogout />}
+        label={t("logout")}
+        onClickIcon={onClickIcon}
+      />
     </div>
   );
 }

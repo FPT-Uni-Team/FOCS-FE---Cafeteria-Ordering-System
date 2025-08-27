@@ -352,7 +352,8 @@ export default function Cart() {
                         className="text-green-800 text-md font-semibold"
                         onClick={() => handleVariantClick(item)}
                       >
-                        {item.base_price +
+                        {(
+                          item.base_price +
                           (item.variant_groups?.reduce((vgSum, vg) => {
                             return (
                               vgSum +
@@ -360,7 +361,8 @@ export default function Cart() {
                                 .filter((v) => v.isSelected)
                                 .reduce((vSum, v) => vSum + v.price, 0)
                             );
-                          }, 0) || 0)}
+                          }, 0) || 0)
+                        ).toLocaleString("vi-VN")}{" "}
                         VND
                       </p>
                     </div>
@@ -380,7 +382,7 @@ export default function Cart() {
           <div className="fixed bottom-[80px] h-[70px] left-0 right-0 bg-white">
             <div className="p-4 flex justify-between items-center border-t border-gray-300">
               <span className="text-sm font-bold text-gray-900">
-                {total} VND
+                {total.toLocaleString("vi-VN")} VND
               </span>
               <button
                 onClick={handleCheckout}

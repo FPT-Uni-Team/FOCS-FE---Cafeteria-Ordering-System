@@ -265,7 +265,7 @@ export default function ProductModalCart({
               <h2 className="text-lg font-bold text-black">{product.name}</h2>
               <div className="flex flex-col gap-1 items-end">
                 <p className="text-green-800 text-md font-semibold">
-                  {product.base_price} VND
+                  {product.base_price.toLocaleString("vi-VN")} VND
                 </p>
                 <div className=" text-xs text-gray-600">{t("base_price")}</div>
               </div>
@@ -311,7 +311,7 @@ export default function ProductModalCart({
                         variant.is_available ? "text-gray-800" : "text-gray-400"
                       }`}
                     >
-                      +{variant.price}
+                      +{variant.price.toLocaleString("vi-VN")}
                     </span>
                   </label>
                 ))}
@@ -368,7 +368,7 @@ export default function ProductModalCart({
               <FaSpinner className="animate-spin w-4 h-4" />
             ) : (
               <>
-                {t("add_to_cart")} – {totalPrice} VND
+                {t("add_to_cart")} – {totalPrice.toLocaleString("vi-VN")} VND
               </>
             )}
           </button>
