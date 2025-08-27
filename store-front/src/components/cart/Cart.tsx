@@ -237,7 +237,7 @@ export default function Cart() {
 
   useEffect(() => {
     const calculatedSubtotal = items.reduce((sum, item) => {
-      if (!selectedItems.includes(item.id)) return sum;
+      if (!selectedItems.includes(item.uniqueId as string)) return sum;
 
       const variantTotal =
         item.variant_groups?.reduce((vgSum, vg) => {
@@ -307,15 +307,15 @@ export default function Cart() {
           >
             {items.map((item) => (
               <SwipeableListItem
-                key={item.id}
-                trailingActions={trailingActions(item.id)}
+                key={item.uniqueId}
+                trailingActions={trailingActions(item.uniqueId as string)}
               >
-                <div key={item.id} className="flex relative gap-2 w-full">
+                <div key={item.uniqueId} className="flex relative gap-2 w-full">
                   <input
                     type="checkbox"
                     className="mt-2 accent-green-700 cursor-pointer"
-                    checked={selectedItems.includes(item.id)}
-                    onChange={() => handleToggleSelect(item.id)}
+                    checked={selectedItems.includes(item.uniqueId as string)}
+                    onChange={() => handleToggleSelect(item.uniqueId as string)}
                   />
                   <Image
                     src={

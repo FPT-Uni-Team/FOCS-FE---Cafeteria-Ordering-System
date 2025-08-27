@@ -40,15 +40,24 @@ function* fetchCartItemList(
       (product) => {
         const cartItems = inputMap[product.id] || [];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return cartItems.map((cartItem: any) => {
+        return cartItems.map((cartItem: any, index: number) => {
           const selectedVariantIds = new Set(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cartItem.variants.map((v: any) => v.variant_id)
           );
+          const uniqueId =
+            `${cartItem.menu_item_id}-` +
+            `${
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              cartItem.variants.map((v: any) => v.variant_id).join("-") ||
+              "no-variant"
+            }-` +
+            `${cartItem.note || "no-note"}-${index}`;
           return {
             ...product,
             quantity: cartItem.quantity,
             note: cartItem.note,
+            uniqueId,
             variant_groups: product.variant_groups.map((group) => ({
               ...group,
               variant: group.variant.map((v) => ({
