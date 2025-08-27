@@ -47,13 +47,8 @@ export const requestForToken = async () => {
   }
 };
 
-export const onMessageListener = () =>
-  new Promise((resolve) => {
-    if (!messaging) {
-      console.warn("Messaging not initialized (SSR).");
-      return;
-    }
-    onMessage(messaging, (payload) => {
-      resolve(payload);
-    });
-  });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const onMessageListener = (callback: (payload: any) => void) => {
+  const messaging = getMessaging();
+  return onMessage(messaging, callback);
+};

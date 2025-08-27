@@ -43,8 +43,8 @@ export default function NavHeader() {
 
     initFCM();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onMessageListener().then((payload: any) => {
+    const unsubscribe = onMessageListener((payload) => {
+      console.log("Message received. ", payload);
       const { notification } = payload;
       if (notification?.title) {
         toast.success(notification.title);
@@ -58,7 +58,10 @@ export default function NavHeader() {
         ]);
       }
     });
+
+    return () => unsubscribe();
   }, []);
+
   return (
     <section className="fixed top-0 z-4 w-full px-4 py-3 h-[108px] bg-green-900 text-white">
       <div className="mb-4 flex items-center gap-3">

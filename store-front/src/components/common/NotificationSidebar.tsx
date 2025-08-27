@@ -38,17 +38,17 @@ export default function NotificationSidebar({
       </div>
       <div className="mt-4 overflow-y-auto">
         <ul className="space-y-4">
-          <li className="p-2 border rounded-md">
-            <h3 className="font-semibold">{t("welcome_title")}</h3>
-            <p className="text-sm text-gray-600">{t("welcome_message")}</p>
-          </li>
           {notifications.length > 0 &&
-            notifications.map((n) => (
-              <li key={n.id} className="p-2 border rounded-md">
+            notifications.map((n, key) => (
+              <li key={key} className="p-2 border rounded-md">
                 <h3 className="font-semibold">{n.title}</h3>
                 <p className="text-sm text-gray-600">{n.message}</p>
               </li>
             ))}
+          <li className="p-2 border rounded-md">
+            <h3 className="font-semibold">{t("welcome_title")}</h3>
+            <p className="text-sm text-gray-600">{t("welcome_message")}</p>
+          </li>
         </ul>
       </div>
     </motion.div>
