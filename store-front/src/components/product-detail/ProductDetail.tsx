@@ -2,6 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import "swiper/css";
+import dayjs from "dayjs";
 import { FaStar } from "react-icons/fa";
 import { VscFeedback } from "react-icons/vsc";
 import { useEffect, useState } from "react";
@@ -77,13 +78,7 @@ export default function ProductDetail() {
             </div>
             <p className="text-sm text-gray-400">{product.description}</p>
             <p className="text-green-800 text-lg font-semibold">
-              {(product?.base_price || 0)
-                .toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                  minimumFractionDigits: 0,
-                })
-                .replace("₫", "VND")}
+              {(product?.base_price || 0).toLocaleString("vi-VN")}
             </p>
             <button
               className="absolute bottom-4 right-4 text-white bg-green-800 px-[10px] py-1 rounded-xl"
@@ -102,40 +97,47 @@ export default function ProductDetail() {
             </h3>
             {product.feedbacks && product.feedbacks.length > 0 ? (
               <div className="space-y-4">
-                {product.feedbacks.map((fb, idx) => (
-                  <div key={idx} className="bg-gray-100 p-4 rounded-lg">
-                    {fb.images && fb.images.length > 0 && (
-                      <div className="flex gap-2 mb-3 flex-wrap">
-                        {fb.images.map((img, i) => (
-                          <Image
+                {product.feedbacks
+                  .filter((item) => item.is_public)
+                  .map((fb, idx) => (
+                    <div key={idx} className="bg-gray-100 p-4 rounded-lg">
+                      {fb.images && fb.images.length > 0 && (
+                        <div className="flex gap-2 mb-3 flex-wrap">
+                          {fb.images.map((img, i) => (
+                            <Image
+                              key={i}
+                              src={img}
+                              alt={`feedback-${i}`}
+                              className="w-20 h-20 object-cover rounded-lg border"
+                              height={20}
+                              width={20}
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="flex gap-1 mb-2">
+                        {[...Array(5)].map((_, i) => (
+                          <FaStar
                             key={i}
-                            src={img}
-                            alt={`feedback-${i}`}
-                            className="w-20 h-20 object-cover rounded-lg border"
-                            height={20}
-                            width={20}
+                            size={16}
+                            className={
+                              i < fb.rating
+                                ? "text-yellow-400"
+                                : "text-gray-300"
+                            }
                           />
                         ))}
                       </div>
-                    )}
 
-                    <div className="flex gap-1 mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <FaStar
-                          key={i}
-                          size={16}
-                          className={
-                            i < fb.rating ? "text-yellow-400" : "text-gray-300"
-                          }
-                        />
-                      ))}
+                      <p className="text-xs text-gray-500 mt-1 mb-2">
+                        {dayjs(fb.created_at).format("DD/MM/YYYY HH:mm")}
+                      </p>
+                      <p className="text-sm text-gray-700 italic">
+                        {fb.comment || "—"}
+                      </p>
                     </div>
-
-                    <p className="text-sm text-gray-700 italic">
-                      {fb.comment || "—"}
-                    </p>
-                  </div>
-                ))}
+                  ))}
               </div>
             ) : (
               <div className="flex flex-col justify-center items-center gap-4 text-gray-500 italic text-sm mt-6">
