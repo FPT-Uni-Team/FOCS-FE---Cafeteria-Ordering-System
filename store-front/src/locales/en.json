@@ -222,7 +222,9 @@
     "subtotal": "Subtotal",
     "tax": "Tax",
     "discount": "Discount",
-    "feedback": "Feedback"
+    "feedback": "Feedback",
+    "callStaff": "Call Staff",
+    "callStaffSuccess": "Staff has been notified and will assist you shortly."
   },
   "FeedbackForm": {
     "title": "Feedback",

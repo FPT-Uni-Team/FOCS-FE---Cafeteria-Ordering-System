@@ -83,6 +83,7 @@ export default function ProductList() {
       throw new Error("");
     }
   };
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setPage(1);

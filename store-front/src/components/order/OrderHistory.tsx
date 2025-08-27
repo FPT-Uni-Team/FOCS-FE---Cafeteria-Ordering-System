@@ -10,6 +10,7 @@ import { Order } from "@/types/order";
 import { useRouter } from "next/navigation";
 import FeedbackForm from "../common/FeedbackForm";
 import { makeHref } from "@/utils/common/common";
+import toast from "react-hot-toast";
 
 export default function OrderHistory() {
   const router = useRouter();
@@ -51,6 +52,11 @@ export default function OrderHistory() {
     setOrderId(id);
   };
 
+  const handleCallStaff = async () => {
+    await orderService.callStaff();
+    toast.success(t("callStaffSuccess"));
+  };
+
   useEffect(() => {
     fetchOrders();
   }, [activeTab]);
@@ -74,7 +80,14 @@ export default function OrderHistory() {
           </button>
         ))}
       </div>
-
+      <div className="text-right">
+        <button
+          className="bg-green-800 p-2 rounded-xl text-sm text-white"
+          onClick={handleCallStaff}
+        >
+          <span>{t("callStaff")}</span>
+        </button>
+      </div>
       <div className="space-y-4">
         {loading ? (
           Array.from({ length: 3 }).map((_, idx) => <OrderSkeleton key={idx} />)
