@@ -8,11 +8,13 @@ import { makeHref } from "@/utils/common/common";
 interface PaymentSuccessProps {
   orderCode: string;
   titlePaymentMoney?: boolean;
+  titlePaymentZero?: boolean;
 }
 
 export default function PaymentSuccess({
   orderCode,
   titlePaymentMoney = false,
+  titlePaymentZero = false,
 }: PaymentSuccessProps) {
   const router = useRouter();
   const t = useTranslations("payment");
@@ -21,6 +23,10 @@ export default function PaymentSuccess({
       <div className="bg-white shadow-lg rounded-2xl p-8 max-w-md w-full text-center">
         <FaCheckCircle className="h-16 w-16 text-green-500 mx-auto" />
         {titlePaymentMoney ? (
+          <h2 className="text-xl font-semibold text-gray-800 mt-4">
+            {t("payment_money_title")}
+          </h2>
+        ) : titlePaymentZero ? (
           <h2 className="text-xl font-semibold text-gray-800 mt-4">
             {t("payment_money_title")}
           </h2>

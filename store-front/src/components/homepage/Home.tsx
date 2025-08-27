@@ -122,7 +122,9 @@ export default function Home({ categories }: IHomeProps) {
                       >
                         {product.menu_item_name}
                       </h3>
-                      <p className="text-sm">{product.price}</p>
+                      <p className="text-sm ">
+                        {product.price.toLocaleString("vi-VN")} VND
+                      </p>
                     </div>
                   </div>
                 </SwiperSlide>
@@ -189,7 +191,9 @@ export default function Home({ categories }: IHomeProps) {
                       >
                         {product.menu_item_name}
                       </h3>
-                      <p className="text-sm">{product.price}</p>
+                      <p className="text-sm">
+                        {product.price.toLocaleString("vi-VN")} VND
+                      </p>
                     </div>
                   </div>
                 </SwiperSlide>
