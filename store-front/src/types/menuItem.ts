@@ -45,6 +45,7 @@ export type Product = {
 export type CartItem = Product & {
   quantity: number;
   note?: string;
+  uniqueId?: string;
 };
 export interface CartItemInputVariant {
   variant_id: string;
