@@ -17,19 +17,10 @@ export default function OrderHistory() {
   const router = useRouter();
   const t = useTranslations("order-detail");
   const { tableId } = useAppSelector((state) => state.common);
-  const [activeTab, setActiveTab] = useState<"coming" | "history" | "review">(
-    "coming"
-  );
   const [show, setShow] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const tabs = [
-    { key: "coming", label: t("tabComing"), status: 0 },
-    { key: "history", label: t("tabHistory"), status: 1 },
-    { key: "review", label: t("tabReview"), status: 2 },
-  ];
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -37,9 +28,6 @@ export default function OrderHistory() {
       const params: ListPageParams = {
         page: 1,
         page_size: 100,
-        // filters: {
-        //   order_status: 0,
-        // },
       };
       const res = await orderService.getListOrders(params);
       setOrders(res?.data?.items || []);
@@ -61,28 +49,12 @@ export default function OrderHistory() {
 
   useEffect(() => {
     fetchOrders();
-  }, [activeTab]);
+  }, []);
 
   return (
     <>
       <Title titleKey="order-history" showBackButton center />
-      <div className="flex justify-between border-b mb-4 mt-4">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onClick={() => setActiveTab(tab.key as any)}
-            className={`pb-2 flex-1/3 ${
-              activeTab === tab.key
-                ? "border-b-2 border-green-800 text-green-800 font-semibold"
-                : "text-gray-500"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      <div className="text-right">
+      <div className="text-right mb-4 border-t border-gray-200 pt-2">
         <button
           className="bg-green-800 p-2 rounded-xl text-sm text-white"
           onClick={handleCallStaff}
@@ -102,7 +74,7 @@ export default function OrderHistory() {
               <div className="flex justify-between items-center border-b pb-2">
                 <div>
                   <p
-                    className="text-sm text-gray-500"
+                    className="text-sm text-gray-500 cursor-pointer"
                     onClick={() =>
                       router.push(makeHref(`order-detail/${order.id}`))
                     }
@@ -175,6 +147,7 @@ export default function OrderHistory() {
           </p>
         )}
       </div>
+
       {show && (
         <FeedbackForm onClose={() => setShow(false)} orderId={orderId} />
       )}

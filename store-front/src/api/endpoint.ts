@@ -74,7 +74,7 @@ const endpoints = {
     detail: (id: string) => `${API_BASE_URL}/staff/${id}`,
     update: (id: string) => `${API_BASE_URL}/staff/${id}`,
     callStaff: (params: string) =>
-      `${API_BASE_URL}/notify/staff/?tableId=${params}`,
+      `${API_BASE_URL}/notify/staff?tableId=${params}`,
   },
   user: {
     profile: () => `${API_BASE_URL}/user`,
