@@ -11,10 +11,12 @@ import { useRouter } from "next/navigation";
 import FeedbackForm from "../common/FeedbackForm";
 import { makeHref } from "@/utils/common/common";
 import toast from "react-hot-toast";
+import { useAppSelector } from "@/hooks/redux";
 
 export default function OrderHistory() {
   const router = useRouter();
   const t = useTranslations("order-detail");
+  const { tableId } = useAppSelector((state) => state.common);
   const [activeTab, setActiveTab] = useState<"coming" | "history" | "review">(
     "coming"
   );
@@ -53,7 +55,7 @@ export default function OrderHistory() {
   };
 
   const handleCallStaff = async () => {
-    await orderService.callStaff();
+    await orderService.callStaff(tableId);
     toast.success(t("callStaffSuccess"));
   };
 
