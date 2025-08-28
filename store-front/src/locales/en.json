@@ -215,9 +215,13 @@
     "quantity": "Qty",
     "total": "Total",
     "status": {
-      "0": "Coming",
-      "1": "Completed",
-      "2": "Reviewed"
+      "0": "Pending",
+      "1": "Confirmed",
+      "2": "Ready",
+      "3": "Delivering",
+      "4": "Completed",
+      "5": "Canceled",
+      "6": "Rejected"
     },
     "note": "Note",
     "subtotal": "Subtotal",
