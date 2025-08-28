@@ -73,7 +73,8 @@ const endpoints = {
     create: () => `${API_BASE_URL}/staff`,
     detail: (id: string) => `${API_BASE_URL}/staff/${id}`,
     update: (id: string) => `${API_BASE_URL}/staff/${id}`,
-    callStaff: () => `${API_BASE_URL}/notify/staff`,
+    callStaff: (params: string) =>
+      `${API_BASE_URL}/notify/staff/?tableId=${params}`,
   },
   user: {
     profile: () => `${API_BASE_URL}/user`,
@@ -94,7 +95,7 @@ const endpoints = {
       `${API_BASE_URL}/order/${actorId}/apply-discount`,
     create_cart: () => `${API_BASE_URL}/order`,
     payment: () => `${API_BASE_URL}/payment`,
-    point: () => `${API_BASE_URL}/me/point`,
+    point: () => `${API_BASE_URL}/me/points`,
   },
   order: {
     list: () => `${API_BASE_URL}/order/history`,
