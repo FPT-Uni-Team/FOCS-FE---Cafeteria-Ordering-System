@@ -107,7 +107,7 @@ export default function Cart() {
     if (selectedItems.length === 0) return;
 
     const selectedCartItems = cartItems.filter((item) =>
-      selectedItems.includes(item.id)
+      selectedItems.includes(item.uniqueId as string)
     );
     dispatch(setSelectedCartItems(selectedCartItems));
 
