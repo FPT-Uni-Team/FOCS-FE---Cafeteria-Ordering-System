@@ -22,6 +22,7 @@ export type SubmitPayload = {
 export type CartItemType = Product & {
   quantity: number;
   note: string;
+  uniqueId?: string;
 };
 
 export interface VariantCheckout {

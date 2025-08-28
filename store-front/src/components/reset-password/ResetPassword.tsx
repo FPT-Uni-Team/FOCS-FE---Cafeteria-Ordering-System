@@ -30,7 +30,7 @@ export default function ResetPassword() {
   const handlePasswordSubmit = async (data: PasswordFormData) => {
     setResetError(null);
     try {
-      await axiosClient.post("/api/auth/reset-password", {
+      await axiosClient.post("/api/me/reset-password", {
         email,
         token: tokenFromUrl,
         new_password: data.new_password,
