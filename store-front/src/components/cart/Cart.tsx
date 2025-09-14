@@ -299,7 +299,7 @@ export default function Cart() {
               className="accent-green-700 cursor-pointer"
               onChange={handleSelectAll}
             />
-            <span className="text-sm text-gray-700">Select All</span>
+            <span className="text-sm text-gray-700">{t("selectAll")}</span>
           </div>
           <SwipeableList
             threshold={0.3}
