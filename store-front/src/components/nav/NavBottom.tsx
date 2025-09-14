@@ -23,6 +23,7 @@ export default function NavBottom() {
     setStoreId(localStorage.getItem("storeFrontId"));
     setTableId(localStorage.getItem("tableStoreId"));
   }, []);
+  
   const makeHref = (path: string) => {
     if (storeId && tableId) {
       return `/${storeId}/${tableId}/${path}`;
