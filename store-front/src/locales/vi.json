@@ -163,7 +163,8 @@
     "checkout": "Thanh toán",
     "add_to_cart_success": "Cập nhật sản phẩm vào giỏ thành công.",
     "add_to_cart_failed": "Cập nhật sản phẩm vào giỏ thất bại.",
-    "removeSuccess": "Đã xóa sản phẩm khỏi giỏ thành công."
+    "removeSuccess": "Đã xóa sản phẩm khỏi giỏ thành công.",
+    "selectAll": "Chọn tất cả"
   },
   "product-detail": {
     "meta_title": "Chi tiết sản phẩm",

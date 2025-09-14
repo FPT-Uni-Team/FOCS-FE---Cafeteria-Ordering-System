@@ -13,7 +13,11 @@ import { makeHref } from "@/utils/common/common";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import NotificationSidebar from "../common/NotificationSidebar";
-import { onMessageListener, requestForToken } from "@/libs/firebase/firebase";
+import {
+  onMessageListener,
+  requestForFID,
+  requestForToken,
+} from "@/libs/firebase/firebase";
 import toast from "react-hot-toast";
 import authService from "@/services/authService";
 
@@ -29,10 +33,11 @@ export default function NavHeader() {
   useEffect(() => {
     const initFCM = async () => {
       const deviceToken = await requestForToken();
+      const fid = await requestForFID();
       if (!deviceToken) return;
       const requestBody = {
         token: deviceToken,
-        deviceId: crypto.randomUUID(),
+        deviceId: fid as string,
         platform: "web",
         createdAt: new Date().toISOString(),
         lastUsedAt: new Date().toISOString(),

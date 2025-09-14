@@ -5,6 +5,7 @@ import {
   onMessage,
   Messaging,
 } from "firebase/messaging";
+import { getInstallations, getId } from "firebase/installations";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -47,8 +48,19 @@ export const requestForToken = async () => {
   }
 };
 
+export const requestForFID = async () => {
+  try {
+    const installations = getInstallations(app);
+    const fid = await getId(installations);
+    return fid;
+  } catch (err) {
+    console.error("An error occurred while retrieving FID.", err);
+    return null;
+  }
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const onMessageListener = (callback: (payload: any) => void) => {
-  const messaging = getMessaging();
+  const messaging = getMessaging(app);
   return onMessage(messaging, callback);
 };

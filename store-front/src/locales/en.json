@@ -163,7 +163,8 @@
     "checkout": "Checkout",
     "add_to_cart_success": "Product updated to cart successfully.",
     "add_to_cart_failed": "Product updated to cart failed.",
-    "removeSuccess": "Product removed from cart successfully."
+    "removeSuccess": "Product removed from cart successfully.",
+    "selectAll": "Select All"
   },
   "product-detail": {
     "meta_title": "Product Detail",
