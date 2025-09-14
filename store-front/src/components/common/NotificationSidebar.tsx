@@ -1,12 +1,7 @@
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { AiOutlineClose } from "react-icons/ai";
-
-interface Notification {
-  id: string | number;
-  title: string;
-  message: string;
-}
+import { Notification } from "@/store/slices/notification/notificationSlice";
 
 interface NotificationSidebarProps {
   show: boolean;
@@ -20,6 +15,7 @@ export default function NotificationSidebar({
   notifications,
 }: NotificationSidebarProps) {
   const t = useTranslations("notifications");
+
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -39,16 +35,26 @@ export default function NotificationSidebar({
       <div className="mt-4 overflow-y-auto">
         <ul className="space-y-4">
           {notifications.length > 0 &&
-            notifications.map((n, key) => (
-              <li key={key} className="p-2 border rounded-md">
+            notifications.map((n) => (
+              <li
+                key={n.id}
+                className={`p-2 border rounded-md ${
+                  n.read ? "bg-gray-100" : "bg-white"
+                }`}
+              >
                 <h3 className="font-semibold">{n.title}</h3>
-                <p className="text-sm text-gray-600">{n.message}</p>
+                {n.body && <p className="text-sm text-gray-600">{n.body}</p>}
+                <span className="text-xs text-gray-400 block mt-1">
+                  {new Date(n.ts).toLocaleString()}
+                </span>
               </li>
             ))}
-          <li className="p-2 border rounded-md">
-            <h3 className="font-semibold">{t("welcome_title")}</h3>
-            <p className="text-sm text-gray-600">{t("welcome_message")}</p>
-          </li>
+          {notifications.length === 0 && (
+            <li className="p-2 border rounded-md">
+              <h3 className="font-semibold">{t("welcome_title")}</h3>
+              <p className="text-sm text-gray-600">{t("welcome_message")}</p>
+            </li>
+          )}
         </ul>
       </div>
     </motion.div>

@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import ReduxProvider from "@/store/ReduxProvider";
 import StoreTableSaver from "@/components/common/StoreTableSaver";
 import ServiceWorkerProvider from "@/utils/ServiceWorkerProvider";
+import NotificationProvider from "@/components/common/NotificationProvider";
 
 export const metadata: Metadata = {
   icons: [
@@ -72,6 +73,7 @@ export default async function RootLayout(props: {
                   className: "text-sm",
                 }}
               />
+              <NotificationProvider />
             </NextIntlClientProvider>
           </ReduxProvider>
         </SessionProviderWrapper>
