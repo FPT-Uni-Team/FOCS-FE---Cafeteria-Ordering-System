@@ -104,7 +104,9 @@ export default function Home({ categories }: IHomeProps) {
                 <SwiperSlide key={product.id}>
                   <div className="shadow-md border-gray-600 rounded-2xl flex flex-col items-center">
                     <Image
-                      src={product.image}
+                      src={
+                        product.image || "/img/product/image-not-available.png"
+                      }
                       alt={product.menu_item_name}
                       className="object-cover rounded-full w-40 h-40"
                       priority
@@ -173,7 +175,9 @@ export default function Home({ categories }: IHomeProps) {
                 <SwiperSlide key={product.id}>
                   <div className="shadow-md border-gray-600 rounded-2xl flex flex-col items-center">
                     <Image
-                      src={product.image}
+                      src={
+                        product.image || "/img/product/image-not-available.png"
+                      }
                       alt={product.menu_item_name}
                       className="object-cover rounded-full w-40 h-40"
                       priority
