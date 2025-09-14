@@ -9,7 +9,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   async (config) => {
     if (typeof window !== "undefined") {
-      const storeId = localStorage.getItem("storeFrontId") || "";
+      const storeId = sessionStorage.getItem("storeFrontId") || "";
       const actorId = localStorage.getItem("actorId") || "";
       if (!config.headers.storeId) {
         config.headers.storeId = storeId;

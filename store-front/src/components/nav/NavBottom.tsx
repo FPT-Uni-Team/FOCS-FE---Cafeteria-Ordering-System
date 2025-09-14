@@ -20,10 +20,10 @@ export default function NavBottom() {
   const [tableId, setTableId] = useState<string | null>(null);
 
   useEffect(() => {
-    setStoreId(localStorage.getItem("storeFrontId"));
-    setTableId(localStorage.getItem("tableStoreId"));
+    setStoreId(sessionStorage.getItem("storeFrontId"));
+    setTableId(sessionStorage.getItem("tableStoreId"));
   }, []);
-  
+
   const makeHref = (path: string) => {
     if (storeId && tableId) {
       return `/${storeId}/${tableId}/${path}`;
