@@ -18,8 +18,8 @@ const initialState: CommonState = {
 };
 
 if (typeof window !== "undefined") {
-  initialState.storeId = localStorage.getItem("storeFrontId") || "";
-  initialState.tableId = localStorage.getItem("tableStoreId") || "";
+  initialState.storeId = sessionStorage.getItem("storeFrontId") || "";
+  initialState.tableId = sessionStorage.getItem("tableStoreId") || "";
   initialState.actorId = localStorage.getItem("actorId") || "";
 }
 

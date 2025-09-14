@@ -13,10 +13,10 @@ export default function StoreTableWatcher() {
     const storeId = parts[1];
     const tableId = parts[2];
     if (storeId) {
-      localStorage.setItem("storeFrontId", storeId);
+      sessionStorage.setItem("storeFrontId", storeId);
     }
     if (tableId) {
-      localStorage.setItem("tableStoreId", tableId);
+      sessionStorage.setItem("tableStoreId", tableId);
     }
     const setActorId = async () => {
       const session = await getSession();

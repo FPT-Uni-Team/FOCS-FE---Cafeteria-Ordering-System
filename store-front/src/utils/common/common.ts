@@ -10,8 +10,8 @@ export const makeHref = (path: string) => {
   if (typeof window === "undefined") {
     return `/${path}`;
   }
-  const tableId = localStorage.getItem("tableStoreId");
-  const storeId = localStorage.getItem("storeFrontId");
+  const tableId = sessionStorage.getItem("tableStoreId");
+  const storeId = sessionStorage.getItem("storeFrontId");
 
   if (storeId && tableId) {
     return `/${storeId}/${tableId}/${path}`;
