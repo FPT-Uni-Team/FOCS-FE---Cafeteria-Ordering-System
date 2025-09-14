@@ -72,7 +72,7 @@ export default function Cart() {
     if (selectedItems.length === items.length) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(items.map((i) => i.id));
+      setSelectedItems(items.map((i) => i.uniqueId as string));
     }
   };
 
