@@ -42,14 +42,15 @@ export default function NotificationProvider() {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const unsubscribe = onMessageListener((payload: any) => {
-      const { data } = payload;
-      if (data?.title) {
-        toast.success(data.title);
+      const { notification } = payload;
+      console.log("Message received. ", payload);
+      if (notification?.title) {
+        toast.success(notification.title);
         dispatch(
           addNotification({
             id: crypto.randomUUID(),
-            title: data.title,
-            body: data.body,
+            title: notification.title,
+            body: notification.body,
             ts: Date.now(),
             read: false,
           })
