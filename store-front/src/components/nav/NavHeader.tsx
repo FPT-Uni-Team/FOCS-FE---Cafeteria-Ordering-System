@@ -10,54 +10,35 @@ import { FiSearch } from "react-icons/fi";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { makeHref } from "@/utils/common/common";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import NotificationSidebar from "../common/NotificationSidebar";
+import orderService from "@/services/orderService";
 
 export default function NavHeader() {
   const router = useRouter();
   const t = useTranslations("nav");
   const [showNotifications, setShowNotifications] = useState(false);
-  const { searchGlobalData } = useAppSelector((state) => state.common);
+  const [address, setAddress] = useState<{
+    name: string;
+    address: string;
+  } | null>(null);
+  const { searchGlobalData, storeId } = useAppSelector((state) => state.common);
   const { list: notifications } = useAppSelector((state) => state.notification);
+
   const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   const initFCM = async () => {
-  //     const deviceToken = await requestForToken();
-  //     const fid = await requestForFID();
-  //     if (!deviceToken) return;
-  //     const requestBody = {
-  //       token: deviceToken,
-  //       deviceId: fid as string,
-  //       platform: "web",
-  //       createdAt: new Date().toISOString(),
-  //       lastUsedAt: new Date().toISOString(),
-  //       actorId,
-  //     };
-  //     await authService.storeMobileToken(requestBody);
-  //   };
-
-  //   initFCM();
-
-  //   const unsubscribe = onMessageListener((payload) => {
-  //     console.log("Message received. ", payload);
-  //     const { notification } = payload;
-  //     if (notification?.title) {
-  //       toast.success(notification.title);
-  //       setNotifications((prev) => [
-  //         {
-  //           title: notification.title,
-  //           body: notification.body,
-  //           ts: Date.now(),
-  //         },
-  //         ...prev,
-  //       ]);
-  //     }
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
+  useEffect(() => {
+    const fetchStoreSetting = async () => {
+      try {
+        const res = await orderService.getDetailStoreSetting(storeId);
+        setAddress(res.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+      }
+    };
+    fetchStoreSetting();
+  }, []);
 
   return (
     <section className="fixed top-0 z-4 w-full px-4 py-3 h-[108px] bg-green-900 text-white">
@@ -84,10 +65,10 @@ export default function NavHeader() {
         />
       </div>
       <div>
-        <h1 className="text-sm font-bold">FOCS</h1>
+        <h1 className="text-sm font-bold">{(address?.name as string) || ""}</h1>
         <p className="text-xs flex items-center gap-1">
           <CiLocationOn className="text-lg" />
-          123 Main Street, City, Country
+          {(address?.address as string) || ""}
         </p>
       </div>
       <AnimatePresence>

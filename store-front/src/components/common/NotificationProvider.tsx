@@ -22,7 +22,6 @@ export default function NotificationProvider() {
         const deviceToken = await requestForToken();
         const fid = await requestForFID();
         if (!deviceToken) return;
-
         const requestBody = {
           token: deviceToken,
           deviceId: fid as string,
@@ -43,15 +42,14 @@ export default function NotificationProvider() {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const unsubscribe = onMessageListener((payload: any) => {
-      const { notification } = payload;
-      console.log("Message received. ", payload);
-      if (notification?.title) {
-        toast.success(notification.title);
+      const { data } = payload;
+      if (data?.title) {
+        toast.success(data.title);
         dispatch(
           addNotification({
             id: crypto.randomUUID(),
-            title: notification.title,
-            body: notification.body,
+            title: data.title,
+            body: data.body,
             ts: Date.now(),
             read: false,
           })
