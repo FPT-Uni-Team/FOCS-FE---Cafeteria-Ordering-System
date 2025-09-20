@@ -11,11 +11,15 @@ axiosClient.interceptors.request.use(
     if (typeof window !== "undefined") {
       const storeId = sessionStorage.getItem("storeFrontId") || "";
       const actorId = localStorage.getItem("actorId") || "";
+      const tableId = sessionStorage.getItem("tableStoreId");
       if (!config.headers.storeId) {
         config.headers.storeId = storeId;
       }
       if (!config.headers.actorId) {
         config.headers.actorId = actorId;
+      }
+      if (!config.headers.tableId) {
+        config.headers.tableId = tableId;
       }
     }
     if (!config.headers?.Authorization) {
