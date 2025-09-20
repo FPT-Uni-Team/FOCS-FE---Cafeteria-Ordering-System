@@ -9,8 +9,7 @@ const orderService = {
     axiosClient.get(endpoints.order.detail(params)),
   feedback: (data: FormData) =>
     axiosClient.post(endpoints.order.feedback(), data),
-  callStaff: (params: string) =>
-    axiosClient.post(endpoints.staff.callStaff(params)),
+  callStaff: () => axiosClient.post(endpoints.staff.callStaff()),
 };
 
 export default orderService;
