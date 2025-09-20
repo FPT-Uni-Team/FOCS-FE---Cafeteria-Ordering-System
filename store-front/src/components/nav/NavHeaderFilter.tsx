@@ -4,18 +4,23 @@ import { FiSearch } from "react-icons/fi";
 import { AiOutlineFilter } from "react-icons/ai";
 import { AnimatePresence } from "framer-motion";
 import FilterSidebar from "../common/FilterSidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFilter } from "@/context/FilterContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
   setSearchGlobalData,
   setSearchTrigger,
 } from "@/store/slices/common/commonSlice";
+import orderService from "@/services/orderService";
 
 export default function NavHeaderFilter() {
   const t = useTranslations("nav");
   const [showFilter, setShowFilter] = useState(false);
-  const { searchGlobalData } = useAppSelector((state) => state.common);
+  const { searchGlobalData, storeId } = useAppSelector((state) => state.common);
+  const [address, setAddress] = useState<{
+    name: string;
+    address: string;
+  } | null>(null);
   const dispatch = useAppDispatch();
   const {
     setSelectedCategories,
@@ -23,6 +28,18 @@ export default function NavHeaderFilter() {
     setSelectedPrice,
     selectedPrice,
   } = useFilter();
+  useEffect(() => {
+    const fetchStoreSetting = async () => {
+      try {
+        const res = await orderService.getDetailStoreSetting(storeId);
+        setAddress(res.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+      }
+    };
+    fetchStoreSetting();
+  }, []);
   return (
     <section className="fixed top-0 z-4 w-full px-4 py-3 h-[108px] bg-green-900 text-white">
       <div className="mb-4 flex items-center gap-3">
@@ -42,10 +59,10 @@ export default function NavHeaderFilter() {
         <AiOutlineFilter size={18} onClick={() => setShowFilter(true)} />
       </div>
       <div>
-        <h1 className="text-sm font-bold">FOCS</h1>
+        <h1 className="text-sm font-bold">{address?.name}</h1>
         <p className="text-xs flex items-center gap-1">
           <CiLocationOn className="text-lg" />
-          123 Main Street, City, Country
+          {address?.address}
         </p>
       </div>
       <AnimatePresence>

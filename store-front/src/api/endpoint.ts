@@ -102,6 +102,9 @@ const endpoints = {
     feedback: () => `${API_BASE_URL}/feedback`,
     update: () => `${API_BASE_URL}/payment/receive-hook`,
   },
+  storeSetting: {
+    detail: (id: string) => `${API_BASE_URL}/admin/${id}`,
+  },
 };
 
 export default endpoints;
