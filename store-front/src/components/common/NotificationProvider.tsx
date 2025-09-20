@@ -31,7 +31,8 @@ export default function NotificationProvider() {
           lastUsedAt: new Date().toISOString(),
           actorId,
         };
-
+        console.log("FCM Token:", deviceToken);
+        console.log("requestBody:", requestBody);
         await authService.storeMobileToken(requestBody);
       } catch (err) {
         console.error("Init FCM failed", err);
@@ -43,9 +44,9 @@ export default function NotificationProvider() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const unsubscribe = onMessageListener((payload: any) => {
       const { notification } = payload;
+      console.log("Message received. ", payload);
       if (notification?.title) {
         toast.success(notification.title);
-
         dispatch(
           addNotification({
             id: crypto.randomUUID(),
