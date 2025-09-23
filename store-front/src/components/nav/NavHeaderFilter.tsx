@@ -12,16 +12,20 @@ import {
   setSearchTrigger,
 } from "@/store/slices/common/commonSlice";
 import orderService from "@/services/orderService";
+import { usePathname } from "next/navigation";
 
 export default function NavHeaderFilter() {
+  const pathname = usePathname();
   const t = useTranslations("nav");
   const [showFilter, setShowFilter] = useState(false);
-  const { searchGlobalData, storeId } = useAppSelector((state) => state.common);
+  const { searchGlobalData } = useAppSelector((state) => state.common);
   const [address, setAddress] = useState<{
     name: string;
     address: string;
   } | null>(null);
   const dispatch = useAppDispatch();
+  const parts = pathname.split("/").filter(Boolean);
+  const storeId = parts[1] || "";
   const {
     setSelectedCategories,
     selectedCategories,
@@ -39,7 +43,7 @@ export default function NavHeaderFilter() {
       }
     };
     fetchStoreSetting();
-  }, []);
+  }, [storeId]);
   return (
     <section className="fixed top-0 z-4 w-full px-4 py-3 h-[108px] bg-green-900 text-white">
       <div className="mb-4 flex items-center gap-3">

@@ -5,19 +5,28 @@ import { usePathname } from "next/navigation";
 import { getSession } from "next-auth/react";
 import { v4 as uuidv4 } from "uuid";
 import { parseJwt } from "@/libs/auth/authOptions";
+import { useAppDispatch } from "@/hooks/redux";
+import { setStoreId, setTableId } from "@/store/slices/common/commonSlice";
 
 export default function StoreTableWatcher() {
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     const parts = pathname.split("/").filter(Boolean);
-    const storeId = parts[1];
-    const tableId = parts[2];
+    const storeId = parts[1] || "";
+    const tableId = parts[2] || "";
+
     if (storeId) {
       sessionStorage.setItem("storeFrontId", storeId);
+      dispatch(setStoreId(storeId));
     }
+
     if (tableId) {
       sessionStorage.setItem("tableStoreId", tableId);
+      dispatch(setTableId(tableId));
     }
+
     const setActorId = async () => {
       const session = await getSession();
       const token = session?.accessToken;
@@ -37,7 +46,7 @@ export default function StoreTableWatcher() {
     };
 
     setActorId();
-  }, [pathname]);
+  }, [pathname, dispatch]);
 
   return null;
 }
