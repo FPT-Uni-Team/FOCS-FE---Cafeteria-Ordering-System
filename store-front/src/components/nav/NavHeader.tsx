@@ -14,8 +14,10 @@ import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import NotificationSidebar from "../common/NotificationSidebar";
 import orderService from "@/services/orderService";
+import { usePathname } from "next/navigation";
 
 export default function NavHeader() {
+  const pathname = usePathname();
   const router = useRouter();
   const t = useTranslations("nav");
   const [showNotifications, setShowNotifications] = useState(false);
@@ -23,10 +25,13 @@ export default function NavHeader() {
     name: string;
     address: string;
   } | null>(null);
-  const { searchGlobalData, storeId } = useAppSelector((state) => state.common);
+  const dispatch = useAppDispatch();
+  const { searchGlobalData } = useAppSelector((state) => state.common);
   const { list: notifications } = useAppSelector((state) => state.notification);
 
-  const dispatch = useAppDispatch();
+  const parts = pathname.split("/").filter(Boolean);
+  const storeId = parts[1] || "";
+
   useEffect(() => {
     const fetchStoreSetting = async () => {
       try {
@@ -38,7 +43,7 @@ export default function NavHeader() {
       }
     };
     fetchStoreSetting();
-  }, []);
+  }, [storeId]);
 
   return (
     <section className="fixed top-0 z-4 w-full px-4 py-3 h-[108px] bg-green-900 text-white">

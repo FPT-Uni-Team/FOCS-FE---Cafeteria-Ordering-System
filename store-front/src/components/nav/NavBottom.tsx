@@ -30,6 +30,8 @@ export default function NavBottom() {
     }
     return `/${path}`;
   };
+
+  console.log(tableId, storeId);
   const navItems = [
     {
       href: makeHref("home-page"),

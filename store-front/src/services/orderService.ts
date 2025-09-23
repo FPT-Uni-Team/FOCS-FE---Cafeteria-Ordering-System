@@ -10,8 +10,10 @@ const orderService = {
   feedback: (data: FormData) =>
     axiosClient.post(endpoints.order.feedback(), data),
   callStaff: () => axiosClient.post(endpoints.staff.callStaff()),
-  getDetailStoreSetting: (params: string) =>
-    axiosClient.get(endpoints.storeSetting.detail(params)),
+  getDetailStoreSetting: (params: string) => {
+    console.log("params", params);
+    return axiosClient.get(endpoints.storeSetting.detail(params));
+  },
 };
 
 export default orderService;
