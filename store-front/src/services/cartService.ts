@@ -52,7 +52,7 @@ const cartService = {
     });
   },
   get_point: () => {
-    return axiosClient.post(endpoints.checkout.point());
+    return axiosClient.get(endpoints.checkout.point());
   },
 };
 
