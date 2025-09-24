@@ -180,7 +180,8 @@ export default function Cart() {
     numberRemove?: number;
   }) => {
     try {
-      const itemToRemove = items.find((item) => item.id === itemId);
+      const itemToRemove = items.find((item) => item.uniqueId === itemId);
+
       if (!itemToRemove) return;
 
       const variants = itemToRemove.variant_groups.flatMap((group) =>
@@ -204,6 +205,7 @@ export default function Cart() {
         tableId,
         actorId,
       };
+
       await cartService.delete(dataTable, dataCart);
     } catch {
     } finally {
