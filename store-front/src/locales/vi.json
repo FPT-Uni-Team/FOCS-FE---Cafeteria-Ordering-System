@@ -201,7 +201,10 @@
     "Apply": "Áp dụng",
     "chooseCoupons": "Chọn phiếu giảm giá",
     "tax": "Thuế",
-    "sign-in-to-point": "<link>Đăng nhập</link> để nhận điểm cho đơn hàng này"
+    "sign-in-to-point": "<link>Đăng nhập</link> để nhận điểm cho đơn hàng này",
+    "notification": "Bạn có cần không?",
+    "note_login_point": "Đăng nhập để nhận thêm điểm sau khi thanh toán thành công.",
+    "login": "Đăng nhập"
   },
   "order-detail": {
     "meta_title": "Lịch sử đơn hàng",

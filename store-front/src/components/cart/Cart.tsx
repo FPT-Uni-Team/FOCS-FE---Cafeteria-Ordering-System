@@ -240,7 +240,6 @@ export default function Cart() {
   useEffect(() => {
     const calculatedSubtotal = items.reduce((sum, item) => {
       if (!selectedItems.includes(item.uniqueId as string)) return sum;
-
       const variantTotal =
         item.variant_groups?.reduce((vgSum, vg) => {
           return (

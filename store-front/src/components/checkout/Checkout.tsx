@@ -19,6 +19,7 @@ import productService from "@/services/productService";
 import PaymentSuccess from "../success/PaymentSuccess";
 import { makeHref } from "@/utils/common/common";
 import Link from "next/link";
+import { AiOutlineClose } from "react-icons/ai";
 
 interface Coupon {
   code: string;
@@ -57,6 +58,7 @@ const Checkout = () => {
   const [codeZero, setCodeZero] = useState("");
   const [point, setPoint] = useState(0);
   const [priceZoro, serPriceZero] = useState(false);
+  const [showModalPoint, setShowModalPoint] = useState(false);
   const isLoading = checkoutLoading || isSubmitting;
   const { data: session } = useSession();
   const isAuth = !!session?.accessToken;
@@ -178,6 +180,19 @@ const Checkout = () => {
     setUsePoint(!usePoint);
   };
 
+  const handleSubmitModal = () => {
+    if (!isAuth) {
+      setShowModalPoint(true);
+    } else {
+      handleSubmit(onSubmit)();
+    }
+  };
+
+  const handleSubmitModalPay = () => {
+    setShowModalPoint(false);
+    handleSubmit(onSubmit)();
+  };
+
   useEffect(() => {
     handleCheckout();
   }, [usePoint, selectedCartItems]);
@@ -211,7 +226,7 @@ const Checkout = () => {
           <LoadingOverlay visible={true} />
         </div>
       )}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleSubmitModal)}>
         <div className="max-h-[calc(100vh-320px)] overflow-y-auto pb-4">
           <div className="flex flex-col gap-2">
             {selectedCartItems.map((item) => {
@@ -599,6 +614,40 @@ const Checkout = () => {
               >
                 {t("Apply")}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showModalPoint && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00000080] p-4">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <button
+              onClick={() => setShowModalPoint(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              <AiOutlineClose size={20} />
+            </button>
+
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              {t("notification")}
+            </h2>
+            <p className="text-sm text-gray-600 mb-6">
+              {t("note_login_point")}
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={handleSubmitModalPay}
+                className="px-4 py-2 text-sm bg-green-800 rounded-md text-white"
+              >
+                {t("pay")}
+              </button>
+              <Link
+                href={makeHref("sign-in")}
+                className="px-4 py-2 text-sm bg-gray-200 rounded-md text-black"
+              >
+                {t("login")}
+              </Link>
             </div>
           </div>
         </div>
