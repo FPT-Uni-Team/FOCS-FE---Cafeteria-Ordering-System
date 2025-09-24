@@ -201,7 +201,10 @@
     "Apply": "Apply",
     "chooseCoupons": "Select coupon",
     "tax": "Tax",
-    "sign-in-to-point": "<link>Sign in</link> to get points for this order"
+    "sign-in-to-point": "<link>Sign in</link> to get points for this order",
+    "notification": "Can you need ?",
+    "note_login_point": "Log in to get extra points after success payment.",
+    "login": "Login"
   },
   "order-detail": {
     "meta_title": "Order History",
