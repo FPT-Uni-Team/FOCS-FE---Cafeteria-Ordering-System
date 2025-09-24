@@ -26,6 +26,7 @@ export interface Order {
   created_by: string;
   updated_at: string;
   updated_by: string;
+  is_feedback: boolean;
   order_details: OrderDetail[];
 }
 

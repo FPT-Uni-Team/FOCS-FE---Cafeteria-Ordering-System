@@ -14,6 +14,11 @@ const orderService = {
     console.log("params", params);
     return axiosClient.get(endpoints.storeSetting.detail(params));
   },
+  deleteOrder: (id: string, orderId?: string) => {
+    return axiosClient.delete(endpoints.order.delete(id), {
+      params: { orderId },
+    });
+  },
 };
 
 export default orderService;

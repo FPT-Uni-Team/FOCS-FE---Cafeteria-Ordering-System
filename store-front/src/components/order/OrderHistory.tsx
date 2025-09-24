@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import FeedbackForm from "../common/FeedbackForm";
 import { makeHref } from "@/utils/common/common";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function OrderHistory() {
   const router = useRouter();
@@ -94,7 +95,7 @@ export default function OrderHistory() {
                 >
                   <div className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden">
                     <Image
-                      src={"/img/profile/default-avatar.jpg"}
+                      src={"/img/product/image-not-available.png"}
                       alt={item.menu_item_name}
                       width={80}
                       height={80}
@@ -103,9 +104,20 @@ export default function OrderHistory() {
                   </div>
                   <div className="flex flex-col flex-grow justify-between">
                     <div>
-                      <p className="font-medium text-gray-800">
+                      <Link
+                        href={makeHref(`product-detail/${item.id}`)}
+                        className="font-medium text-gray-800"
+                      >
                         {item.menu_item_name}
-                      </p>
+                      </Link>
+                      {item.variants.length > 0 && (
+                        <p className="text-xs text-gray-400 truncate max-w-[180px]">
+                          {item.variants
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            .map((v: any) => v.variant_name)
+                            .join(", ")}
+                        </p>
+                      )}
                       {item.variant_name && (
                         <p className="text-xs text-gray-500">
                           {item.variant_name}
@@ -113,7 +125,7 @@ export default function OrderHistory() {
                       )}
                     </div>
                     <p className="text-green-800 text-sm font-semibold">
-                      {item.total_price} VND
+                      {item.total_price.toLocaleString("vi-VN") ?? 0} VND
                     </p>
                   </div>
                   <p className="text-sm text-gray-500">
@@ -122,18 +134,21 @@ export default function OrderHistory() {
                 </div>
               ))}
               <div className="flex justify-between items-center pt-2">
-                <button
-                  onClick={() => handleClickFeedback(order.id)}
-                  className="border border-gray-300 text-[14px] flex items-center gap-2 px-3 py-1 rounded-md text-gray-800"
-                >
-                  {t("feedback")}
-                </button>
+                {!order.is_feedback && (
+                  <button
+                    onClick={() => handleClickFeedback(order.id)}
+                    className="border border-gray-300 text-[14px] flex items-center gap-2 px-3 py-1 rounded-md text-gray-800"
+                  >
+                    {t("feedback")}
+                  </button>
+                )}
+
                 <div>
                   <span className="text-[14px] text-gray-500">
                     {t("total")}:{" "}
                   </span>
                   <span className="text-green-800 font-semibold">
-                    {order.total_amount} VND
+                    {order.total_amount.toLocaleString("vi-VN") ?? 0} VND
                   </span>
                 </div>
               </div>
