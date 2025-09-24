@@ -433,7 +433,7 @@ const Checkout = () => {
             >
               * {t("choose")}
             </div>
-            {!isAuth ? (
+            {isAuth ? (
               <div>
                 {point !== 0 && (
                   <div className="mt-3 flex items-center justify-between">
