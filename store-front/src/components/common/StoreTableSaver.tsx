@@ -33,7 +33,8 @@ export default function StoreTableWatcher() {
 
       if (token) {
         const payload = parseJwt(token);
-        const actorId = payload?.id;
+        const actorId = payload?.nameidentifier;
+        console.log("actorId from token:", actorId);
         if (actorId) {
           localStorage.setItem("actorId", actorId);
           return;

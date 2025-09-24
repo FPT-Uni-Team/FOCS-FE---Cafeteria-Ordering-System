@@ -63,6 +63,7 @@ const Checkout = () => {
     setSelectedCoupon(coupon);
   };
   const handleCheckout = async (couponCode?: string) => {
+    console.log("usePoint", usePoint);
     try {
       const checkoutData: CheckoutRequest = {
         store_id: storeId,
@@ -81,7 +82,7 @@ const Checkout = () => {
           quantity: item.quantity,
           note: item.note ?? "",
         })),
-        point: 0,
+        point: usePoint ? point : 0,
         is_use_point: usePoint,
         coupon_code: couponCode,
       };
@@ -174,12 +175,11 @@ const Checkout = () => {
 
   const handleChangePoint = () => {
     setUsePoint(!usePoint);
-    handleCheckout();
   };
 
   useEffect(() => {
     handleCheckout();
-  }, [selectedCartItems]);
+  }, [usePoint, selectedCartItems]);
 
   useEffect(() => {
     setCouponCode((data?.applied_coupon_code as string) || "");
@@ -439,7 +439,7 @@ const Checkout = () => {
                 </span>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-500">
-                    {point.toLocaleString("vi-VN")} point
+                    {point.toLocaleString("vi-VN")} {t("point")}
                   </span>
                   <label className="inline-flex items-center cursor-pointer">
                     <input
