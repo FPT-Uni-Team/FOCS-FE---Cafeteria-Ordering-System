@@ -200,7 +200,8 @@
     "cancel": "Hủy",
     "Apply": "Áp dụng",
     "chooseCoupons": "Chọn phiếu giảm giá",
-    "tax": "Thuế"
+    "tax": "Thuế",
+    "sign-in-to-point": "<link>Đăng nhập</link> để nhận điểm cho đơn hàng này"
   },
   "order-detail": {
     "meta_title": "Lịch sử đơn hàng",
