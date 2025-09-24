@@ -32,7 +32,7 @@ const SignUp = () => {
   const onSubmit = async (data: SignUpFormData) => {
     setRegisterError(null);
     try {
-      await axiosClient.post("/api/me/register", data);
+      await axiosClient.post("/api/auth/register", data);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const message = err.response?.data?.message || "Registration failed";
