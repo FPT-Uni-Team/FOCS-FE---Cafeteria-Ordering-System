@@ -200,7 +200,8 @@
     "cancel": "Cancel",
     "Apply": "Apply",
     "chooseCoupons": "Select coupon",
-    "tax": "Tax"
+    "tax": "Tax",
+    "sign-in-to-point": "<link>Sign in</link> to get points for this order"
   },
   "order-detail": {
     "meta_title": "Order History",

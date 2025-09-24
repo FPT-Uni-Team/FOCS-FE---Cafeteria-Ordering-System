@@ -17,6 +17,8 @@ import { useSession } from "next-auth/react";
 import { FaCheckCircle, FaTag, FaTimes } from "react-icons/fa";
 import productService from "@/services/productService";
 import PaymentSuccess from "../success/PaymentSuccess";
+import { makeHref } from "@/utils/common/common";
+import Link from "next/link";
 
 interface Coupon {
   code: string;
@@ -431,33 +433,49 @@ const Checkout = () => {
             >
               * {t("choose")}
             </div>
-
-            {isAuth && point !== 0 && (
-              <div className="mt-3 flex items-center justify-between">
-                <span className="text-sm font-semibold text-black">
-                  {t("point")}
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-500">
-                    {point.toLocaleString("vi-VN")} {t("point")}
-                  </span>
-                  <label className="inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      checked={usePoint}
-                      onChange={handleChangePoint}
-                    />
-                    <div
-                      className="relative w-11 h-6 bg-gray-200 rounded-full 
+            {!isAuth ? (
+              <div>
+                {point !== 0 && (
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-sm font-semibold text-black">
+                      {t("point")}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-500">
+                        {point.toLocaleString("vi-VN")} {t("point")}
+                      </span>
+                      <label className="inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          checked={usePoint}
+                          onChange={handleChangePoint}
+                        />
+                        <div
+                          className="relative w-11 h-6 bg-gray-200 rounded-full 
                   peer-checked:bg-green-600 
                   after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
                   after:bg-white after:border-gray-300 after:border 
                   after:rounded-full after:h-5 after:w-5 
                   after:transition-all peer-checked:after:translate-x-full"
-                    ></div>
-                  </label>
-                </div>
+                        ></div>
+                      </label>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-sm font-semibold text-black">
+                {t.rich("sign-in-to-point", {
+                  link: (chunks) => (
+                    <Link
+                      href={makeHref("sign-in")}
+                      className=" text-green-800"
+                    >
+                      {chunks}
+                    </Link>
+                  ),
+                })}
               </div>
             )}
           </div>
