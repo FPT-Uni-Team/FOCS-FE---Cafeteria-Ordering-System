@@ -65,7 +65,6 @@ const Checkout = () => {
     setSelectedCoupon(coupon);
   };
   const handleCheckout = async (couponCode?: string) => {
-    console.log("usePoint", usePoint);
     try {
       const checkoutData: CheckoutRequest = {
         store_id: storeId,
