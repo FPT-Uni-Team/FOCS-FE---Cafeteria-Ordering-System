@@ -199,7 +199,8 @@
     "noCouponsAvailable": "Không có phiếu giảm giá.",
     "cancel": "Hủy",
     "Apply": "Áp dụng",
-    "chooseCoupons": "Chọn phiếu giảm giá"
+    "chooseCoupons": "Chọn phiếu giảm giá",
+    "tax": "Thuế"
   },
   "order-detail": {
     "meta_title": "Lịch sử đơn hàng",

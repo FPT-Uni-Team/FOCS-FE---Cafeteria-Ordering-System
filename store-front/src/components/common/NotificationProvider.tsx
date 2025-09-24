@@ -43,7 +43,7 @@ export default function NotificationProvider() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const unsubscribe = onMessageListener((payload: any) => {
       const { notification } = payload;
-      console.log("Message received. ", payload);
+      console.log("Message received. ", notification);
       if (notification?.title) {
         toast.success(notification.title);
         dispatch(
