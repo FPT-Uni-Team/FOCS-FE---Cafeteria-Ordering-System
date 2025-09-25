@@ -23,12 +23,12 @@ export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
   const token = session?.accessToken;
   const res = await userService.detail(token);
-  const resPoints = await cartService.get_point();
+  const resPoints = await cartService.get_point(token);
   const user = {
     fullName: `${res.data.first_name} ${res.data.last_name}`,
     email: res.data.email,
     avatar: res.data.avatar || "/img/profile/default-avatar.jpg",
-    point: resPoints.data.point || 0,
+    point: resPoints.data || 0,
   };
 
   return <Profile user={user} />;

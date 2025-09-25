@@ -116,7 +116,8 @@
     "save": "Lưu",
     "error_required": "Trường này là bắt buộc",
     "update_success": "Cập nhật thành công",
-    "update_fail": "Cập nhật thất bại"
+    "update_fail": "Cập nhật thất bại",
+    "points": "Điểm"
   },
   "product-list": {
     "meta_title": "Danh sách sản phẩm",

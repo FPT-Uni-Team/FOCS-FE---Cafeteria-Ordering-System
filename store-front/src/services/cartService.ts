@@ -51,8 +51,14 @@ const cartService = {
       },
     });
   },
-  get_point: () => {
-    return axiosClient.get(endpoints.checkout.point());
+  get_point: (token?: string) => {
+    return axiosClient.get(endpoints.checkout.point(), {
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : {},
+    });
   },
 };
 
