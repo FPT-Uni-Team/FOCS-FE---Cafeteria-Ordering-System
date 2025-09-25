@@ -49,6 +49,25 @@ export default function OrderDetail() {
                 {t("note")}: {order.customer_note}
               </p>
             )}
+            {order.order_type !== undefined && (
+              <p className="text-sm text-gray-600">
+                {t("orderType")}:{" "}
+                <span className="text-gray-900">
+                  {Number(order.order_type) === 1 ? t("takeAway") : t("dineIn")}
+                </span>
+              </p>
+            )}
+            {order.payment_status !== undefined && (
+              <p className="text-sm text-gray-600">
+                {t("paymentStatusText")}:{" "}
+                <span className="text-green-900">
+                  {t(`paymentStatus.${order.payment_status}`)}
+                </span>
+              </p>
+            )}
+            {order.discount_note !== undefined && (
+              <span className="text-green-900">{order.discount_note}</span>
+            )}
           </div>
 
           <div className="bg-white rounded-lg shadow p-4 space-y-4">
@@ -105,8 +124,8 @@ export default function OrderDetail() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">{t("tax")}</span>
-              <span className="font-semibold">
-                {order.tax_amount.toLocaleString("vi-VN")} VND
+              <span className="text-green-600 font-semibold">
+                + {order.tax_amount.toLocaleString("vi-VN")} VND
               </span>
             </div>
             <div className="flex justify-between">
@@ -119,7 +138,9 @@ export default function OrderDetail() {
               <span className="text-sm font-bold text-green-800">
                 {t("total")}
               </span>
-              <span>{order.total_amount.toLocaleString("vi-VN")} VND</span>
+              <span className="text-sm font-bold text-gray-900">
+                {order.total_amount.toLocaleString("vi-VN")} VND
+              </span>
             </div>
           </div>
         </>

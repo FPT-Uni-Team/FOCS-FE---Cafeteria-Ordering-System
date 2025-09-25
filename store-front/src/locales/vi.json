@@ -234,6 +234,18 @@
     "discount": "Giảm giá",
     "feedback": "Đánh giá",
     "callStaff": "Gọi nhân viên",
+    "orderType": "Loại đơn hàng",
+    "takeAway": "Mang đi",
+    "dineIn": "Dùng tại chỗ",
+    "paymentStatus": {
+      "0": "Chưa thanh toán",
+      "1": "Đã thanh toán đầy đủ",
+      "2": "Đã thanh toán một phần",
+      "3": "Thanh toán thất bại (qua cổng online)",
+      "4": "Đã hoàn tiền",
+      "5": "Đợi thanh toán"
+    },
+    "paymentStatusText": "Trạng thái thanh toán",
     "callStaffSuccess": "Đã thông báo nhân viên, họ sẽ hỗ trợ bạn ngay."
   },
   "FeedbackForm": {

@@ -29,6 +29,7 @@ export interface Order {
   updated_by: string;
   is_feedback: boolean;
   order_details: OrderDetail[];
+  discount_note?: string;
 }
 
 export interface OrderListResponse {

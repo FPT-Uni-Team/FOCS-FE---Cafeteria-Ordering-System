@@ -234,6 +234,18 @@
     "discount": "Discount",
     "feedback": "Feedback",
     "callStaff": "Call Staff",
+    "paymentStatus": {
+      "0": "Unpaid",
+      "1": "Paid in full",
+      "2": "Partially paid",
+      "3": "Payment failed (via online gateway)",
+      "4": "Refunded",
+      "5": "Pending payment"
+    },
+    "orderType": "Order Type",
+    "takeAway": "Take Away",
+    "dineIn": "Dine In",
+    "paymentStatusText": "Payment Status",
     "callStaffSuccess": "Staff has been notified and will assist you shortly."
   },
   "FeedbackForm": {
