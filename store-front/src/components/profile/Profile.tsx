@@ -1,19 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { CiLocationOn, CiLogout } from "react-icons/ci";
+import { CiCirclePlus, CiLocationOn, CiLogout } from "react-icons/ci";
 import { GrLanguage } from "react-icons/gr";
 import ProfileItem from "./ProfileItem";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { signOut } from "next-auth/react";
 import { makeHref } from "@/utils/common/common";
+import { usePathname } from "next/navigation";
 
 interface Props {
   user: {
     fullName: string;
     email: string;
     avatar: string;
+    point: number;
   };
 }
 
@@ -26,6 +28,13 @@ const onClickIcon = () => {
 
 export default function Profile({ user }: Props) {
   const t = useTranslations("profile");
+  const pathname = usePathname();
+  const parts = pathname.split("/").filter(Boolean);
+  const storeId = parts[1] || "";
+  const tableId = parts[2] || "";
+  const makeHrefSever = (path: string) => {
+    return `/${storeId}/${tableId}/${path}`;
+  };
   return (
     <div className="bg-white px-4 py-6 border rounded-lg shadow-lg">
       <div className="flex flex-col mb-6">
@@ -50,7 +59,7 @@ export default function Profile({ user }: Props) {
           <div className="w-1/3"></div>
           <div className="w-2/3">
             <Link
-              href={makeHref("profile-detail")}
+              href={makeHrefSever("profile-detail")}
               className="text-sm text-white bg-green-800 px-4 py-1 rounded-md inline-block"
             >
               {t("edit")}
@@ -59,6 +68,7 @@ export default function Profile({ user }: Props) {
         </div>
       </div>
 
+      <ProfileItem icon={<CiCirclePlus />} label={`${user.point} Points`} />
       <ProfileItem icon={<GrLanguage />} label={t("languages")} />
       <ProfileItem icon={<CiLocationOn />} label={t("location")} />
       <div className="border border-t border-gray-200 mb-6"></div>
