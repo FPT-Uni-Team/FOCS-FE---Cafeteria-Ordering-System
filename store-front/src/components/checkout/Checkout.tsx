@@ -20,6 +20,7 @@ import PaymentSuccess from "../success/PaymentSuccess";
 import { makeHref } from "@/utils/common/common";
 import Link from "next/link";
 import { AiOutlineClose } from "react-icons/ai";
+import orderService from "@/services/orderService";
 
 interface Coupon {
   code: string;
@@ -118,6 +119,7 @@ const Checkout = () => {
 
   const onSubmit = async (values: CheckoutFormData) => {
     setIsSubmitting(true);
+    let createdOrderCode: string | null = null;
     try {
       const orderData: OrderRequest = {
         store_id: storeId,
@@ -148,6 +150,7 @@ const Checkout = () => {
         order_type: parseInt(orderType),
       };
       const res = await cartService.create_order(orderData);
+      createdOrderCode = res.data.order_code;
       if (res.data.total_price === 0) {
         serPriceZero(true);
         setCodeZero(res.data.order_code);
@@ -171,6 +174,9 @@ const Checkout = () => {
         window.location.href = resPayment.data;
       }
     } catch {
+      if (createdOrderCode) {
+        orderService.deleteOrder(createdOrderCode);
+      }
     } finally {
       setIsSubmitting(false);
     }

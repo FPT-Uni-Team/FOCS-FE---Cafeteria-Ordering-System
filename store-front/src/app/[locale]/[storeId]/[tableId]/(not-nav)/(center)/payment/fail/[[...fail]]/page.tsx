@@ -1,4 +1,5 @@
 import PaymentFail from "@/components/failed/PaymentFail";
+import orderService from "@/services/orderService";
 import { IAuthenticationProps } from "@/types/common";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -23,16 +24,17 @@ export async function generateMetadata(props: IAuthenticationProps) {
 export default async function PaymentFailPage({
   searchParams,
 }: PaymentFailPageProps) {
-  const { orderCode = "", statusString = "" } = await searchParams;
-  const baseUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL_SEVER || "http://localhost:3000";
+  const { orderCode = "" } = await searchParams;
+  // const baseUrl =
+  //   process.env.NEXT_PUBLIC_API_BASE_URL_SEVER || "http://localhost:3000";
 
-  if (orderCode && statusString) {
-    await fetch(`${baseUrl}/api/payment/update`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderCode, statusString }),
-    });
+  if (orderCode) {
+    // await fetch(`${baseUrl}/api/payment/update`, {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ orderCode, statusString }),
+    // });
+    await orderService.deleteOrder(orderCode);
   }
 
   return <PaymentFail />;
