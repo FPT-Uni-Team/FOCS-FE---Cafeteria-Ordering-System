@@ -68,7 +68,10 @@ export default function Profile({ user }: Props) {
         </div>
       </div>
 
-      <ProfileItem icon={<CiCirclePlus />} label={`${user.point} Points`} />
+      <ProfileItem
+        icon={<CiCirclePlus />}
+        label={`${user.point} ${t("points")}`}
+      />
       <ProfileItem icon={<GrLanguage />} label={t("languages")} />
       <ProfileItem icon={<CiLocationOn />} label={t("location")} />
       <div className="border border-t border-gray-200 mb-6"></div>

@@ -117,7 +117,8 @@
     "save": "Save",
     "error_required": "This field is required",
     "update_success": "Update successfully",
-    "update_fail": "Update failed"
+    "update_fail": "Update failed",
+    "points": "Điểm"
   },
   "product-list": {
     "meta_title": "Product List",
