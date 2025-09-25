@@ -50,7 +50,7 @@ export default function Profile({ user }: Props) {
           <div className="w-1/3"></div>
           <div className="w-2/3">
             <Link
-              href="/profile-detail"
+              href={makeHref("edit-profile")}
               className="text-sm text-white bg-green-800 px-4 py-1 rounded-md inline-block"
             >
               {t("edit")}
