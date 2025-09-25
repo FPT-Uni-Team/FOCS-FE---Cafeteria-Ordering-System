@@ -75,7 +75,7 @@ export default function OrderHistory() {
                   <p
                     className="text-sm text-gray-500 cursor-pointer"
                     onClick={() =>
-                      router.push(makeHref(`order-detail/${order.id}`))
+                      router.push(makeHref(`order-detail/${order.order_code}`))
                     }
                   >
                     #<span className="font-medium">{order.order_code}</span>

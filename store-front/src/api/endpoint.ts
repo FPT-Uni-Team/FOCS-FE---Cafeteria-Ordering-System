@@ -98,7 +98,7 @@ const endpoints = {
   },
   order: {
     list: () => `${API_BASE_URL}/order/history`,
-    detail: (id: string) => `${API_BASE_URL}/order/${id}`,
+    detail: (id: string) => `${API_BASE_URL}/order/order-by-code/${id}`,
     feedback: () => `${API_BASE_URL}/feedback`,
     update: () => `${API_BASE_URL}/payment/receive-hook`,
     delete: (id: string) => `${API_BASE_URL}/order/${id}`,

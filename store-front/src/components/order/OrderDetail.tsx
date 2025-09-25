@@ -12,12 +12,12 @@ export default function OrderDetail() {
   const t = useTranslations("order-detail");
   const params = useParams();
   const orderId = params?.id;
-  const [order, setOrder] = useState<Order | null>(null);
+  const [order, setOrder] = useState<Order>();
 
   const fetchOrders = async () => {
     try {
       const res = await orderService.getDetailOrder(orderId as string);
-      setOrder(res?.data?.items || []);
+      setOrder(res?.data || []);
     } catch (err) {
       console.error(err);
     }
@@ -71,9 +71,12 @@ export default function OrderDetail() {
                     <p className="font-medium text-gray-800">
                       {item.menu_item_name}
                     </p>
-                    {item.variant_name && (
+                    {item.variants && (
                       <p className="text-xs text-gray-500">
-                        {item.variant_name}
+                        {item.variants
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          .map((v: any) => v.variant_name)
+                          .join(", ")}
                       </p>
                     )}
                     {item.note && (
@@ -83,7 +86,7 @@ export default function OrderDetail() {
                     )}
                   </div>
                   <p className="text-green-800 text-sm font-semibold">
-                    {item.total_price} VND
+                    {item.unit_price.toLocaleString("vi-VN")} VND
                   </p>
                 </div>
                 <p className="text-sm text-gray-500">
@@ -97,24 +100,26 @@ export default function OrderDetail() {
             <div className="flex justify-between">
               <span className="text-gray-600">{t("subtotal")}</span>
               <span className="font-semibold">
-                {order.sub_total_amount} VND
+                {order.sub_total_amount.toLocaleString("vi-VN")} VND
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">{t("tax")}</span>
-              <span className="font-semibold">{order.tax_amount} VND</span>
+              <span className="font-semibold">
+                {order.tax_amount.toLocaleString("vi-VN")} VND
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">{t("discount")}</span>
               <span className="text-red-600 font-semibold">
-                - {order.discount_amount} VND
+                - {order.discount_amount.toLocaleString("vi-VN")} VND
               </span>
             </div>
             <div className="flex justify-between font-semibold border-t pt-2">
               <span className="text-sm font-bold text-green-800">
                 {t("total")}
               </span>
-              <span>{order.total_amount} VND</span>
+              <span>{order.total_amount.toLocaleString("vi-VN")} VND</span>
             </div>
           </div>
         </>
