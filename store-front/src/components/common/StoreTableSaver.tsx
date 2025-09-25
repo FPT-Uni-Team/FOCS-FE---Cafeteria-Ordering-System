@@ -34,15 +34,20 @@ export default function StoreTableWatcher() {
       if (token) {
         const payload = parseJwt(token);
         const actorId = payload?.nameidentifier;
-        console.log("actorId from token:", actorId);
         if (actorId) {
           localStorage.setItem("actorId", actorId);
+          localStorage.setItem("tokenType", "login");
           return;
         }
-      }
-
-      if (!localStorage.getItem("actorId")) {
-        localStorage.setItem("actorId", uuidv4());
+      } else {
+        if (localStorage.getItem("tokenType") === "login") {
+          localStorage.removeItem("actorId");
+          localStorage.setItem("actorId", uuidv4());
+          localStorage.setItem("tokenType", "guest");
+        } else if (!localStorage.getItem("actorId")) {
+          localStorage.setItem("actorId", uuidv4());
+          localStorage.setItem("tokenType", "guest");
+        }
       }
     };
 
