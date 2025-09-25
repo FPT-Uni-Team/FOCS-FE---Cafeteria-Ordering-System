@@ -151,25 +151,29 @@ const Checkout = () => {
       };
       const res = await cartService.create_order(orderData);
       createdOrderCode = res.data.order_code;
+
       if (res.data.total_price === 0) {
         serPriceZero(true);
         setCodeZero(res.data.order_code);
-        await cartService.order_update({
-          orderCode: res.data.order_code,
-          statusString: "00",
-        });
+        // await cartService.order_update({
+        //   orderCode: res.data.order_code,
+        //   statusString: "00",
+        // });
         return;
       }
+
       if (paymentType === "1") {
         setOrderCode(res.data.order_code);
         return;
       }
+
       const resPayment = await cartService.payment_order({
         order_code: res.data.order_code as number,
         amount: res.data.total_price as number,
         description: `Order ${res.data.order_code}`,
         table_id: tableId,
       });
+
       if (resPayment.data) {
         window.location.href = resPayment.data;
       }

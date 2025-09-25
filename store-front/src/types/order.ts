@@ -8,6 +8,7 @@ export interface OrderDetail {
   unit_price: number;
   total_price: number;
   note: string;
+  variants?: { variant_id: string; variant_name: string }[];
 }
 
 export interface Order {
