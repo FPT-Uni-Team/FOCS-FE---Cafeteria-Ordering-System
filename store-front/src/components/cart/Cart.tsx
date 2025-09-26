@@ -304,14 +304,17 @@ export default function Cart() {
           </div>
           <SwipeableList
             threshold={0.3}
-            className="max-h-[calc(100vh-240px)] overflow-y-auto space-y-3 pb-2"
+            className="max-h-[calc(100vh-240px-env(safe-area-inset-bottom))] overflow-y-auto space-y-3 pb-2"
           >
             {items.map((item) => (
               <SwipeableListItem
                 key={item.uniqueId}
                 trailingActions={trailingActions(item.uniqueId as string)}
               >
-                <div key={item.uniqueId} className="flex relative gap-2 w-full">
+                <div
+                  key={item.uniqueId}
+                  className="flex relative items-center gap-2 w-full"
+                >
                   <input
                     type="checkbox"
                     className="mt-2 accent-green-700 cursor-pointer"
