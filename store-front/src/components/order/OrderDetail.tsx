@@ -7,6 +7,8 @@ import { OrderDetailSkeleton } from "../common/OrderDetailSkeleton";
 import orderService from "@/services/orderService";
 import { useParams } from "next/navigation";
 import { Order } from "@/types/order";
+import { makeHref } from "@/utils/common/common";
+import Link from "next/link";
 
 export default function OrderDetail() {
   const t = useTranslations("order-detail");
@@ -87,9 +89,12 @@ export default function OrderDetail() {
                 </div>
                 <div className="flex flex-col flex-grow justify-between">
                   <div>
-                    <p className="font-medium text-gray-800">
+                    <Link
+                      href={makeHref(`product-detail/${item.menu_item_id}`)}
+                      className="font-medium text-gray-800"
+                    >
                       {item.menu_item_name}
-                    </p>
+                    </Link>
                     {item.variants && (
                       <p className="text-xs text-gray-500">
                         {item.variants
