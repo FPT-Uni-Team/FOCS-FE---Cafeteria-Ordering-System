@@ -167,7 +167,11 @@ export default function OrderHistory() {
       </div>
 
       {show && (
-        <FeedbackForm onClose={() => setShow(false)} orderId={orderId} />
+        <FeedbackForm
+          onClose={() => setShow(false)}
+          orderId={orderId}
+          fetchOrders={fetchOrders}
+        />
       )}
     </>
   );
