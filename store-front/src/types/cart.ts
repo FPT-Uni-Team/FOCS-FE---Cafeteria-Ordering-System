@@ -42,7 +42,7 @@ export interface CheckoutRequest {
   table_id: string;
   items: CheckoutItem[];
   note?: string;
-  coupon_code?: string;
+  coupon_code?: string | null;
   point?: number;
   is_use_point?: boolean;
 }

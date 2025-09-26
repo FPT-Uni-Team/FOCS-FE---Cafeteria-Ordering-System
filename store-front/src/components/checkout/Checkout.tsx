@@ -67,7 +67,7 @@ const Checkout = () => {
   const handleSelect = (coupon: Coupon) => {
     setSelectedCoupon(coupon);
   };
-  const handleCheckout = async (couponCode?: string) => {
+  const handleCheckout = async (couponCodeInput?: string) => {
     try {
       const checkoutData: CheckoutRequest = {
         store_id: storeId,
@@ -88,7 +88,11 @@ const Checkout = () => {
         })),
         point: usePoint ? point : 0,
         is_use_point: usePoint,
-        coupon_code: couponCode,
+        coupon_code: couponCodeInput
+          ? couponCodeInput
+          : couponCode.length > 0
+          ? couponCode
+          : null,
       };
 
       await dispatch(
@@ -149,6 +153,7 @@ const Checkout = () => {
         payment_type: paymentType === "0" ? 0 : 1,
         order_type: parseInt(orderType),
       };
+      console.log("Order Data:", orderData);
       const res = await cartService.create_order(orderData);
       createdOrderCode = res.data.order_code;
 
@@ -237,7 +242,7 @@ const Checkout = () => {
         </div>
       )}
       <form onSubmit={handleSubmit(handleSubmitModal)}>
-        <div className="max-h-[calc(100vh-320px)] overflow-y-auto pb-4">
+        <div className="max-h-[calc(100vh-320px-env(safe-area-inset-bottom))] overflow-y-auto pb-4">
           <div className="flex flex-col gap-2">
             {selectedCartItems.map((item) => {
               const selectedVariant = item.variant_groups
