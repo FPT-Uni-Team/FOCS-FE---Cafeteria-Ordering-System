@@ -38,7 +38,7 @@ export default function ProductList() {
     params?: ProductListParams;
   }) => {
     const paramsFilter: ProductListParams = {
-      ...(params ?? defaultParams(10, pageNumber)),
+      ...(params ?? defaultParams(30, pageNumber)),
       page: pageNumber,
       search_by: "name",
       sort_by: "price",

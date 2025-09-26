@@ -95,7 +95,9 @@ export default function ProductDetail() {
             <h3 className="text-sm font-semibold mb-2 border-t border-t-gray-200 text-black pt-2">
               {t("feedbackTitle")}
             </h3>
-            {product.feedbacks && product.feedbacks.length > 0 ? (
+            {product.feedbacks &&
+            product.feedbacks.length > 0 &&
+            product.feedbacks.filter((item) => item.is_public).length > 0 ? (
               <div className="space-y-4">
                 {product.feedbacks
                   .filter((item) => item.is_public)
