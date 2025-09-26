@@ -261,7 +261,8 @@
     "submit": "Submit",
     "descriptionRequired": "Please enter a description",
     "feedbackSuccess": "Feedback submitted successfully",
-    "feedbackError": "Failed to submit feedback, please try again"
+    "feedbackError": "Failed to submit feedback, please try again",
+    "feedbackCompleteError": "Please wait complete this order to feedback"
   },
   "homepage": {
     "meta_title": "Homepage",
