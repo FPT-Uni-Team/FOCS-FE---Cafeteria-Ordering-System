@@ -9,6 +9,7 @@ export interface OrderDetail {
   total_price: number;
   note: string;
   variants?: { variant_id: string; variant_name: string }[];
+  images?: { url: string; is_main: boolean }[];
 }
 
 export interface Order {

@@ -80,7 +80,12 @@ export default function OrderDetail() {
               >
                 <div className="w-20 h-20 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
                   <Image
-                    src={"/img/product/image-not-available.png"}
+                    src={
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      item.images?.find((img: any) => img.is_main)?.url ||
+                      item.images?.[0]?.url ||
+                      "/img/product/image-not-available.png"
+                    }
                     alt={item.menu_item_name}
                     width={80}
                     height={80}

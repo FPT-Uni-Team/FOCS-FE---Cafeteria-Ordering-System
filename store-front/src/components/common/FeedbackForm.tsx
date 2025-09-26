@@ -18,11 +18,15 @@ export interface FeedbackFormValues {
 interface FeedbackFormProps {
   onClose: () => void;
   orderId: string;
+  fetchOrders: () => void;
 }
 
-export default function FeedbackForm({ onClose, orderId }: FeedbackFormProps) {
+export default function FeedbackForm({
+  onClose,
+  orderId,
+  fetchOrders,
+}: FeedbackFormProps) {
   const t = useTranslations("FeedbackForm");
-
   const {
     register,
     handleSubmit,
@@ -57,6 +61,7 @@ export default function FeedbackForm({ onClose, orderId }: FeedbackFormProps) {
       .then(() => {
         toast.success(t("feedbackSuccess"));
         onClose();
+        fetchOrders();
       })
       .catch(() => {
         toast.error(t("feedbackError"));
