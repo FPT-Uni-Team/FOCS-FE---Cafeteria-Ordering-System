@@ -58,13 +58,20 @@ export default function FeedbackForm({
     });
     orderService
       .feedback(formData)
-      .then(() => {
-        toast.success(t("feedbackSuccess"));
-        onClose();
-        fetchOrders();
+      .then((res) => {
+        if (res.data === true) {
+          toast.success(t("feedbackSuccess"));
+          onClose();
+          fetchOrders();
+        } else {
+          toast.error(t("feedbackCompleteError"));
+        }
       })
       .catch(() => {
         toast.error(t("feedbackError"));
+        setLoading(false);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };

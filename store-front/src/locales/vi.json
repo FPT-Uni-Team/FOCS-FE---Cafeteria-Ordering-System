@@ -261,7 +261,8 @@
     "submit": "Gửi",
     "descriptionRequired": "Vui lòng nhập nội dung đánh giá",
     "feedbackSuccess": "Gửi đánh giá thành công",
-    "feedbackError": "Gửi đánh giá thất bại, vui lòng thử lại"
+    "feedbackError": "Gửi đánh giá thất bại, vui lòng thử lại",
+    "feedbackCompleteError": "Vui lòng chờ hoàn tất đơn hàng này để đánh giá"
   },
   "homepage": {
     "meta_title": "Trang chủ",
